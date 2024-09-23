@@ -1,0 +1,44 @@
+.switch-checkbox {
+  display: none;
+}
+
+.switch-label {
+  position: relative;
+  display: inline-block;
+  width: 101px;
+  height: 38px;
+}
+
+.switch-button {
+  position: absolute;
+  cursor: pointer;
+  padding-right: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  transition: 0.4s;
+  border-radius: 36px;
+}
+
+.switch-button:before {
+  position: absolute;
+  content: "";
+  height: 28px;
+  width: 28px;
+  left: 4px;
+  bottom: 5px;
+  background-color: var(--primary-fade);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.switch-checkbox:focus + .switch-label .switch-button {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.switch-checkbox:checked + .switch-label .switch-button:before {
+  background-color: var(--primary);
+  transform: translateX(64px);
+}

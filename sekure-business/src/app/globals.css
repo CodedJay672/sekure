@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+   --primary: #18BC7A;
+   --dark2: #D9D9D9;
+   --dark: #242424;
+   --secondary: #f5f5f5;
+   --dark3: #1E1E1E;
+   --danger: #DC473E;
+   --notif: #E9E9E9;
+   --input: #F5F5F5;
+   --placeholder-text: #A9A9A9;
+   --primary-fade: #D5F1E6;
+  }
+}
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  body {
+    @apply  max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .flex-end {
+    @apply flex justify-end items-center;
+  }
+
+  .wrapper {
+    @apply flex-auto w-[80%] flex gap-4 ml-4 pb-10 pr-6;
+  }
+
+  .tab-header {
+    @apply hidden;
+  }
+
+  .tab-label {
+    @apply text-dark3 text-[11px] leading-[16.5px] font-normal cursor-pointer inline-block py-2 px-2 mr-5 transition-all;
+  }
+
+  .tab-header:checked + .tab-label {
+    @apply border-b-2 border-notif;
+  }
+
+  .tab-content {
+    @apply mt-10 hidden;
+  }
+
+  #tab1:checked ~ #content1,
+  #tab2:checked ~ #content2,
+  #tab3:checked ~ #content3 {
+    @apply block;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply rounded-lg text-xs font-medium leading-[34.5px];
+  }
+
+  .alert {
+    @apply w-full bg-background text-dark rounded-lg flex-center flex-col gap-3;
+  }
+
+  .input {
+    @apply flex-1 border-none outline-0 rounded-lg block px-3 py-2 text-dark3 text-[10px] leading-6 placeholder:text-placeholder-text focus:border-none focus:outline-none focus:ring-transparent;
+  }
+
+  .recharge-card {
+    @apply flex flex-col px-6 py-6 bg-input rounded-[26px];
+  }
+
+  .labels {
+    @apply text-[8px] text-[#242424] leading-6 font-normal;
+  }
+
+  .select {
+    @apply w-[111px] border-none cursor-pointer rounded-full bg-primary-fade duration-300 ring-transparent focus:ring-transparent text-primary text-xs leading-3 tracking-[-0.5px] font-medium;
+  }
+
+  .primary-btn {
+    @apply bg-primary text-white btn;
+  }
+
+  .secondary-btn {
+    @apply bg-dark2 text-dark btn;
+  }
+}
