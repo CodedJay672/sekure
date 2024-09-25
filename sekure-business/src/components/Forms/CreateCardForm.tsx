@@ -27,7 +27,7 @@ interface CreateCardFormProps {
   btnText: string;
 }
 
-const CreateCardForm = (props: CreateCardFormProps) => {
+const CreateCardForm:React.FC<CreateCardFormProps> = ({ btnText }) => {
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
   })
@@ -84,22 +84,12 @@ const CreateCardForm = (props: CreateCardFormProps) => {
           <DetailsTag data={{ key: 'Montant debité', value: '51 500 XAF' }} />
         </div>
 
-        <Dialog>
-          <DialogTrigger className="w-full">
-            <Button variant="default" type="submit" className="primary-btn flex-between w-full">
-              <span className="flex-1 text-center" {...props} >
-                {props.btnText} 
-              </span>
-              <ArrowRightIcon size={16} color="#fff" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent
-            className="w-[383px]"
-            aria-describedby="en traitment"
-          >
-            <SuccessAlert text="Cette carte a été bloquée avec succès !!" />
-          </DialogContent>
-        </Dialog>
+        <Button variant="default" type="submit" className="primary-btn flex-between w-full">
+          <span className="flex-1 text-center">
+            {btnText} 
+          </span>
+          <ArrowRightIcon size={16} color="#fff" />
+        </Button>
       </form>
     </Form>
   )

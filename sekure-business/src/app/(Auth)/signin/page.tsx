@@ -1,19 +1,25 @@
-import SignInForm from "@/components/Forms/SignInForm";
-import SignupForm from "@/components/Forms/SignupForm";
+import { createPortal } from 'react-dom';
+import SignInForm from '@/components/Forms/SignInForm';
+import Image from 'next/image';
 
-const Signin = () => {
+const SignIn = () => {
   return (
-    <>
-      <div className="w-full h-full overflow-y-hidden relative md:w-[490px] bg-white bg-no-repeat bg-right-top bg-[url(/assets/images/login-vector.png)]">
-        <div className="h-full px-16 py-12 overflow-x-hiddden overflow-y-scroll">
-          <h1 className="text-[35px] leading-[30px] tracking-[-2px] font-semibold text-primary mb-3">
-            Connexion à Mon entreprise            
-          </h1>
-          <SignInForm />
-        </div>
+    <div className="w-full max-w-[448px] h-[285px] flex-1 flex justify-start items-center">
+      <div className='p-0 w-full'>
+        <h1 className="text-[33px] leading-[41px] tracking-[-2px] font-semibold mb-3">
+          Se connecter            
+        </h1>
+        <SignInForm />
       </div>
-    </>
+      <Image
+        src="/assets/images/login-img.png"
+        alt="login image"
+        width={488}
+        height={770}
+        className="absolute -top-6 -right-24 2xl:right-14 z-[5000]"
+      />
+    </div>
   )
 }
 
-export default Signin;
+export default SignIn;

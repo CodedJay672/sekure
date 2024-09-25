@@ -59,18 +59,13 @@ export const searchSchema = z.object({
 
 export const signupSchema = z.object({
   fullName: z.string(),
-  code: z.string({
-    required_error: 'Le code est requis'
-  }),
-  phone: z.string().length(13),
   businessName: z.string(),
-  position: z.string(),
+  receive_mail: z.boolean().default(false).optional(),
+  pays: z.string(),
   email: z.string().email(),
   password: z.string().min(8, {
     message: 'Le mot de passe doit contenir au moins 8 caractères'
   }),
-  terms_condition: z.boolean().default(false).optional(),
-  receive_mail: z.boolean().default(false).optional(),
 });
 
 export const businessFieldSchema = z.object({

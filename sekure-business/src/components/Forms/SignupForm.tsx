@@ -42,34 +42,16 @@ const SignupForm = () => {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Nom complet</FormLabel>
+              <FormLabel className="text-[12px] leading-6 text-[#242424]">Nom complet</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Kamgaing Kamdem"
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
+                  type="text"
+                  placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                  className="form-input h-[37.09px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary"
                   {...field}
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Numéro de téléphone</FormLabel>
-                <FormControl>
-                  <Input
-                    type="tel"
-                    placeholder="6xxx xxxx xxxx"
-                    {...field}
-                    className="form-input w-[287px] h-[37.09px]bg-[#F4EFE3] text-black focus:ring-primary"
-                    />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
             </FormItem>
           )}
         />
@@ -79,30 +61,55 @@ const SignupForm = () => {
           name="businessName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Nom de votre entreprise</FormLabel>
+              <FormLabel className="text-[12px] leading-6 text-[#242424]">Nom de l’entreprise</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Entrez le nom de votre entreprise"
+                    {...field}
+                    className="form-input h-[37.09px] bg-[#F3F3F3] text-[12px] text-[#B3B3B3] leading-3 font-medium invalid:ring-red-500 focus:ring-primary"
+                  />
+                </FormControl>
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="receive_mail"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
               <FormControl>
-                <Input
-                  placeholder="EntrepriseANC"
-                  {...field}
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className="mt-1 text-white font-bold"
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              <div className="leading-none">
+                <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+                  Je confirme que mon entreprise est dument  enregistrée et possède les autorisations et licences légales pour opérer
+                </FormLabel>
+              </div>
             </FormItem>
           )}
         />
         
         <FormField
           control={form.control}
-          name="position"
+          name="pays"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Poste dans l&apos;entreprise</FormLabel>
+              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+                Pays
+              </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Comptable"
+                  type="email"
+                  placeholder="Entrez le nom de votre entreprise"
                   {...field}
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
+                  className="form-input h-[37.09px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -115,13 +122,15 @@ const SignupForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Adresse email proféssionnelle</FormLabel>
+              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+                Adresse email proféssionnelle
+              </FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="nomcomplete@enterprise.com"
+                  placeholder="Votre adresse mail"
                   {...field}
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
+                  className="form-input h-[37.09px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -134,13 +143,15 @@ const SignupForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Mot de passe</FormLabel>
+              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+                Mot de passe
+              </FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="********"
+                  placeholder="Votre mot de passe"
                   {...field}
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
+                  className="form-input h-[37.09px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -148,80 +159,16 @@ const SignupForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[11px] leading-4 text-black">Confirmation</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  placeholder="********"
-                  {...field}
-                  className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
-                />
-              </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-            </FormItem>
-          )}
-        />
-
-        <div className="py-3">
-          <FormField
-            control={form.control}
-            name="terms_condition"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md py-1">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="form-checkbox h-[17px] w-[17px] text-primary rounded-md"
-                    />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-[9px] leading-4 font-normal">
-                    j’ai lu et accepté les termes et conditions de Sekure
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="receive_mail"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0 rounded-md py-1">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="form-checkbox h-[17px] w-[17px] text-primary rounded-md"
-                    />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-[9px] leading-4 font-normal">
-                    j’accepte de recevoir des messages d’information de Sekure 
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <Button
-          type="submit"
-          className="w-[288px] bg-black rounded-full text-white flex-between"
-        >
-          <span className="flex-1">Suivant</span>
-          <CgChevronRightO size={30} color="black" className="bg-white rounded-full" />
-        </Button>
-        <div className="w-[288px] flex-center">
-          <p className="text-[9px] leading-4 font-normal text-black">
-            Vous avez déjà un compte? <Link href="/signin" className="font-semibold">Connectez-vous</Link>
-          </p>
+        <div className="py-3 flex items-center gap-2">
+          <Button
+            type="submit"
+            className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
+            >
+              Créer mon compte
+          </Button>
+          <Link href="/signup" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
+            Déjà inscrit? <span className="font-bold">Connectez-vous</span>
+          </Link>
         </div>
       </form>
     </Form>

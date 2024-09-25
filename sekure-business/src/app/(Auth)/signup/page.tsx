@@ -1,18 +1,29 @@
 import SignupForm from "@/components/Forms/SignupForm";
+import { Metadata } from "next";
+import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Sign Up | Sekure Business",
+  description: "Sekure provides card services for businesses.",
+};
 
 const Signup = () => {
   return (
-    <>
-      <div className="w-full h-full overflow-y-hidden relative md:w-[490px] bg-white bg-no-repeat bg-right-top bg-[url(/assets/images/login-vector.png)]">
-        <div className="h-full px-8 pt-8 pb-12 md:px-16 md:pt-2 md:pb-12 overflow-x-hiddden overflow-y-scroll">
-          <div className="flex gap-2 mt-10 mb-4">
-            <span className="w-6 h-6 rounded-full bg-primary"/><span className="w-6 h-6 rounded-full bg-notif"/>
-          </div>
-          <h1 className="text-[35px] leading-[30px] tracking-[-2px] font-semibold text-primary mb-3">Enregistrer son entreprise</h1>
-          <SignupForm />
-        </div>
+    <div className="w-full max-w-[448px] h-[285px] flex-1 flex justify-start items-center">
+      <div className='p-0 w-full'>
+        <h1 className="text-[33px] leading-[41px] tracking-[-2px] font-semibold mb-3">
+          Créer un compte
+        </h1>
+        <SignupForm />
       </div>
-    </>
+      <Image
+        src="/assets/images/signup-hero.png"
+        alt="signup image"
+        width={450}
+        height={817}
+        className="absolute -top-20 -right-24 2xl:right-14 z-[5000]"
+      />
+    </div>
   )
 }
 
