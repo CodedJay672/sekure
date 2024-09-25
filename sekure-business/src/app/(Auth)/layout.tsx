@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="pl-10 py-6 bg-white relative -z-50">
+        <header className="pl-20 py-6 bg-white relative -z-50">
           <nav className="w-full flex items-center gap-10">
             <Link href="/" className="flex gap-2">
               <Image
@@ -57,7 +57,7 @@ export default function RootLayout({
             </Link>
           </nav>
         </header>
-        <main className="max-w-[1552px] h-auto pl-14 flex bg-white py-5 relative">
+        <main className="max-w-[1552px] h-auto pl-20 flex bg-white py-5 relative">
           <div className="flex flex-col h-auto flex-between mr-16">
             {children}
             <footer className="w-[448px] h-[143px] mt-10">
@@ -98,10 +98,10 @@ export default function RootLayout({
             <div className="flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image
-                  src="/assets/images/arrowstrokewhite.png"
+                  src="/assets/images/icon2.png"
                   alt="left arrow down"
-                  width={28}
-                  height={28}
+                  width={44}
+                  height={39}
                   className="object-contain absolute"
                 />
               </div>
@@ -116,10 +116,10 @@ export default function RootLayout({
             <div className="flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image
-                  src="/assets/images/arrowstrokewhite.png"
+                  src="/assets/images/icon3.png"
                   alt="left arrow down"
-                  width={28}
-                  height={28}
+                  width={36}
+                  height={27}
                   className="object-contain absolute"
                 />
               </div>
@@ -134,10 +134,10 @@ export default function RootLayout({
             <div className="flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image
-                  src="/assets/images/arrowstrokewhite.png"
+                  src="/assets/images/icon4.png"
                   alt="left arrow down"
-                  width={28}
-                  height={28}
+                  width={35}
+                  height={26}
                   className="object-contain absolute"
                 />
               </div>
@@ -152,10 +152,10 @@ export default function RootLayout({
             <div className="flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image
-                  src="/assets/images/arrowstrokewhite.png"
+                  src="/assets/images/icon5.png"
                   alt="left arrow down"
-                  width={28}
-                  height={28}
+                  width={25}
+                  height={30}
                   className="object-contain absolute"
                 />
               </div>

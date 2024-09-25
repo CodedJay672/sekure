@@ -166,7 +166,7 @@ const SignupForm = () => {
             >
               Créer mon compte
           </Button>
-          <Link href="/signup" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
+          <Link href="/signin" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
             Déjà inscrit? <span className="font-bold">Connectez-vous</span>
           </Link>
         </div>
