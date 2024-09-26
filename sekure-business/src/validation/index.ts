@@ -88,7 +88,9 @@ export const recPwdSchema = z.object({
 });
 
 export const OTPSchema = z.object({
-  otp: z.string(),
+  otp: z.string().min(6, {
+    message: 'Le code doit contenir au moins 6 caractères'
+  }),
 });
 
 export const pwdSchema = z.object({

@@ -15,14 +15,17 @@ import {
 
 import { signupSchema } from "../../validation";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
-import { CgChevronRightO } from "react-icons/cg";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 
 const SignupForm = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
   })
@@ -32,6 +35,7 @@ const SignupForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    router.push(`${pathname}/get-otp`);
   }
 
   return (

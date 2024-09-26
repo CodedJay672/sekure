@@ -17,9 +17,13 @@ import { signinSchema } from "../../validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { usePathname, useRouter } from 'next/navigation';
 
 
 const SignInForm = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
   })
@@ -29,6 +33,7 @@ const SignInForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    router.push(`${pathname}/get-otp`);
   }
 
   return (

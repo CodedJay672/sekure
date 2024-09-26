@@ -7,20 +7,23 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CgChevronRightO } from "react-icons/cg";
 import Link from "next/link";
 import { OTPSchema } from "@/validation";
+import { useRouter } from "next/navigation";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 
 
 const PwdRecOTPFForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
   })
@@ -29,48 +32,52 @@ const PwdRecOTPFForm = () => {
   function onSubmit(values: z.infer<typeof OTPSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
+    router.push('/');
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex justify-between h-[460px] flex-col">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
         <div>
-          <FormField
-            control={form.control}
-            name="otp"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[11px] leading-4 text-black">Entrez le code OTP envoyé par mail</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="5000"
-                    className="form-input w-[287px] h-[37.09px] bg-[#F4EFE3] text-black focus:ring-primary"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-            />
-          
-          <Link href="#" className="w-[288px] flex justify-end text-[9px] leading-4 pr-2">Aucun code reçu?<span className="font-semibold ml-[2px]">renvoyez le code</span></Link>
+        <FormField
+          control={form.control}
+          name="otp"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <InputOTP maxLength={6} {...field}>
+                  <InputOTPGroup className="bg-primary-fade w-full flex space-around text-[]">
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormDescription>
+                <Link href="#" className="flex justify-start text-[12px] leading-[19px] pr-2">
+                  Vous n’avez pas reçu de code?<span className="font-semibold text-primary ml-1"> Renvoyez le code</span>
+                </Link>
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         </div>
 
-        <div className="">
+        <div className="py-3 flex items-center gap-2">
           <Button
             type="submit"
-            className="w-[288px] bg-black rounded-full text-white flex-between"
+            className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
             >
-            <span className="flex-1">Suivant</span>
-            <CgChevronRightO size={30} color="black" className="bg-white rounded-full" />
+              Créer mon compte
           </Button>
-          <div className="w-[288px] flex-center">
-            <p className="text-[9px] leading-4 font-normal text-black">
-              Vous n’avez pas encore de compte? <Link href="/signin" className="font-semibold">Inscivez-vous</Link>
-            </p>
-          </div>
+          <Link href="/signin" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
+            Déjà inscrit? <span className="font-bold">Connectez-vous</span>
+          </Link>
         </div>
       </form>
     </Form>
