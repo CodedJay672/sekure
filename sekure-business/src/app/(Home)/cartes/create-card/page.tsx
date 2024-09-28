@@ -1,6 +1,6 @@
 import CreateCardForm from "@/components/Forms/CreateCardForm"
 
-const CreateCard = () => {
+const Page = () => {
   return (
     <div className="w-full h-screen flex-center">
       <div className="w-[385px] rounded-[18px] p-6 bg-white">
@@ -11,4 +11,4 @@ const CreateCard = () => {
   )
 }
 
-export default CreateCard
+export default Page

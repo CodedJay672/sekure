@@ -3,7 +3,7 @@ import './Switch.css';
 
 
 interface SwitchProps {
-  text: string;
+  text?: string;
   isOn: boolean;
   handleToggle: () => void;
 }

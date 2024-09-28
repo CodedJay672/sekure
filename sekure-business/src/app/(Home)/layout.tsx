@@ -12,16 +12,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  modal,
   children,
 }: Readonly<{
-  modal: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {modal}
         <Topbar />
         <main className="w-full flex justify-between items-start">
           <Sidebar />

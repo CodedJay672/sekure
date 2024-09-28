@@ -47,8 +47,8 @@ const PwdRecOTPFForm = () => {
             <FormItem>
               <FormControl>
                 <InputOTP maxLength={6} {...field}>
-                  <InputOTPGroup className="bg-primary-fade w-full flex space-around text-[]">
-                    <InputOTPSlot index={0} />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} className="border-2" />
                     <InputOTPSlot index={1} />
                     <InputOTPSlot index={2} />
                     <InputOTPSlot index={3} />
@@ -73,10 +73,10 @@ const PwdRecOTPFForm = () => {
             type="submit"
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
             >
-              Créer mon compte
+              Me connecter
           </Button>
           <Link href="/signin" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
-            Déjà inscrit? <span className="font-bold">Connectez-vous</span>
+            Pas encore de compte?<span className="font-bold ml-[2px]"> Inscrivez vous</span>
           </Link>
         </div>
       </form>

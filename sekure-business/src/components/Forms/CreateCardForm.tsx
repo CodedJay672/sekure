@@ -18,9 +18,6 @@ import { ArrowRightIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import DetailsTag from "../ui/shared/DetailsTag";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent,  DialogTrigger } from "../ui/dialog";
-import LoadingSpinner from "../Alert/Loading";
-import SuccessAlert from "../Alert/SuccessAlert";
 
 
 interface CreateCardFormProps {

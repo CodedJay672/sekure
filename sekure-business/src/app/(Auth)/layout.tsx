@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="pl-20 py-6 bg-white relative -z-50">
+        <header className="w-full pl-20 py-6 bg-white">
           <nav className="w-full flex items-center gap-10">
             <Link href="/" className="flex gap-2">
               <Image
@@ -57,7 +57,7 @@ export default function RootLayout({
             </Link>
           </nav>
         </header>
-        <main className="max-w-[1552px] h-auto pl-20 flex bg-white py-5 relative">
+        <main className="max-w-[1552px] h-auto pl-20 flex bg-white pb-7 relative">
           <div className="flex flex-col h-auto flex-between mr-16">
             {children}
             <footer className="w-[448px] h-[143px] mt-10">
@@ -76,7 +76,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
-          <div className="flex-1 flex flex-col gap-6 bg-[url(/assets/images/signin-bg.png)] pl-10 relative pb-10">
+          <div className="flex-1 flex flex-col gap-6 bg-[url(/assets/images/signin-bg.png)] pl-10 relative py-10">
             <div className=" flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image

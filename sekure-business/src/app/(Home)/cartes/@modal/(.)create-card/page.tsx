@@ -1,12 +1,12 @@
-import Modal from "@/components/ui/shared/Modal"
-import CreateCard from "../../create-card/page"
+import CreateCardForm from "@/components/Forms/CreateCardForm";
+import Modal from "@/components/ui/shared/Modal";
 
-const page = () => {
+const Page = () => {
   return (
     <Modal>
-      <CreateCard />
+      <CreateCardForm btnText="Créer" />
     </Modal>
   )
 }
 
-export default page
+export default Page;
