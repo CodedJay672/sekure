@@ -21,7 +21,7 @@ const Filter = () => {
           className="w-auto h-auto object-cover cursor-pointer mx-3 rounded-[9px]"
         />
       </SheetTrigger>
-      <SheetContent side="right" className="overflow-y-scroll">
+      <SheetContent className="overflow-auto" side="right">
         <SheetHeader>
           <SheetTitle>
             Filtrer
@@ -30,9 +30,7 @@ const Filter = () => {
             Filtrer les transactions par date, montant, type, etc.
           </SheetDescription>
         </SheetHeader>
-        <div className="w-[383px] min-h-max mt-2">
-          <FilterForm />
-        </div>
+        <FilterForm />
       </SheetContent>
     </Sheet>
   )

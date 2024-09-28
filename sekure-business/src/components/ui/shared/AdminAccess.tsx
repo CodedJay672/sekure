@@ -5,6 +5,7 @@ import {
   SheetHeader,
 } from "@/components/ui/sheet";
 import { ArrowRightToLineIcon } from "lucide-react";
+import PermissionsComponent from "./PermissionComponent";
 
 const AdminAccess = () => {
   return (
@@ -19,8 +20,9 @@ const AdminAccess = () => {
               <ArrowRightToLineIcon size={12} className="ml-1 inline-block" />
             </span>
           </SheetTrigger>
-          <SheetContent className="w-[383px]" aria-describedby="admin access">
+          <SheetContent className="w-[383px] overflow-auto" aria-describedby="admin access">
             <SheetHeader className="text-[16px] leading-[24px] font-semibold">Accès pour Admin</SheetHeader>
+            <PermissionsComponent />
           </SheetContent>
         </Sheet>
       </div>

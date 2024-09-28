@@ -32,7 +32,7 @@ const FilterForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-2 overflow-y-scroll">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-2">
         <FormField
           control={form.control}
           name="type"

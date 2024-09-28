@@ -1,15 +1,13 @@
-import React from 'react'
-
 const Layout = ({
   children,
-  modal,
+  parammodal,
 }: {
   children: React.ReactNode,
-  modal: React.ReactNode
+  parammodal: React.ReactNode
 }) => {
   return (
     <>
-      {modal}
+      {parammodal}
       {children}
     </>
   )
