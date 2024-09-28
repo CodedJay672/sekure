@@ -85,7 +85,7 @@
   }
 
   .labels {
-    @apply text-[8px] text-[#242424] leading-6 font-normal;
+    @apply text-[10px] text-[#242424] leading-6 font-normal;
   }
 
   .select {

@@ -1,13 +1,13 @@
-import CreateCardForm from "@/components/Forms/CreateCardForm";
+import ConvertFundsForm from "@/components/Forms/ConvertFundsForm";
 import Modal from "@/components/ui/shared/Modal";
 
 const Page = () => {
   return (
     <Modal>
       <h2 className="text-[16px] leading-5 font-semibold text-[#1E1E1E]">
-        Créer une carte
+        Convertir des fonds
       </h2>
-      <CreateCardForm btnText="Créer" />
+      <ConvertFundsForm btnText="Convertir" />
     </Modal>
   )
 }

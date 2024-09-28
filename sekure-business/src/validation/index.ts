@@ -18,8 +18,8 @@ export const rechargeCardSchema = z.object({
 
 
 export const conversionSchema = z.object({
-  receiveAmount: z.number().positive(),
-  convertAmount: z.number().positive(),
+  receiveAmount: z.string(),
+  convertAmount: z.string(),
 });
 
 export const cardCreateSchema = z.object({

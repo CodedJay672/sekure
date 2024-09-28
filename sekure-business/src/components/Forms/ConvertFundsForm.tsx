@@ -19,20 +19,12 @@ import { Input } from "../ui/input";
 import Currency from "../ui/shared/Currency";
 import DetailsTag from "../ui/shared/DetailsTag";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import Voider from "../ui/shared/Voider";
+const ConvertFundsForm = ({ btnText }: { btnText: string }) => {
+  const router = useRouter();
 
-
-const ConvertFundsForm = ({ btnText, handleSubmit }: { btnText: string; handleSubmit: () => void; }) => {
   const form = useForm<z.infer<typeof conversionSchema>>({
     resolver: zodResolver(conversionSchema),
   })
@@ -40,8 +32,9 @@ const ConvertFundsForm = ({ btnText, handleSubmit }: { btnText: string; handleSu
   function onSubmit(values: z.infer<typeof conversionSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    handleSubmit();
+    console.log(values);
+    router.push('/volder');
+  
   }
 
   return (
@@ -56,6 +49,7 @@ const ConvertFundsForm = ({ btnText, handleSubmit }: { btnText: string; handleSu
               <FormControl>
                 <div className="flex-between w-full bg-notif rounded-[7px] relative">
                   <Input
+                    type="number"
                     placeholder="50 000"
                     {...field}
                     className="input pr-20 bg-inherit"
@@ -78,6 +72,7 @@ const ConvertFundsForm = ({ btnText, handleSubmit }: { btnText: string; handleSu
               <FormControl>
                 <div className="flex-between w-full bg-notif rounded-[7px] relative">
                   <Input
+                    type="number"
                     placeholder="50 000"
                     {...field}
                     className="input pr-20 bg-notif"
@@ -95,29 +90,12 @@ const ConvertFundsForm = ({ btnText, handleSubmit }: { btnText: string; handleSu
           <DetailsTag data={{ key: 'Montant debité', value: '51 500 XAF' }} />
         </div>
 
-        <Dialog>
-          <DialogTrigger>
-            <Button type="submit" className="primary-btn w-[330px]">
-              <span className="flex-1">
-                {btnText}
-              </span>
-              <ArrowRightIcon size={10} color="#fff" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-[383px]">
-            <DialogHeader>
-              <DialogTitle>Vaider la transaction</DialogTitle>
-              <DialogDescription className="sr-only">Vaider la transaction</DialogDescription>
-            </DialogHeader>
-            <Voider form={{
-              type: "Recharge de solde utilisateur ",
-              compte: "Orange Money",
-              montant: "5000 XAF",
-              numero: "+237 699887766",
-              total: "5150 FCFA"
-            }}/>
-          </DialogContent>
-        </Dialog>
+        <Button type="submit" className="primary-btn w-full">
+          <span className="flex-1">
+            {btnText}
+          </span>
+          <ArrowRightIcon size={10} color="#fff" />
+        </Button>
       </form>
     </Form>
   )

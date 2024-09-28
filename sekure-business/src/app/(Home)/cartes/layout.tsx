@@ -9,7 +9,6 @@ const ModalLayout = ({
     <>
       {modal}
       {children}
-      <div id="app" />
     </>
   )
 }
