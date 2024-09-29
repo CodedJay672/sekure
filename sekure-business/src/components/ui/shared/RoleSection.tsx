@@ -1,6 +1,8 @@
 import React from "react";
 import { IRoleSectionData } from "@/constants/types";
 import { Button } from "../button";
+import { Sheet, SheetContent, SheetHeader, SheetOverlay, SheetTitle, SheetTrigger } from "../sheet";
+import PermissionsComponent from "./PermissionComponent";
 
 const RoleSection: React.FC<IRoleSectionData> = ({ role, tagline, data}) => {
   return (
@@ -11,13 +13,23 @@ const RoleSection: React.FC<IRoleSectionData> = ({ role, tagline, data}) => {
           <h2 className="text-base leading-6 font-semibold">{role}</h2>
           <p className="text-xs leading-4 font-light text-placeholder-text">{tagline}</p>
         </div>
-        <Button 
-          variant="outline"
-          type="button"
-          className="secondary-btn h-[34px] text-xs leading-[34.5px] tracking-[-0.5%] font-semibold"
-        >
-          voir les accès
-        </Button>
+        <Sheet>
+          <SheetTrigger>
+            <Button
+              variant="outline"
+              type="button"
+              className="secondary-btn h-[34px] text-xs leading-[34.5px] tracking-[-0.5%] font-semibold"
+              >
+              voir les accès
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="overflow-auto">
+            <SheetHeader>
+              <SheetTitle>Accès pour Admin</SheetTitle>
+            </SheetHeader>
+            <PermissionsComponent />
+          </SheetContent>
+        </Sheet>
       </div>
 
       <div className="w-[592px] grid grid-cols-3 gap-4 mt-5">

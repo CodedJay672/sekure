@@ -33,20 +33,24 @@ const Wallet = ({ type, deposit, withdraw }: IWalletDetails) => {
           <h2 className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-dark3 ml-2">Wallet {type}</h2>
         </div>
         <div className="flex-between gap-2">
-          <Image
-            src="/assets/images/menu.png"
-            alt="menu"
-            width={24}
-            height={24}
-            className="object-contain"
-          />
-          <Image
-            src="/assets/images/reset.png"
-            alt="menu"
-            width={24}
-            height={24}
-            className="object-contain"
-          />
+          <div className="w-6 h-6 flex-center rounded-full overflow-hidden bg-gray-200">
+            <Image
+              src="/assets/icons-pack/dots.svg"
+              alt="menu"
+              width={2.5}
+              height={10}
+              className="object-contain"
+            />
+          </div>
+          <div className="w-6 h-6 flex-center rounded-full overflow-hidden bg-gray-200">
+            <Image
+              src="/assets/icons-pack/refresh.svg"
+              alt="menu"
+              width={10}
+              height={10}
+              className="object-contain"
+            />
+          </div>
         </div>
       </div>
 
@@ -68,13 +72,15 @@ const Wallet = ({ type, deposit, withdraw }: IWalletDetails) => {
           <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
             Recharger
           </span>
-          <Image
-            src="/assets/images/forward.png"
-            alt="deposit"
-            width={24}
-            height={24}
-            className="object-contain"
+          <div className="bg-white w-6 h-6 rounded-full flex-center">
+            <Image
+              src="/assets/icons-pack/forward-arrow.svg"
+              alt="deposit"
+              width={9}
+              height={9}
+              className="object-contain"
             />
+          </div>
         </Button>
         <Button
           variant="default"
@@ -86,13 +92,15 @@ const Wallet = ({ type, deposit, withdraw }: IWalletDetails) => {
             <Link href='/convert' className="flex-1 text-center">
               Convertir
             </Link>
-            <Image
-              src="/assets/images/reset.png"
-              alt="deposit"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
+            <div className="bg-white w-6 h-6 rounded-full flex-center">
+              <Image
+                src="/assets/icons-pack/reset.svg"
+                alt="deposit"
+                width={10}
+                height={10}
+                className="object-contain fill-white"
+              />
+            </div>
           </div>
         </Button>
       </div>

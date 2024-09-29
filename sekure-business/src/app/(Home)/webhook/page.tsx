@@ -1,9 +1,24 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 
-const Webhook = () => {
+const Webhook: React.FC = () => {
+  const [copied, setCopied] = useState(false);
+  
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch (error) {
+      console.error('Failed to copy text: ', error);
+    }
+  };
+
+
   return (
     <section className="wrapper">
       <div className="flex-1 flex flex-col rounded-[10px] h-[560px] 2xl:h-[705px] bg-white pt-11 pl-10 pb-44">
@@ -28,9 +43,9 @@ const Webhook = () => {
                   readOnly
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-3 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-3 flex w-3 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}
@@ -48,9 +63,9 @@ const Webhook = () => {
                   defaultValue="thisisyourpublickey"
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-0 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-0 flex w-9 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}
@@ -81,9 +96,9 @@ const Webhook = () => {
                   readOnly
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-3 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-3 flex w-3 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}
@@ -101,9 +116,9 @@ const Webhook = () => {
                   defaultValue="thisisyourpublickey"
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-0 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-0 flex w-9 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}
@@ -123,9 +138,9 @@ const Webhook = () => {
                   readOnly
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-3 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-3 flex w-3 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}
@@ -143,9 +158,9 @@ const Webhook = () => {
                   defaultValue="thisisyourpublickey"
                   className="w-[382px] h-[40px] border border-[#E0E0E0] rounded-[8px] px-4 pr-10 py-2 text-sm font-light text-[#BFBFBF] read-only"
                 />
-                <div className="absolute top-0 right-0 flex w-10 h-[40px] items-center justify-center">
+                <div className="absolute top-0 right-0 flex w-9 h-[40px] items-center justify-center">
                   <Image
-                    src="/assets/images/copy-icon.png"
+                    src="/assets/icons-pack-2/copy.svg"
                     alt="copy-icon"
                     width={11}
                     height={12}

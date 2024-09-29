@@ -14,11 +14,11 @@ const Filter = () => {
     <Sheet>
       <SheetTrigger>
         <Image
-          src="/assets/images/filter.png"
+          src="/assets/icons-pack-2/filter.svg"
           alt="filter"
           width={89}
           height={32}
-          className="w-auto h-auto object-cover cursor-pointer mx-3 rounded-[9px]"
+          className="object-cover cursor-pointer rounded-[9px]"
         />
       </SheetTrigger>
       <SheetContent className="overflow-auto" side="right">
@@ -26,9 +26,6 @@ const Filter = () => {
           <SheetTitle>
             Filtrer
           </SheetTitle>
-          <SheetDescription>
-            Filtrer les transactions par date, montant, type, etc.
-          </SheetDescription>
         </SheetHeader>
         <FilterForm />
       </SheetContent>

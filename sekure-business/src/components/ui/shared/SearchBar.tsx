@@ -22,13 +22,19 @@ const SearchBar:React.FC<SearchBarProps> = ({ placeholder, setData }) => {
         className="form-input w-full h-8 rounded-[5px] border-none outline-none px-10 pr-12 py-3 input bg-input"
         onChange={handleChange}
       />
-      <RiSearchLine size={20} color="#A5A5A5" className="absolute top-1 left-4 mt-[2px]"/>
       <Image
-        src="/assets/images/send.png"
+        src="/assets/icons-pack-2/search-icon.svg"
         alt="search"
         width={13}
         height={14}
-        className="absolute top-2 right-4 mt-[2px] cursor-pointer"
+        className="absolute top-2 left-4 mt-[2px] cursor-pointer pointer-events-auto"
+      />
+      <Image
+        src="/assets/icons-pack-2/send.svg"
+        alt="search"
+        width={13}
+        height={14}
+        className="absolute top-2 right-4 mt-[2px] cursor-pointer pointer-events-auto"
       />
     </div>
   );

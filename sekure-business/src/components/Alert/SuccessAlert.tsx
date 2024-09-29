@@ -1,13 +1,19 @@
 "use client";
 
-import { RiCheckboxCircleFill } from "react-icons/ri";
 import { Button } from "../ui/button";
+import Modal from "../ui/shared/Modal";
+import Image from "next/image";
 
 const SuccessAlert = ({ text }: { text: string }) => {
   return (
-    <>
+    <Modal>
       <div className="alert">
-        <RiCheckboxCircleFill color="#18BC7A" size={34.66} className="fill-primary" />
+        <Image
+          src="/assets/icons-pack-2/success.svg"
+          alt="success"
+          width={34.66}
+          height={34.66}
+        />
         <p className="w-[250px] font-semibold text-base leading-[19px] text-center">{text}</p>
         <Button
           type="button"
@@ -16,7 +22,7 @@ const SuccessAlert = ({ text }: { text: string }) => {
           Ok
         </Button>
       </div>
-    </>
+    </Modal>
   )
 }
 

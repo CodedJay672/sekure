@@ -1,27 +1,30 @@
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { RiNotification2Line } from 'react-icons/ri';
-import { Button } from "../button";
 import NotificationItem from "./NotificationItem";
-import { NotificationItemProps } from "@/constants/types";
 import { info } from "@/constants";
+import Image from "next/image";
 
 const Notifications = () => {
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" className='w-[37.58px] h-[37.58px] bg-primary relative rounded-full'>
-          <RiNotification2Line size={40} color='white' />
+      <SheetTrigger>
+        <div className='w-[40.58px] h-[40.58px] relative rounded-full flex justify-center items-center'>
+          <Image
+            src='/assets/icons-pack-2/notifications.svg'
+            alt='notification'
+            width={40.58}
+            height={40.58}
+            className="object-cover"
+          />
           <div className='flex-center max-w-[17.48px] max-h-[17.48px] px-[5px] bg-dark3 absolute bottom-0 right-0 rounded-full'>
             <p className='text-[9px] font-bold leading-6 text-white'>3</p>
           </div>
-        </Button>
+        </div>
       </SheetTrigger>
       <SheetContent side="right" className="w-[383px] h-[795px]" aria-describedby="notifications">
         <SheetHeader>
@@ -36,7 +39,7 @@ const Notifications = () => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-3">
+          <div className="w-full flex flex-col gap-6">
             {info.map((data, idx) => (
               <NotificationItem info={data} key={idx} />
             ))}
