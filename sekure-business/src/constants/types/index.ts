@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 export interface INavLinks {
   path: string;
   name: string;
-  icon: StaticImageData;
+  icon: string;
 }
 
 export interface Data {

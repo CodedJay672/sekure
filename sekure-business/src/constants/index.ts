@@ -1,15 +1,4 @@
-import {
-  icon1,
-  icon2,
-  icon3,
-  icon4,
-  icon5,
-  icon6,
-  icon7,
-  icon8,
-  icon9,
-  icon10,
-} from "../../public/assets/images/import";
+
 import {
   Data,
   ICardDetails,
@@ -22,27 +11,27 @@ export const navLinks: INavLinks[] = [
   {
     path: "/",
     name: 'Accueil',
-    icon: icon1,
+    icon: '/assets/sidebar-icons/accueil.svg',
   },
   {
     path: "/cartes",
     name: 'Cartes',
-    icon: icon2,
+    icon: "/assets/sidebar-icons/cartes.svg",
   },
   {
     path: "/transactions",
     name: 'Transactions',
-    icon: icon3,
+    icon: '/assets/sidebar-icons/transactions.svg',
   },
   {
     path: "/utilisateurs",
     name: 'Utilisateurs',
-    icon: icon4,
+    icon: '/assets/sidebar-icons/utilisateurs.svg',
   },
   {
     path: "/parametres",
     name: 'Paramètres',
-    icon: icon5,
+    icon: '/assets/sidebar-icons/parametres.svg',
   },
 ]
 
@@ -50,17 +39,17 @@ export const bottomNav: INavLinks[] = [
   {
     path: "/statut",
     name: 'Statut check',
-    icon: icon1,
+    icon: '/assets/sidebar-icons/statut.svg',
   },
   {
     path: "/sekure",
     name: 'Sekure dev',
-    icon: icon2,
+    icon: '/assets/sidebar-icons/sekure.svg',
   },
   {
     path: "/webhook",
     name: 'Webhook & API',
-    icon: icon3,
+    icon: '/assets/sidebar-icons/webhook.svg',
   },
 ]
 
