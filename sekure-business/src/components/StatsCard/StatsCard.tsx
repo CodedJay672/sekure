@@ -27,7 +27,11 @@ ChartJs.register(
   ArcElement
 );
 
-const StatsCard = ({ entry }: { entry: number[]}) => {
+interface StatsCardProps {
+  entry: number[];
+}
+
+const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
 
   const data = {
     backgroundColor: ['#242424', '#33E89C' ],

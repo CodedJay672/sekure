@@ -1,7 +1,7 @@
 import { bigTable, data } from "@/constants"
 import TableComponent from "../ui/shared/TableComponent"
 
-const JournalTab = () => {
+const JournalTab: React.FC = () => {
   return (
     <>
       <div className="flex items-center">

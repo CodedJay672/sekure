@@ -11,7 +11,7 @@ interface IWalletDetails {
   withdraw: string;
 }
 
-const Wallet = ({ type, deposit, withdraw }: IWalletDetails) => {
+const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
   const [open, setOpen] = useState(false);
 
   const handleSubmit =() => {

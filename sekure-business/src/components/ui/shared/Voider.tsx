@@ -7,7 +7,7 @@ interface FormProps {
   };
 }
 
-const Voider = ({ form }: FormProps) => {
+const Voider: React.FC<FormProps> = ({ form }) => {
   const { type, compte, montant, numero, total } = form;
 
   return (

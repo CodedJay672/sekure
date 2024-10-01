@@ -12,7 +12,7 @@ import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { RxPinRight } from "react-icons/rx";
 
-const UtilisateursDetails = () => {
+const UtilisateursDetails: React.FC = () => {
   const [query, setQuery] = useState<string>('');
 
   const filteredData = useMemo(() => {

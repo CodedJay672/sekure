@@ -1,6 +1,6 @@
 import ConvertFundsForm from "@/components/Forms/ConvertFundsForm";
 
-const Page = () => {
+const Page: React.FC = () => {
   return (
     <div className="wrapper h-[580px] flex justify-center items-center">
       <div className="w-[350px] max-w-[383px] p-5 rounded-[26px] flex flex-col bg-[#F5F5F5]">

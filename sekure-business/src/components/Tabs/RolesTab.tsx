@@ -11,7 +11,7 @@ import {
 import SheetForm from "../ui/shared/SheetForm";
 import PermissionsComponent from "../ui/shared/PermissionComponent";
 
-const RolesTab = () => {
+const RolesTab: React.FC = () => {
   return (
     <>
       <div className="w-full max-w-[802px] flex justify-end">

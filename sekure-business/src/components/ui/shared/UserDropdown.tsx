@@ -3,7 +3,12 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const UserDropdown = ({ fullname, business }: { fullname: string; business: string; }) => {
+interface UserDropdownProps {
+  fullname: string;
+  business: string;
+}
+
+const UserDropdown: React.FC<UserDropdownProps> = ({ fullname, business }) => {
   const Router = useRouter();
 
   return (

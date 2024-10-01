@@ -4,16 +4,8 @@ import { bigTable, data } from "@/constants";
 import { Button } from "../ui/button";
 import TableComponent from "../ui/shared/TableComponent";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "../ui/sheet";
-import EquipSheet from "../ui/shared/SheetForm";
 
-const EquipeTab = () => {
+const EquipeTab: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
 

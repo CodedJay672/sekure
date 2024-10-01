@@ -10,7 +10,7 @@ interface IConfirmAlert {
   btnText: string;
 }
 
-const ConfirmAlert = ({heading, content, btnText}: IConfirmAlert) => {
+const ConfirmAlert: React.FC<IConfirmAlert> = ({heading, content, btnText}) => {
   const [show, setShow] = useState<Boolean>(true);
 
   const handleClick = () => {

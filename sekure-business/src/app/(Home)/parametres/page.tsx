@@ -8,7 +8,7 @@ import JournalTab from '@/components/Tabs/JournalTab';
 import RolesTab from '@/components/Tabs/RolesTab';
 import { IoIosArrowDown } from 'react-icons/io';
 
-const Paramètres = () => {
+const Paramètres: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState('tab1');
   
   const [isSwitchOn, setIsSwitchOn] = useState(false);

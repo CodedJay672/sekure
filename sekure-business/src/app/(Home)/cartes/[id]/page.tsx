@@ -24,7 +24,14 @@ import {
 import CreateCardForm from "@/components/Forms/CreateCardForm";
 import RechargeCardForm from "@/components/Forms/RechargeCardForm";
 
-const CardDetails = ({ params } : { params: { id: string } }) => {
+
+interface DetailsProps {
+  params: {
+    id: string
+  }
+}
+
+const CardDetails: React.FC<DetailsProps> = ({ params }) => {
   const [tableData, setTableData] = React.useState<Data[]>(data);
   const [query, setQuery] = React.useState<string>('');
 

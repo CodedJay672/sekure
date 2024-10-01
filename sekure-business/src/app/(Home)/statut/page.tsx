@@ -1,6 +1,6 @@
 import StatusSwitch from "@/components/ui/shared/StatusSwitch";
 
-const Status = () => {
+const Status: React.FC = () => {
   return (
     <section className="wrapper">
       <div className="w-full rounded-[10px] bg-white pt-11 pl-10 pb-44">

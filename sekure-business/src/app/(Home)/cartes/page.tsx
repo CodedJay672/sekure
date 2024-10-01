@@ -9,7 +9,7 @@ import Table from "@/components/Table/Table";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
 
-const Cartes = () => {
+const Cartes: React.FC = () => {
   const pathname = usePathname(); 
   const router = useRouter();
 

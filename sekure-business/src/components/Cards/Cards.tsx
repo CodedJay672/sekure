@@ -1,6 +1,6 @@
 import { ICardDetails } from "@/constants/types";
 
-const Card = ({ data1, data2, data3 }: ICardDetails) => {
+const Card: React.FC<ICardDetails> = ({ data1, data2, data3 }) => {
   return (
     <div className="flex-1 h-[78.43px] px-[14px] py-3 bg-white flex-between rounded-[10px]">
       <div className="flex-1 flex flex-col">

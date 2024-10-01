@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const CustomTab = () => {
+const CustomTab: React.FC = () => {
   const pathname = usePathname();
 
   return (

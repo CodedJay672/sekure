@@ -4,6 +4,7 @@ import "../../app/globals.css";
 import Topbar from "@/components/Topbar/Topbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           {convertmodal}
           {children}
         </main>
+        <Toaster />
       </body>
     </html>
   );

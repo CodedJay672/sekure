@@ -5,7 +5,7 @@ import Table from '@/components/Table/Table';
 import { bigTable, cardDetails, data, smallData, smallTable } from '@/constants';
 import React from 'react'
 
-const Transactions = () => {
+const Transactions: React.FC = () => {
   return (
     <section className='wrapper'>
       <div className='overflow-hidden flex flex-col gap-4'>

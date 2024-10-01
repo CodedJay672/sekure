@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const VisaCard = () => {
+const VisaCard: React.FC = () => {
   return (
     <div className="w-[326px] h-[239px] rounded-[20px] p-5 bg-primary mt-4 relative shadow-md">
       <Image

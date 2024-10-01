@@ -5,7 +5,7 @@ import { ArrowRightFromLine } from "lucide-react"
 import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog"
 import LoadingSpinner from "../Alert/Loading"
 
-const CreateAdmin = () => {
+const CreateAdmin: React.FC = () => {
   return (
     <article className="w-full">
       <div className="my-4">

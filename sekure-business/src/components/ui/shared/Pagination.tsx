@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 
-const Pagination = () => {
+const Pagination: React.FC = () => {
   return (
     <div className="flex gap-1">
       <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-normal">page: </span>

@@ -3,7 +3,7 @@ import Table from '@/components/Table/Table';
 import { bigTable, cardDetails, data } from '@/constants';
 import React from 'react'
 
-const Utilisateurs = () => {
+const Utilisateurs: React.FC = () => {
   return (
     <section className='wrapper'>
       <div className='overflow-hidden w-full flex flex-col gap-4'>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { RiCloseLargeLine } from 'react-icons/ri';
 
-const Notifications = () => {
+const Notifications: React.FC = () => {
   return (
     <article className='absolute w-[383px] bg-[#F5F5F5] p-6'>
       <div className='flex-between'>

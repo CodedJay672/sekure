@@ -9,7 +9,7 @@ import NotificationItem from "./NotificationItem";
 import { info } from "@/constants";
 import Image from "next/image";
 
-const Notifications = () => {
+const Notifications: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger>

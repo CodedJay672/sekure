@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   const pathname = usePathname();
 
   return (

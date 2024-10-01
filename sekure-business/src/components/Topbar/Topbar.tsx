@@ -7,7 +7,7 @@ import Notifications from "../ui/shared/Notifications";
 import Switch from "../ui/shared/switch/Switch";
 import { useState } from "react";
 
-const Topbar = () => {
+const Topbar: React.FC = () => {
   const pathname = usePathname();
   const [isOn, setIsOn] = useState(false);
 

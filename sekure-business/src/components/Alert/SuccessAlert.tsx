@@ -1,10 +1,12 @@
-"use client";
-
 import { Button } from "../ui/button";
 import Modal from "../ui/shared/Modal";
 import Image from "next/image";
 
-const SuccessAlert = ({ text }: { text: string }) => {
+interface SuccessAlertProps {
+  text: string
+}
+
+const SuccessAlert: React.FC<SuccessAlertProps> = ({ text }) => {
   return (
     <Modal>
       <div className="alert">

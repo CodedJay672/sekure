@@ -1,6 +1,6 @@
 import CreateAdmin from "@/components/CreateAdmin/CreateAdmin";
 
-const Page = () => {
+const Page: React.FC = () => {
   return (
     <div className="w-full h-screen flex-center">
       <div className="w-[385px] rounded-[18px] p-6 bg-white">
