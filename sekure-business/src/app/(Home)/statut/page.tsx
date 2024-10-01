@@ -1,4 +1,4 @@
-import StatusSwitch from "@/components/ui/shared/StatusSwitch";
+import StatutCheck from "@/components/ui/shared/Statut-check";
 
 const Status: React.FC = () => {
   return (
@@ -12,63 +12,54 @@ const Status: React.FC = () => {
             </p>
           </div>
 
-          <div className="my-3">
-            <h2 className="text-[12px] leading-4 font-bold">XAF</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Recharges via mobile money" />
-              <StatusSwitch text="Recharge via Depot bancaires" />
-              <StatusSwitch text="Recharges via PayPal" />
-            </div>
-          </div>
+          <StatutCheck
+            title="XAF"
+            items={[
+              {id: "switch1", text: "Recharges via mobile money"},
+              {id: "switch2", text: "Recharge via Depot bancaires"},
+              {id: "switch3", text: "Recharges via PayPal"}
+            ]}
+          />
 
-          <div className="my-10">
-            <h2 className="text-[12px] leading-4 font-bold">XOF</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Recharges via mobile money" />
-              <StatusSwitch text="Recharge via Depot bancaires" />
-              <StatusSwitch text="Recharges via PayPal" />
-            </div>
-          </div>
+          <StatutCheck
+            title="XOF"
+            items={[
+              {id: "switch1", text: "Recharges via mobile money"},
+              {id: "switch2", text: "Recharge via Depot bancaires"},
+              {id: "switch3", text: "Recharges via PayPal"}
+            ]}
+          />
 
-          <div className="my-10">
-            <h2 className="text-[12px] leading-4 font-bold">USD</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Recharges via mobile money" />
-              <StatusSwitch text="Recharge via Depot bancaires" />
-              <StatusSwitch text="Recharges via PayPal" />
-            </div>
-          </div>
+          <StatutCheck
+            title="USD"
+            items={[
+              {id: "switch1", text: "Recharges via mobile money"},
+              {id: "switch2", text: "Recharge via Depot bancaires"},
+              {id: "switch3", text: "Recharges via PayPal"}
+            ]}
+          />
 
-          <div className="my-10">
-            <h2 className="text-[12px] leading-4 font-bold">Cartes</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Achat de cartes" />
-              <StatusSwitch text="Retraits de cartes" />
-              <StatusSwitch text="recharges de carte" />
-            </div>
-          </div>
+          <StatutCheck
+            title="Collectes"
+            items={[
+              {id: "switch1", text: "Par ORANGE Money CM"},
+              {id: "switch2", text: "Par MTN MOMO CM"},
+              {id: "switch3", text: "Par AIRTEL Money GB"},
+              {id: "switch4", text: "Par MOOV Money GB"},
+              {id: "switch5", text: "Par Depot bancaires"},
+              {id: "switch6", text: "Par Dépôt PayPal"},
+            ]}
+          />
 
-          <div className="my-10">
-            <h2 className="text-[12px] leading-4 font-bold">Collectes</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Par ORANGE Money CM" />
-              <StatusSwitch text="Par MTN MOMO CM" />
-              <StatusSwitch text="Par AIRTEL Money GB" />
-              <StatusSwitch text="Par MOOV Money GB" />
-              <StatusSwitch text="Par Depot bancaires" />
-              <StatusSwitch text="Par Dépôt PayPal" />
-            </div>
-          </div>
-
-          <div className="my-10">
-            <h2 className="text-[12px] leading-4 font-bold">KYC</h2>
-            <div className="flex flex-wrap gap-6 mt-2">
-              <StatusSwitch text="Recharges par Orange money Cameroun" />
-              <StatusSwitch text="Recharges par Orange money CM" />
-              <StatusSwitch text="Recharges par Orange money Cameroun" />
-              <StatusSwitch text="Recharges par Orange money CM" />
-            </div>
-          </div>
+          <StatutCheck
+            title="KYC"
+            items={[
+              {id: "switch1", text: "Recharges par Orange money Cameroun"},
+              {id: "switch2", text: "Recharges par Orange money CM"},
+              {id: "switch3", text: "Recharges par Orange money Cameroun"},
+              {id: "switch4", text: "Recharges par Orange money CM"},
+            ]}
+          />
         </div>
       </div>
     </section>
