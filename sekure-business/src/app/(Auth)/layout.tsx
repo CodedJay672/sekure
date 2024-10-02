@@ -76,7 +76,7 @@ export default function RootLayout({
               </div>
             </footer>
           </div>
-          <div className="flex-1 flex flex-col gap-6 bg-[url(/assets/images/signin-bg.png)] pl-10 relative py-10">
+          <div className="relative flex-1 flex flex-col gap-6 bg-[url(/assets/images/signin-bg.png)] pl-10 py-10">
             <div className=" flex gap-4">
               <div className="relative flex justify-center items-center w-[88px] h-[88px] rounded-full bg-[#DFFCE3]">
                 <Image

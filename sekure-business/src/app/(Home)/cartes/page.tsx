@@ -27,7 +27,7 @@ const Cartes: React.FC = () => {
           <Table heading="Liste de Cartes délivrées" variant="big" columns={bigTable} data={data} />
         </section>
       </div>
-      <div className="w-[350px] flex flex-col gap-[13px]">
+      <div className="w-[380px] flex flex-col gap-[13px]">
         <h2 className="text-2xl font-semibold leading-[27px] tracking-[-1px]">Stats</h2>
         <div className="w-full py-3 px-[14px] bg-white overflow-hidden rounded-[10px]">
           <StatsCard entry={[20, 80]} />
