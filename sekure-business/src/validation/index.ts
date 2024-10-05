@@ -145,12 +145,16 @@ export const ActionnairesSchema = z.object({
   email: z.string().email(),
   poste: z.string(),
   percentage: z.string(),
+  receive_mail: z.boolean().default(false).optional(),
+  director: z.enum(['non', 'oui'], {
+    required_error: 'please select one option here...'
+  })
 })
 
 export const AdresseInfoSchema = z.object({
   nom: z.string(),
   poste: z.string(),
-  date: z.string(),
+  date: z.string().date(),
   percentage: z.string(),
   email: z.string().date(),
   tel: z.string(),
@@ -160,5 +164,14 @@ export const AdresseInfoSchema = z.object({
   cite: z.string(),
   etat: z.string(),
   zip: z.string(),
+  id_card: z.custom<File[]>(),
+  id_address: z.custom<File[]>(),
+  receive_mail: z.boolean().default(false).optional(),
 })
 
+export const LegalSchema = z.object({
+  certificate: z.custom<File[]>(),
+  proof_of_address: z.custom<File[]>(),
+  constitution_status: z.custom<File[]>(),
+  receive_mail: z.boolean().default(false).optional(),
+})

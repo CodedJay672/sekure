@@ -46,7 +46,7 @@ const Actionnaires: React.FC = () => {
         </span>
       </div>
 
-      <div className='flex items-center py-[18px] px-[15px] border rounded-[18px]'>
+      <div className='flex items-center py-[18px] px-[15px] border rounded-[18px] cursor-pointer' onClick={() => router.push(`${pathname}/vous`)}>
         <div className='w-[48px] h-[48px] rounded-full bg-[#F5F5F5] mr-5' />
         <div className='flex-1 flex items-center'>
           <div className='flex-1'>
@@ -59,7 +59,7 @@ const Actionnaires: React.FC = () => {
         </div>
       </div>
 
-      <div className='flex items-center py-[18px] px-[15px] border rounded-[18px] mt-[15px] mb-[101px]'>
+      <div className='flex items-center py-[18px] px-[15px] border rounded-[18px] mt-[15px] mb-[101px] cursor-pointer' onClick={() => router.push(`${pathname}/adjourter`)}>
         <div className='w-[48px] h-[48px] rounded-full bg-[#F5F5F5] mr-5 flex-center text-[24px] font-semibold'>+</div>
         <div className='flex-1 flex items-center'>
           <div className='flex-1'>
