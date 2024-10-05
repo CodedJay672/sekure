@@ -1,6 +1,4 @@
-import { createPortal } from 'react-dom';
 import SignInForm from '@/components/Forms/SignInForm';
-import Image from 'next/image';
 
 const SignIn = () => {
   return (
@@ -11,13 +9,6 @@ const SignIn = () => {
         </h1>
         <SignInForm />
       </div>
-      <Image
-        src="/assets/images/login-img.png"
-        alt="login image"
-        width={488}
-        height={770}
-        className="absolute -top-6 -right-24 2xl:right-14 z-[5000]"
-      />
     </div>
   )
 }

@@ -51,7 +51,7 @@ const SignupForm = () => {
                 <Input
                   type="text"
                   placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                   {...field}
                 />
               </FormControl>
@@ -71,7 +71,7 @@ const SignupForm = () => {
                     type="text"
                     placeholder="Entrez le nom de votre entreprise"
                     {...field}
-                    className="form-input h-[50px] bg-[#F3F3F3] text-[12px] text-[#B3B3B3] leading-3 font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                    className="form-input h-[50px] bg-[#F3F3F3] text-[12px] text-black leading-3 font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                   />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -113,7 +113,7 @@ const SignupForm = () => {
                   type="email"
                   placeholder="Entrez le nom de votre entreprise"
                   {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -134,7 +134,7 @@ const SignupForm = () => {
                   type="email"
                   placeholder="Votre adresse mail"
                   {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -155,7 +155,7 @@ const SignupForm = () => {
                   type="password"
                   placeholder="Votre mot de passe"
                   {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-[#B3B3B3] font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                 />
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />

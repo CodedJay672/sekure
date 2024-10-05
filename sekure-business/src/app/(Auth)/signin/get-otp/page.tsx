@@ -1,5 +1,4 @@
 import PwdRecOTPFForm from '@/components/Forms/PwdRecOTPFForm'
-import Image from 'next/image'
 import React from 'react'
 
 const GetOTP = () => {
@@ -14,13 +13,6 @@ const GetOTP = () => {
         </p>
         <PwdRecOTPFForm />
       </div>
-      <Image
-        src="/assets/images/login-img.png"
-        alt="login image"
-        width={488}
-        height={770}
-        className="absolute -top-6 -right-24 2xl:right-14 z-[5000]"
-      />
     </div>
   )
 }

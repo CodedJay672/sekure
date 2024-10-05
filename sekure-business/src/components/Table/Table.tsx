@@ -6,6 +6,8 @@ import Filter from "../ui/shared/Filter";
 import Pagination from "../ui/shared/Pagination";
 import TableComponent from "../ui/shared/TableComponent";
 import { Data, ITableColumn } from "@/constants/types";
+import { usePathname } from "next/navigation";
+import TableDetailComponent from "../ui/shared/TableDetailComponent";
 
 interface TableProps {
   variant?: 'big' | 'small';
@@ -17,6 +19,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ heading, variant, columns, data }) => {
   const [tableData, setTableData] = React.useState<Data[]>(data);
   const [query, setQuery] = React.useState<string>('');
+  const pathname = usePathname();
 
   const filteredData = useMemo(() => {
     return tableData.filter((item) => {
@@ -43,7 +46,11 @@ const Table: React.FC<TableProps> = ({ heading, variant, columns, data }) => {
         )}
 
         <div className="flex">
-          <TableComponent variant={variant} columns={columns} data={filteredData} />
+          {pathname === '/cartes' || pathname === "/utilisateurs" ? (
+            <TableDetailComponent variant={variant} columns={columns} data={filteredData} />
+          ) : (
+            <TableComponent variant={variant} columns={columns} data={filteredData} />
+          )}
         </div>
     </section>
   )

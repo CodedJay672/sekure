@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { date, z } from 'zod';
 
 export const rechargeWalletSchema = z.object({
   amount: z.number().positive().min(50000, {
@@ -118,3 +118,47 @@ export const filterSchema = z.object({
     fin: z.string(),
   }),
 });
+
+export const InformationSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+  sector: z.string(),
+  description: z.string(),
+  date_of_creation: z.string().date(),
+  number_registered: z.string(),
+  number_impot: z.string(),
+  number_telephone: z.string(),
+  web: z.string()
+})
+
+export const AdresseSchema = z.object({
+  pays: z.string(),
+  region: z.string(),
+  postal: z.string(),
+  city: z.string(),
+  quartier: z.string().date(),
+  appartement: z.string(),
+})
+
+export const ActionnairesSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  poste: z.string(),
+  percentage: z.string(),
+})
+
+export const AdresseInfoSchema = z.object({
+  nom: z.string(),
+  poste: z.string(),
+  date: z.string(),
+  percentage: z.string(),
+  email: z.string().date(),
+  tel: z.string(),
+  naionalite: z.string(),
+  rue: z.string(),
+  apartment: z.string(),
+  cite: z.string(),
+  etat: z.string(),
+  zip: z.string(),
+})
+

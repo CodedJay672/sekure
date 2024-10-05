@@ -59,7 +59,9 @@ export default function RootLayout({
         </header>
         <main className="max-w-[1552px] h-auto pl-20 flex bg-white pb-7 relative">
           <div className="flex flex-col h-auto flex-between mr-16">
-            {children}
+            <div className="mt-10">
+              {children}
+            </div>
             <footer className="w-[448px] h-[143px] mt-10">
               <div className="w-full flex">
                 <Image

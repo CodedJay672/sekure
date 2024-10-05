@@ -1,6 +1,11 @@
-import PwdRecOTPFForm from '@/components/Forms/PwdRecOTPFForm'
-import Image from 'next/image'
 import React from 'react'
+import PwdRecOTPFForm from '@/components/Forms/PwdRecOTPFForm'
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Sign Up | Sekure Business",
+  description: "Sekure provides card services for businesses.",
+};
 
 const GetOTP = () => {
   return (
@@ -14,13 +19,6 @@ const GetOTP = () => {
         </p>
         <PwdRecOTPFForm />
       </div>
-      <Image
-        src="/assets/images/signup-hero.png"
-        alt="signup image"
-        width={450}
-        height={817}
-        className="absolute -top-20 -right-24 2xl:right-14 z-[5000]"
-      />
     </div>
   )
 }

@@ -49,7 +49,7 @@ const SignInForm = () => {
                 <Input
                   type="email"
                   placeholder="Votre adresse mail"
-                  className="form-input h-[50px] bg-notif text-black focus:ring-primary invalid:border-red-500 placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg[#F3F3F3] text-black focus:ring-primary invalid:border-red-500 placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                   {...field}
                 />
               </FormControl>
@@ -68,7 +68,7 @@ const SignInForm = () => {
                 <Input
                   type="password"
                   placeholder="Votre mot de passe"
-                  className="form-input h-[50px] bg-notif text-black focus:ring-primary invalid:border-red-500 placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                  className="form-input h-[50px] bg-[#F3F3F3] text-black focus:ring-primary invalid:border-red-500 placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                   {...field}
                   />
               </FormControl>
