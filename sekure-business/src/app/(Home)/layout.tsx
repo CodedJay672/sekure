@@ -16,9 +16,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   convertmodal,
+  rechargemodal,
 }: Readonly<{
   children: React.ReactNode;
   convertmodal: React.ReactNode;
+  rechargemodal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -27,6 +29,7 @@ export default function RootLayout({
         <main className="w-full flex justify-start items-start">
           <Sidebar />
           {convertmodal}
+          {rechargemodal}
           {children}
         </main>
         <Toaster />

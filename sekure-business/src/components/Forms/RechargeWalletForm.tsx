@@ -40,9 +40,9 @@ const RechargeWalletForm = ({ btnText}: { btnText: string }) => {
           name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="labels">Montant à recharger</FormLabel>
+              <FormLabel className="labels text-[10px] leading-[24px]">Montant à recharger</FormLabel>
               <FormControl>
-                <div className="flex-between w-full bg-notif rounded-[7px]">
+                <div className="flex-between w-full bg-notif rounded-[7px] relative">
                   <Input
                     placeholder="Min : 50 000"
                     {...field}
@@ -56,7 +56,7 @@ const RechargeWalletForm = ({ btnText}: { btnText: string }) => {
           )}
         />
 
-        <div className="mb-44 flex gap-2">
+        <div className="flex gap-2">
           <DetailsTag data={{ key: 'Frais', value: '2.5%' }} />
           <DetailsTag data={{ key: 'Montant debité', value: '51 500 XAF' }} />
         </div>
@@ -66,7 +66,7 @@ const RechargeWalletForm = ({ btnText}: { btnText: string }) => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="labels">Numero crediteur</FormLabel>
+              <FormLabel className="text-[10px] leading-[24px]">Numero crediteur</FormLabel>
               <FormControl className="flex-between w-full bg-notif rounded-[7px]">
                 <Input
                   placeholder="+237 688 77 55 88"
@@ -79,9 +79,9 @@ const RechargeWalletForm = ({ btnText}: { btnText: string }) => {
           )}
         />
 
-        <Button variant="outline" type="submit" className="primary-btn">
-          {btnText} 
-          <ArrowRightIcon size={10} color="#fff" />
+        <Button variant="outline" type="submit" className="bg-primary w-full flex-between">
+          <span className="text-white flex-1 rounded-[9px]">Recharger</span>
+          <ArrowRightIcon size={15} color="#fff" />
         </Button>
       </form>
     </Form>
