@@ -8,7 +8,7 @@ import React from 'react'
 const Transactions: React.FC = () => {
   return (
     <section className='wrapper'>
-      <div className='overflow-hidden flex flex-col gap-4'>
+      <div className='overflow-hidden flex-1 flex flex-col gap-4'>
         <section className='flex gap-2 w-[80%]'>
           <Card key={0} {...cardDetails[0]} />
           <Card key={1} {...cardDetails[1]} />
