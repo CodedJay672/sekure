@@ -7,8 +7,6 @@ const CustomTab: React.FC = () => {
   const pathname = usePathname();
   const id = useId();
   const currentTab = pathname.split('/')[3];
-  const [prevTabs, setPrevTabs] = useState<string[]>([]);
-
   const [tabs, setTabs] = useState([
     { id: `${id}information`, label: 'Informations', completed: false },
     { id: `${id}adresse`, label: 'Adresse', completed: false },
@@ -37,7 +35,7 @@ const CustomTab: React.FC = () => {
       {tabs.map((tab) => (
         <div key={tab.id} className={`relative flex-center py-[8px] w-[78.34px] border-t-4 mt-2 ${currentTab === tab.label.toLowerCase() || tab.completed ? 'border-t-primary text-primary group': ''} text-[12px] leading-[24px] text-center`}>
           {tab.completed && (
-            <div className={`absolute inset-0 -top-[10px] left-[30px] bg-[url(/assets/icons-pack-2/success.svg)] bg-no-repeat w-[18px] h-[18px] }bg-center bg-contain top-[4px] rounded-[7px] bg`} />
+            <div className={`absolute inset-0 -top-[20px] left-[30px] bg-[url(/assets/icons-pack-2/success.svg)] bg-no-repeat w-[18px] h-[18px] }bg-center bg-contain top-[4px] rounded-[7px] bg`} />
           )}
           <span className="group-active:text-primary">{tab.label}</span>
         </div>
