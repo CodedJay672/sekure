@@ -88,9 +88,9 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
               </div>
             </div>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="absolute">
             <>
-              <div className="top-[50px] left-0 w-[213px] h-[87px] rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] z-[1000] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] before:z-[1000] bg-white before:bg-white">
+              <div className="top-[29px] left-0 w-[213px] h-[87px] rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white beforeshadow-xl">
                 <MenuOption options={[
                   {label: 'par montant', path: '/recharge-wallet'},
                   {label: 'Via dépôt bancaire', path: '/recharge-wallet'},
