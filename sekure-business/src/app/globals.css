@@ -89,7 +89,7 @@
   }
 
   .select {
-    @apply w-[111px] border-none cursor-pointer rounded-full bg-primary-fade duration-300 ring-transparent focus:ring-transparent text-primary text-xs leading-3 tracking-[-0.5px] font-medium;
+    @apply w-[116px] border-none cursor-pointer rounded-full bg-primary-fade duration-300 ring-transparent focus:ring-transparent text-primary;
   }
 
   .primary-btn {

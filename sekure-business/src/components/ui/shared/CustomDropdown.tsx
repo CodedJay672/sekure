@@ -1,22 +1,43 @@
 "use client";
 
-import {SetStateAction, useState} from 'react';
-import { IoIosArrowRoundForward } from 'react-icons/io';
+import {SetStateAction, useState, useId} from 'react';
+import { MenuOption } from './MenuOption';
+import Image from 'next/image';
 
 const CustomDropdown = () => {
   const [selected, setSelected] = useState('Semaine');
+  const [open, setOpen] = useState(false);
+  const id = useId();
 
-  const handleChange = (e: { target: { value: SetStateAction<string>; }; }) => {
-    setSelected(e.target.value)
-  }
+  const selectOption = [
+    {id: `${id}jour`, label: 'jour'},
+    {id: `${id}semine`, label: 'semaine'},
+    {id: `${id}mois`, label: 'mois'},
+    {id: `${id}année`, label: 'année'},
+  ]
 
   return (
-    <select name="duration" className="select" value={selected} onChange={handleChange}>
-      <option className='text-[11px] leading-6 font-normal text-dark3 flex-between bg-white'>par jour</option>
-      <option className='text-[11px] leading-6 font-normal text-dark3 flex-between bg-white'>par semaine</option>
-      <option className='text-[11px] leading-6 font-normal text-dark3 flex-between bg-white'>par mois</option>
-      <option className='text-[11px] leading-6 font-normal text-dark3 flex-between bg-white'>par année</option>
-    </select>
+    <div  className="form-select select py-[12px] relative" onClick={() => setOpen(!open)}>
+      <p className='text-[12px] leading-3 tracking-[-0.5px] font-medium text-center'>{selected}</p>
+      {open && (
+        <div className="top-[40px] left-0 w-[213px] h-auto rounded-[15px] px-[22px] py-[12px] absolute flex-between gap-1 flex-col before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white">
+          {selectOption.map((option) => (
+            <div key={option.id} className="w-full text-[11px] leading-[24px] flex-between" onClick={() => {
+              setSelected(option.label);
+            }}>
+              <span className='text-black flex-1'>per {option.label}</span>
+              <Image
+                src="/assets/icons-pack-2/arrow-forward.svg"
+                alt="menu"
+                width={10}
+                height={10}
+                className="object-contain"
+                />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
