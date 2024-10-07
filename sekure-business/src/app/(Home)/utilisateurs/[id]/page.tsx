@@ -81,13 +81,13 @@ const UtilisateursDetails: React.FC = () => {
           <TableComponent columns={smallTable} data={smallData} />
         </div>
       </div>
-      <div className="flex-1 max-w-[743px]">
+      <div className="flex-1 overflow-hidden">
         <div className="w-full flex-between gap-2">
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
         </div>
-        <div className="w-full max-w-[843px] bg-white mt-3  px-2 py-3 rounded-[10px] overflow-hidden">
+        <div className="w-full bg-white mt-3  px-2 py-3 rounded-[10px] overflow-hidden">
           <h2 className="text-base leading-6 font-semibold">Liste des transactions</h2>
           <div className="w-full flex-between mt-2 gap-2">
             <SearchBar placeholder="Enter search term..." setData={setQuery} />

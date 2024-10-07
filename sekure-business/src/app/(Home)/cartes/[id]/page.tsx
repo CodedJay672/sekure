@@ -46,7 +46,7 @@ const CardDetails: React.FC<DetailsProps> = ({ params }) => {
   const card = data.find((data) => data.no === Number(id));
   
   return (
-    <section className="wrapper max-w-[720px] 2xl:max-w-full">
+    <section className="wrapper max-w-full">
       <div className="max-w-[354px] flex flex-col gap-3 rounded-[10px]">
         <div className="bg-white flex flex-col py-6 px-4 rounded-[10px]">
           <div className="flex-between">
@@ -116,13 +116,13 @@ const CardDetails: React.FC<DetailsProps> = ({ params }) => {
         </div>
       </div>
 
-      <div className="flex-1 w-full max-w-[843px]">
+      <div className="flex-1 overflow-hidden">
         <div className="w-full flex-between gap-2">
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
           <Card data1={{ title: "Total paiements", value: "$54200.50" }} data2={{ title: "activées", value: "1437" }} data3={{ title: "suspendues", value: "46" }} />
         </div>
-        <div className="w-full max-w-[843px] bg-white mt-3  px-2 py-3 rounded-[10px] ">
+        <div className="bg-white mt-3  px-2 py-3 rounded-[10px] ">
           <h2 className="text-base leading-6 font-semibold">Liste des transactions</h2>
           <div className="w-full flex-between mt-2 gap-2">
             <SearchBar placeholder="Enter search term..." setData={setQuery}/>
