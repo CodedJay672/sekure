@@ -37,7 +37,7 @@ const BusinessForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Business name</FormLabel>
+              <FormLabel className="text-xs font-light">Business name</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
@@ -55,7 +55,7 @@ const BusinessForm = () => {
           name="number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Business Registration Number</FormLabel>
+              <FormLabel className="text-xs font-light">Business Registration Number</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Steve"
@@ -73,7 +73,7 @@ const BusinessForm = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Business Address</FormLabel>
+              <FormLabel className="text-xs font-light">Business Address</FormLabel>
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
@@ -91,7 +91,7 @@ const BusinessForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Business Email</FormLabel>
+              <FormLabel className="text-xs font-light">Business Email</FormLabel>
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
@@ -109,7 +109,7 @@ const BusinessForm = () => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Description</FormLabel>
+              <FormLabel className="text-xs font-light">Description</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="This is my description."

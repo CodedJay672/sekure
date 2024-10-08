@@ -36,7 +36,7 @@ const UserForm = () => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Nom</FormLabel>
+              <FormLabel className="text-xs font-light">Nom</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
@@ -54,7 +54,7 @@ const UserForm = () => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Prenom</FormLabel>
+              <FormLabel className="text-xs font-light">Prenom</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Steve"
@@ -72,7 +72,7 @@ const UserForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light text-placeholder-text">Email</FormLabel>
+              <FormLabel className="text-xs font-light">Email</FormLabel>
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
