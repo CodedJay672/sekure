@@ -84,7 +84,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
         </div>
       </div>
       <div className="flex-between w-full gap-1 relative">
-        <div className="parent-div flex-1 flex flex-col">
+        <div className="parent-div w-full flex flex-col">
           <div
             className="primary-btn flex-between flex-1 h-[34px] px-2 cursor-pointer"
             onClick={handleClick}
@@ -115,7 +115,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
           )}
         </div>
         <div
-          className="bg-dark3 flex-between flex-1 h-[34px] px-2 cursor-pointer rounded-[9px]"
+          className="bg-dark3 flex-between w-full h-[34px] px-2 cursor-pointer rounded-[9px]"
         >
           <div className="w-full flex items-center">
             <Link href='/convert' className="text-[12px] text-white leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
