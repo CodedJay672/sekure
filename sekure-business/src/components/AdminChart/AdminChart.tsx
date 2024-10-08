@@ -33,7 +33,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant }) => {
         </div>
       </div>
 
-      <div className="w-full mt-3 pb-4">
+      <div className="w-full overflow-hidden mt-3 pb-4">
         <BarChart />
       </div>
     </div>

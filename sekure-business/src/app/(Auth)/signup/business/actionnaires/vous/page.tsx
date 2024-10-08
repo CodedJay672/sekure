@@ -1,11 +1,12 @@
 "use client";
 
 import React from 'react'
-import { RxCaretRight } from 'react-icons/rx';
+import {  } from 'react'
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useFormStatus } from 'react-dom';
 
 import {
   Form,
@@ -26,6 +27,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 const VousForm: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { pending } = useFormStatus();
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
@@ -41,15 +43,15 @@ const VousForm: React.FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <div className='w-full px-[15px] py-[18px] rounded-[19px] border'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <div className='w-full px-[15px] py-[18px] rounded-[19px] border space-y-3'>
           <span className='text-[13px] leading-[17px] font-semibold'>Details</span>
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Nom Complet</FormLabel>
+                <FormLabel className="text-xs font-light">Nom Complet</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -67,7 +69,7 @@ const VousForm: React.FC = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Email</FormLabel>
+                <FormLabel className="text-xs font-light">Email</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
@@ -85,7 +87,7 @@ const VousForm: React.FC = () => {
             name="poste"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Poste</FormLabel>
+                <FormLabel className="text-xs font-light">Poste</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -103,7 +105,7 @@ const VousForm: React.FC = () => {
             name="percentage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Pourcentage d’actions</FormLabel>
+                <FormLabel className="text-xs font-light">Pourcentage d’actions</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -121,33 +123,35 @@ const VousForm: React.FC = () => {
             control={form.control}
             name="director"
             render={({ field }) => (
-              <FormItem className="flex-between">
-                <FormLabel className='text-[12px] leading-[24px] text-[#242424]'>Le Directeur est politiquement exposé</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex-between"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl className='peer-checked:text-primary'>
-                        <RadioGroupItem value="non" />
-                      </FormControl>
-                      <FormLabel className="text-[12px] leading-[18px] text-[#808080]">
-                        Non
-                      </FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="oui" />
-                      </FormControl>
-                      <FormLabel className="text-[12px] leading-[18px] text-[#808080]">
-                        Oui
-                      </FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
+              <FormItem>
+                <div className="flex-between">
+                  <FormLabel className='text-[12px] leading-[24px] text-[#242424]'>Le Directeur est politiquement exposé</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex-between relative"
+                      >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl className='peer-checked:text-primary'>
+                          <RadioGroupItem value="non" />
+                        </FormControl>
+                        <FormLabel className="text-[12px] leading-[18px] text-[#808080]">
+                          Non
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="oui" />
+                        </FormControl>
+                        <FormLabel className="text-[12px] leading-[18px] text-[#808080]">
+                          Oui
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
             )}
           />
@@ -173,7 +177,7 @@ const VousForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <div className="w-full flex justify-between gap-2">
+        <div className="w-full flex justify-between gap-2 mt-4">
           <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
             Valider et continuer
           </Button>

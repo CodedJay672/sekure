@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Topbar />
-        <main className="w-full flex justify-start items-start">
+        <main className="w-full overflow-hidden flex justify-start items-start">
           <Sidebar />
           {convertmodal}
           {rechargemodal}

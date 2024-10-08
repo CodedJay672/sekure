@@ -10,7 +10,7 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="w-[234px] flex-between flex-col gap-24 sticky top-16">
+    <nav className="w-[234px] flex-between flex-col gap-24 sticky">
       <div className="w-full">
         {navLinks.map((link, idx) => (
           <Link href={link.path} key={`${idx}-${link.name}`} className={`w-full h-9 px-6 mb-3 flex flex-start items-center gap-3 hover:bg-white group ${pathname === link.path ? 'bg-white' : ''} transition-all`}>

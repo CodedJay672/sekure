@@ -84,8 +84,8 @@ const SignInForm = () => {
             >
               Suivant
           </Button>
-          <Link href="/signup" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background">
-            Pas encore de compte? <span className="font-bold">Inscrivez vous</span>
+          <Link href="/signup" className="flex-center rounded-md inline-block flex-1 h-[50px] text-[12px] leading-[19px] bg-background px-1">
+            Pas encore de compte? <strong className="ml-[2px]">Inscrivez vous</strong>
           </Link>
         </div>
       </form>

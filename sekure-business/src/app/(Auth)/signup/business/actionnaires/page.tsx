@@ -41,7 +41,7 @@ const Actionnaires: React.FC = () => {
   return (
     <div className="w-[473px] mt-[2px] mb-4">
       <div className='w-[443px] mt-[33px] mb-[25px]'>
-        <span className='text-[12px] leading-[17px] font-normal text-[#8F8F8F]'>
+        <span className='text-[12px] leading-[17px] font-normal'>
           Veuillez ajouter des informations par rapport à vous meme, et un autre membre de l’entreprise avec au moins 25% de parts dans l’entreprise 
         </span>
       </div>

@@ -18,7 +18,7 @@ export const MenuOption: React.FC<MenuOptionProps> = ({ options }) => {
       {options.map((option, idx) => (
         <div
           key={idx}
-          className="text-[11px] leading-[24px] flex-between hover:bg-gray-100 cursor-pointer"
+          className="text-[11px] leading-[24px] flex-between cursor-pointer"
           onClick={() => router.push(option.path)}
         >
           {option.label} 

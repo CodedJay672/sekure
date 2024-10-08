@@ -103,15 +103,15 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
             </div>
           </div>
           {open && (
-            <>
+            <div className="relative">
             <div className="fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-[3px]" />
-            <div className="menu-div top-[39px] left-0 w-[213px] h-[87px] animate-in fade-in-10 slide-in-from-top-10 ease-in-out rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white beforeshadow-xl">
+            <div className="menu-div top-1 left-0 w-[213px] h-[87px] animate-in fade-in-10 slide-in-from-top-10 ease-in-out rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white beforeshadow-xl">
               <MenuOption options={[
                 {label: 'par montant', path: '/recharge-wallet'},
                 {label: 'Via dépôt bancaire', path: '/recharge-wallet'},
               ]} />
             </div>
-            </>
+            </div>
           )}
         </div>
         <div
