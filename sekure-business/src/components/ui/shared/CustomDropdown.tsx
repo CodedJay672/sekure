@@ -4,15 +4,15 @@ import {useState, useEffect, useId} from 'react';
 import Image from 'next/image';
 
 const CustomDropdown = () => {
-  const [selected, setSelected] = useState('jour');
+  const [selected, setSelected] = useState('per Jour');
   const [open, setOpen] = useState(false);
   const id = useId();
 
   const selectOption = [
-    {id: `${id}jour`, label: 'jour'},
-    {id: `${id}semine`, label: 'semaine'},
-    {id: `${id}mois`, label: 'mois'},
-    {id: `${id}année`, label: 'année'},
+    {id: `${id}jour`, label: 'per Jour'},
+    {id: `${id}semine`, label: 'per Semaine'},
+    {id: `${id}mois`, label: 'per Mois'},
+    {id: `${id}année`, label: 'per Année'},
   ]
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const CustomDropdown = () => {
           <div key={option.id} className="w-full flex-between px-[22px] cursor-pointer hover:bg-gray-100 transition-all" onClick={() => {
             setSelected(option.label); 
           }}>
-            <span className='text-[11px] text-black leading-[24px] flex-1'>per {option.label}</span>
+            <span className='text-[11px] text-black leading-[24px] flex-1 text-nowrap'>{option.label}</span>
             <Image
               src="/assets/icons-pack-2/arrow-forward.svg"
               alt="menu"
