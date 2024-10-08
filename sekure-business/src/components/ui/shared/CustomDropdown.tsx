@@ -43,7 +43,7 @@ const CustomDropdown = () => {
       <p className='text-[12px] leading-3 tracking-[-0.5px] font-medium text-center'>{selected}</p>
       {open && (
         <>
-        <div className='fixed top-0 left-0 w-full h-full bg-black/30 z-10' />
+        <div className='fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10' />
         <div className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out top-[40px] left-0 w-[213px] rounded-[15px] px-[22px] py-[12px] z-10 flex-between gap-1 flex-col absolute before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}>
         {selectOption.map((option) => (
           <div key={option.id} className="w-full text-[11px] leading-[24px] flex-between" onClick={() => {
