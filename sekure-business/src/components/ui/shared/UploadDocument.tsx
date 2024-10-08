@@ -43,7 +43,7 @@ const DocumentUploader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
               className="object-cover"
               />
           </div>
-          <p className='w-[283px] text-[10px] text-center leading-[15px] mt-[2px] font-light text-placeholder-text'>
+          <p className='w-[283px] text-[10px] text-center leading-[15px] mt-[2px] font-light'>
             Click or drag to replace photo
           </p>
           </>
@@ -56,7 +56,7 @@ const DocumentUploader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
               height={28.21}
             />
             <div className="w-[283px]">
-              <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light text-placeholder-text'>
+              <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light'>
                 Deposez un document ici ou cliquez pour ajouter une Document ( PDF, JPEG, JPG, PNG )
               </p>
             </div>

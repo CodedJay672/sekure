@@ -40,7 +40,7 @@ const AdresseForm = () => {
               name="pays"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light text-placeholder-text">Pays</FormLabel>
+                  <FormLabel className="text-xs font-light">Pays</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -59,7 +59,7 @@ const AdresseForm = () => {
               name="region"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light text-placeholder-text">Region / State</FormLabel>
+                  <FormLabel className="text-xs font-light">Region / State</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -78,7 +78,7 @@ const AdresseForm = () => {
               name="postal"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light text-placeholder-text">Code Postal / ZIP</FormLabel>
+                  <FormLabel className="text-xs font-light">Code Postal / ZIP</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -97,7 +97,7 @@ const AdresseForm = () => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light text-placeholder-text">Ville / City</FormLabel>
+                  <FormLabel className="text-xs font-light">Ville / City</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -117,7 +117,7 @@ const AdresseForm = () => {
             name="quartier"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Quartier / Street</FormLabel>
+                <FormLabel className="text-xs font-light">Quartier / Street</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -136,7 +136,7 @@ const AdresseForm = () => {
             name="appartement"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Appartement /  Suite / Etage/ Point repère</FormLabel>
+                <FormLabel className="text-xs font-light">Appartement /  Suite / Etage/ Point repère</FormLabel>
                 <FormControl>
                   <Input
                     type="text"

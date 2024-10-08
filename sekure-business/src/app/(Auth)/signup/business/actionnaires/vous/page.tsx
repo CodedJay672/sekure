@@ -125,7 +125,7 @@ const VousForm: React.FC = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex-between">
-                  <FormLabel className='text-[12px] leading-[24px] text-[#242424]'>Le Directeur est politiquement exposé</FormLabel>
+                  <FormLabel className='text-[12px] leading-[24px] font-light'>Le Directeur est politiquement exposé</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}

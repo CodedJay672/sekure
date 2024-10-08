@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import { usePathname, useRouter } from "next/navigation";
 import { AdresseInfoSchema } from '@/validation';
 import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from '@/components/ui/checkbox';
 import FileUploader from '@/components/ui/shared/FileUploader';
 
@@ -50,7 +49,7 @@ const AdjourterForm: React.FC = () => {
             name="nom"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Nom Complet</FormLabel>
+                <FormLabel className="text-xs font-light">Nom Complet</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -68,7 +67,7 @@ const AdjourterForm: React.FC = () => {
             name="poste"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Poste</FormLabel>
+                <FormLabel className="text-xs font-light">Poste</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -86,7 +85,7 @@ const AdjourterForm: React.FC = () => {
             name="date"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Date de Naissance</FormLabel>
+                <FormLabel className="text-xs font-light">Date de Naissance</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -104,7 +103,7 @@ const AdjourterForm: React.FC = () => {
             name="percentage"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Pourcentage d’actions</FormLabel>
+                <FormLabel className="text-xs font-light">Pourcentage d’actions</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -122,7 +121,7 @@ const AdjourterForm: React.FC = () => {
             name="email"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Email</FormLabel>
+                <FormLabel className="text-xs font-light">Email</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
@@ -140,7 +139,7 @@ const AdjourterForm: React.FC = () => {
             name="tel"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Numéro de Téléphone</FormLabel>
+                <FormLabel className="text-xs font-light">Numéro de Téléphone</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -160,7 +159,7 @@ const AdjourterForm: React.FC = () => {
             name="naionalite"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Nationalité</FormLabel>
+                <FormLabel className="text-xs font-light">Nationalité</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -178,7 +177,7 @@ const AdjourterForm: React.FC = () => {
             name="rue"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Rue</FormLabel>
+                <FormLabel className="text-xs font-light">Rue</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -196,7 +195,7 @@ const AdjourterForm: React.FC = () => {
             name="apartment"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Appartement, etage</FormLabel>
+                <FormLabel className="text-xs font-light">Appartement, etage</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -214,7 +213,7 @@ const AdjourterForm: React.FC = () => {
             name="cite"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Cité</FormLabel>
+                <FormLabel className="text-xs font-light">Cité</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -232,7 +231,7 @@ const AdjourterForm: React.FC = () => {
             name="etat"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Etat</FormLabel>
+                <FormLabel className="text-xs font-light">Etat</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -250,7 +249,7 @@ const AdjourterForm: React.FC = () => {
             name="zip"
             render={({ field }) => (
               <FormItem className='mt-3'>
-                <FormLabel className="text-xs font-light text-placeholder-text">Zip Code</FormLabel>
+                <FormLabel className="text-xs font-light">Zip Code</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -271,7 +270,7 @@ const AdjourterForm: React.FC = () => {
             name="id_card"
             render={({ field }) => ( 
               <FormItem className='mt-3'>
-                <FormLabel className="text-[12px] leading-[24px] font-light text-placeholder-text">
+                <FormLabel className="text-[12px] leading-[24px] font-light">
                   Ajoutez un document de vérification d’identité ( CNI, Passeport, etc )
                 </FormLabel>
                 <FormControl>
@@ -289,7 +288,7 @@ const AdjourterForm: React.FC = () => {
             name="id_card"
             render={({ field }) => ( 
               <FormItem className='mt-3'>
-                <FormLabel className="text-[12px] leading-[24px] font-light text-placeholder-text">
+                <FormLabel className="text-[12px] leading-[24px] font-light">
                   Ajoutez un document qui justifie votre adresse ( CNI, Passeport, etc )
                 </FormLabel>
                 <FormControl>

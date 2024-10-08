@@ -50,7 +50,7 @@ const LegalForm: React.FC = () => {
               <FormItem className='mt-3'>
                 <div className='flex flex-col gap-[1px]'>
                   <span className='text-[13px] leading-[17px] font-semibold'>Certificat de Constitution</span>
-                  <FormLabel className="text-[12px] leading-[24px] font-light text-placeholder-text">
+                  <FormLabel className="text-[12px] leading-[24px] font-light">
                     Veuillez ajouter des documents conformes de votre entreprise
                   </FormLabel>
                 </div>
@@ -70,7 +70,7 @@ const LegalForm: React.FC = () => {
               <FormItem className='mt-3'>
                 <div className='flex flex-col gap-[1px]'>
                   <span className='text-[13px] leading-[17px] font-semibold'>Preuve d’adresse</span>
-                  <FormLabel className="text-[12px] leading-[24px] font-light text-placeholder-text">
+                  <FormLabel className="text-[12px] leading-[24px] font-light">
                     Ajoutez un document qui justifie l’adresse de votre entreprise
                   </FormLabel>
                 </div>
@@ -90,7 +90,7 @@ const LegalForm: React.FC = () => {
               <FormItem className='mt-3'>
                 <div className='flex flex-col gap-[1px]'>
                   <span className='text-[13px] leading-[17px] font-semibold'>Acte constitutif et statuts</span>
-                  <FormLabel className="text-[12px] leading-[24px] font-light text-placeholder-text">
+                  <FormLabel className="text-[12px] leading-[24px] font-light">
                     Ajoutez les documents legaux des statuts de votre entreprise
                   </FormLabel>
                 </div>

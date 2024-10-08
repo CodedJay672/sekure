@@ -41,7 +41,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
               className="object-cover"
               />
           </div>
-          <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light text-placeholder-text'>
+          <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light'>
             Click or drag to replace photo
           </p>
           </>
@@ -53,7 +53,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
               width={28.21}
               height={28.21}
             />
-            <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light text-placeholder-text'>
+            <p className='text-[10px] text-center leading-[15px] mt-[2px] font-light'>
             Deposez une image ici ou cliquez pour ajouter une image
             </p>
           </div>

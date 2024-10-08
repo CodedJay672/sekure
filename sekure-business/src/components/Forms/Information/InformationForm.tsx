@@ -40,7 +40,7 @@ const InformationForm = () => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Nom De l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">Nom De l’entreprise</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -59,7 +59,7 @@ const InformationForm = () => {
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Type de l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">Type de l’entreprise</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -78,7 +78,7 @@ const InformationForm = () => {
             name="sector"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Secteur d’activité</FormLabel>
+                <FormLabel className="text-xs font-light">Secteur d’activité</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -97,7 +97,7 @@ const InformationForm = () => {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">Nom De l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">Nom De l’entreprise</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
@@ -120,7 +120,7 @@ const InformationForm = () => {
             name="date_of_creation"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">
+                <FormLabel className="text-xs font-light">
                   Date de creation de l’entreprise
                 </FormLabel>
                 <FormControl>
@@ -141,7 +141,7 @@ const InformationForm = () => {
             name="number_registered"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">
+                <FormLabel className="text-xs font-light">
                   Numéro de Registre de l’entreprise
                 </FormLabel>
                 <FormControl>
@@ -162,7 +162,7 @@ const InformationForm = () => {
             name="number_impot"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">
+                <FormLabel className="text-xs font-light">
                   Numéro de matricule aux Impots
                 </FormLabel>
                 <FormControl>
@@ -187,7 +187,7 @@ const InformationForm = () => {
             name="number_telephone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">
+                <FormLabel className="text-xs font-light">
                   Numéro de Téléphone
                 </FormLabel>
                 <FormControl>
@@ -208,7 +208,7 @@ const InformationForm = () => {
             name="web"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light text-placeholder-text">
+                <FormLabel className="text-xs font-light">
                   Lien du site web
                 </FormLabel>
                 <FormControl>

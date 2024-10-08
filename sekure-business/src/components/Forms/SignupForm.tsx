@@ -46,7 +46,7 @@ const SignupForm = () => {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[12px] leading-6 text-[#242424]">Nom complet</FormLabel>
+              <FormLabel className="text-[12px] leading-6">Nom complet</FormLabel>
               <FormControl>
                 <Input
                   type="text"
@@ -65,7 +65,7 @@ const SignupForm = () => {
           name="businessName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[12px] leading-6 text-[#242424]">Nom de l’entreprise</FormLabel>
+              <FormLabel className="text-[12px] leading-6">Nom de l’entreprise</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -105,7 +105,7 @@ const SignupForm = () => {
           name="pays"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
                 Pays
               </FormLabel>
               <FormControl>
@@ -126,7 +126,7 @@ const SignupForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
                 Adresse email proféssionnelle
               </FormLabel>
               <FormControl>
@@ -147,7 +147,7 @@ const SignupForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
                 Mot de passe
               </FormLabel>
               <FormControl>
