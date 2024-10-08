@@ -21,7 +21,7 @@ const Notifications: React.FC = () => {
             height={40.58}
             className="object-cover"
           />
-          <div className='flex-center max-w-[17.48px] max-h-[17.48px] px-[5px] bg-dark3 absolute bottom-0 right-0 rounded-full'>
+          <div className='flex-center max-w-[17.48px] max-h-[17.48px] px-[5px] bg-dark3 absolute bottom-0 right-0 rounded-full animate-pulse ease-in-out duration-1000'>
             <p className='text-[9px] font-bold leading-6 text-white'>3</p>
           </div>
         </div>
