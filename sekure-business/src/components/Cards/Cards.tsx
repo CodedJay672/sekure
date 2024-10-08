@@ -2,7 +2,7 @@ import { ICardDetails } from "@/constants/types";
 
 const Card: React.FC<ICardDetails> = ({ data1, data2, data3 }) => {
   return (
-    <div className="flex-1 h-[78.43px] px-[14px] py-3 bg-white flex-between rounded-[10px]">
+    <div className="flex w-[275px] h-[78.43px] px-[14px] py-3 bg-white flex-between rounded-[10px]">
       <div className="flex-1 flex flex-col">
         <h2 className="text-[12px] leading-[24.5px] tracking-[-0.5px] font-[500px] text-dark3">{data1.title}</h2>
         <p className="text-[12px] leading-[24.5px] tracking-[-0.5px] font-normal text-dark3">{data1.value}</p>

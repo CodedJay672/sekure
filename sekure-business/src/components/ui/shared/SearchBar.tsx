@@ -12,7 +12,7 @@ const SearchBar:React.FC<SearchBarProps> = ({ placeholder, setData }) => {
     setData(e.target.value);
   };
   return (
-    <div className="flex-1 flex-center relative">
+    <div className="flex-1 flex-center">
       <input
         type="search"
         placeholder={placeholder}

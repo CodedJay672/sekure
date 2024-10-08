@@ -16,7 +16,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant }) => {
             <p className="text-[12px] leading-4 font-light text-[#6F6F6F]">visualisez la courbe d’evolution en nombre de cartes parrainées par periode sur votre plateforme</p>
           )}
         </div>
-        <div className="flex-center pt-2">
+        <div className="flex-center pt-2 relative">
           <CustomDropdown />
           {variant === 'detailed' && (
             <div className="ml-3">

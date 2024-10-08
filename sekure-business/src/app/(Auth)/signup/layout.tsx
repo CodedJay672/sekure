@@ -11,7 +11,7 @@ const Layout = ({ children }: {
         alt="signup image"
         width={450}
         height={817}
-        className="absolute -top-20 -right-24 2xl:right-14 z-[5000]"
+        className="absolute -top-20 -right-24 2xl:right-14 z-50"
       />
     </>
   )

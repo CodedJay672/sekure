@@ -39,24 +39,24 @@ const CustomDropdown = () => {
   }, [open]);
 
   return (
-    <div  className="parent-div form-select select py-[12px] relative" onClick={() => setOpen(!open)}>
+    <div  className="parent-div form-select select py-[12px]" onClick={() => setOpen(!open)}>
       <p className='text-[12px] leading-3 -tracking-[0.5px] font-medium text-center'>{selected}</p>
       {open && (
         <>
         <div className='fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10 cursor-default' />
-        <div className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out top-[40px] left-0 w-[213px] rounded-[15px] px-[22px] py-[12px] z-10 flex-between gap-1 flex-col absolute cursor-default before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}>
+        <div className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out flex flex-col gap-[3px] top-[60px] left-0 w-[213px] rounded-[15px] py-[12px] z-50 absolute cursor-default before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}>
         {selectOption.map((option) => (
-          <div key={option.id} className="w-full text-[11px] leading-[24px] flex-between cursor-pointer" onClick={() => {
-            setSelected(option.label);
+          <div key={option.id} className="w-full flex-between px-[22px] cursor-pointer hover:bg-gray-100 transition-all" onClick={() => {
+            setSelected(option.label); 
           }}>
-            <span className='text-black flex-1'>per {option.label}</span>
+            <span className='text-[11px] text-black leading-[24px] flex-1'>per {option.label}</span>
             <Image
               src="/assets/icons-pack-2/arrow-forward.svg"
               alt="menu"
               width={10}
               height={10}
               className="object-contain"
-              />
+            />
           </div>
         ))}
       </div>
