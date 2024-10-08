@@ -1,9 +1,6 @@
 "use client";
 
-import React, { forwardRef } from "react";
 import Image from "next/image";
-import { RiSearchLine } from "react-icons/ri";
-import { Data } from "@/constants/types";
 
 interface SearchBarProps {
   placeholder: string;

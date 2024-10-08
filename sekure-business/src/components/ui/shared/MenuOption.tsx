@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 interface MenuOptionProps {
   options: {
@@ -9,10 +11,16 @@ interface MenuOptionProps {
 }
 
 export const MenuOption: React.FC<MenuOptionProps> = ({ options }) => {
+  const router = useRouter();
+
   return (
     <div className="w-full flex flex-col gap-4">
       {options.map((option, idx) => (
-        <Link href={option.path} key={idx} className=" text-[11px] leading-[24px] flex-between">
+        <div
+          key={idx}
+          className="text-[11px] leading-[24px] flex-between hover:bg-gray-100 cursor-pointer"
+          onClick={() => router.push(option.path)}
+        >
           {option.label} 
           <Image
             src="/assets/icons-pack-2/arrow-forward.svg"
@@ -21,7 +29,7 @@ export const MenuOption: React.FC<MenuOptionProps> = ({ options }) => {
             height={10}
             className="object-contain"
           />
-        </Link>
+        </div>
       ))}
     </div>
   );

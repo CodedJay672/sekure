@@ -2,13 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { MenuOption } from "../ui/shared/MenuOption";
-import { Dialog } from "../ui/dialog";
-import { DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
-import { createPortal } from "react-dom";
-
 interface IWalletDetails {
   type: string;
   deposit: string;
@@ -18,11 +13,32 @@ interface IWalletDetails {
 const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
   const [open, setOpen] = useState(false);
 
-
   const handleClick =(e: any) => {
-    console.log('submit');
     setOpen(!open);
   }
+
+  useEffect(() => {
+    const handleToggle = (e: MouseEvent) => {
+      if (open) {
+        const target = e.target as HTMLElement;
+        if (!target.closest('parent-div')) {
+          setOpen(false);
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', handleToggle);
+
+    return () => document.removeEventListener('mousedown', handleToggle);
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [open]);
 
   return (
     <article className="w-[304px] py-3 px-[14px] flex flex-col justify-between gap-2 bg-white rounded-[10px]">
@@ -68,37 +84,36 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
         </div>
       </div>
       <div className="flex-between w-full gap-1 relative">
-        <Dialog>
-          <DialogTrigger asChild>
-            <div
-              className="primary-btn flex-between flex-1 h-[34px] px-2 cursor-pointer"
-              onClick={handleClick}
-              >
-              <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
-                Recharger
-              </span>
-              <div className="bg-white w-6 h-6 rounded-full flex-center">
-                <Image
-                  src="/assets/icons-pack/forward-arrow.svg"
-                  alt="deposit"
-                  width={9}
-                  height={9}
-                  className="object-contain"
+        <div className="parent-div flex-1 flex flex-col">
+          <div
+            className="primary-btn flex-between flex-1 h-[34px] px-2 cursor-pointer"
+            onClick={handleClick}
+            >
+            <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
+              Recharger
+            </span>
+            <div className="bg-white w-6 h-6 rounded-full flex-center">
+              <Image
+                src="/assets/icons-pack/forward-arrow.svg"
+                alt="deposit"
+                width={9}
+                height={9}
+                className="object-contain"
                 />
-              </div>
             </div>
-          </DialogTrigger>
-          <DialogContent className="absolute">
+          </div>
+          {open && (
             <>
-              <div className="top-[29px] left-0 w-[213px] h-[87px] rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white beforeshadow-xl">
-                <MenuOption options={[
-                  {label: 'par montant', path: '/recharge-wallet'},
-                  {label: 'Via dépôt bancaire', path: '/recharge-wallet'},
-                ]} />
-              </div>
+            <div className="fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-[3px]" />
+            <div className="top-[29px] left-0 w-[213px] h-[87px] animate-in fade-in-10 slide-in-from-top-10 ease-in-out rounded-[15px] px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white beforeshadow-xl">
+              <MenuOption options={[
+                {label: 'par montant', path: '/recharge-wallet'},
+                {label: 'Via dépôt bancaire', path: '/recharge-wallet'},
+              ]} />
+            </div>
             </>
-          </DialogContent>
-        </Dialog>
+          )}
+        </div>
         <div
           className="bg-dark3 flex-between flex-1 h-[34px] px-2 cursor-pointer rounded-[9px]"
         >

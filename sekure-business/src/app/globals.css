@@ -99,4 +99,8 @@
   .secondary-btn {
     @apply bg-dark2 text-dark btn;
   }
+
+  .no-scroll {
+    @apply overflow-hidden;
+  }
 }
