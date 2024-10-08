@@ -44,7 +44,7 @@ const CustomDropdown = () => {
       {open && (
         <>
         <div className='fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10 cursor-default' />
-        <div className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out flex flex-col gap-[3px] top-[60px] left-0 w-[213px] rounded-[15px] py-[12px] z-50 absolute cursor-default before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}>
+        <div className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out flex flex-col gap-[3px] top-[60px] -left-24 w-[213px] rounded-[15px] py-[12px] z-10 absolute cursor-default before:absolute before:-top-3 before:left-40 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}>
         {selectOption.map((option) => (
           <div key={option.id} className="w-full flex-between px-[22px] cursor-pointer hover:bg-gray-100 transition-all" onClick={() => {
             setSelected(option.label); 
