@@ -18,7 +18,7 @@ const Switch: React.FC<SwitchProps> = ({ text, isOn, handleToggle }) => {
         id="switch-input"
         type="checkbox"
       />
-      <label htmlFor="switch-input" className="switch-label">
+      <label htmlFor="switch-input" className="switch-label select-none">
         <span className={`switch-button ${isOn ? 'flex-center' : 'flex-end'} text-[10px] leading-[11.75px]`}>{text}</span>
       </label>
     </>

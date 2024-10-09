@@ -89,7 +89,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
             className="primary-btn flex-between flex-1 h-[34px] px-2 cursor-pointer"
             onClick={handleClick}
             >
-            <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
+            <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center select-none">
               Recharger
             </span>
             <div className="bg-white w-6 h-6 rounded-full flex-center">

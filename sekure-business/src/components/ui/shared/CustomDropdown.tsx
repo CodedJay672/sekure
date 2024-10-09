@@ -40,7 +40,7 @@ const CustomDropdown = () => {
 
   return (
     <div  className="parent-div form-select select py-[12px]" onClick={() => setOpen(!open)}>
-      <p className='text-[12px] leading-3 -tracking-[0.5px] font-medium text-center'>{selected}</p>
+      <p className='text-[12px] leading-3 -tracking-[0.5px] font-medium text-center select-none'>{selected}</p>
       {open && (
         <>
         <div className='fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10 cursor-default' />
@@ -49,7 +49,7 @@ const CustomDropdown = () => {
           <div key={option.id} className="w-full flex-between px-[22px] cursor-pointer hover:bg-gray-100 transition-all" onClick={() => {
             setSelected(option.label); 
           }}>
-            <span className='text-[11px] text-black leading-[24px] flex-1 text-nowrap'>{option.label}</span>
+            <span className='text-[11px] text-black leading-[24px] flex-1 text-nowrap select-none'>{option.label}</span>
             <Image
               src="/assets/icons-pack-2/arrow-forward.svg"
               alt="menu"
