@@ -7,7 +7,7 @@ interface SearchBarProps {
   setData: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SearchBar:React.FC<SearchBarProps> = ({ placeholder, setData }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder, setData }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData(e.target.value);
   };

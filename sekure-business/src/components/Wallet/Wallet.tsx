@@ -13,30 +13,30 @@ interface IWalletDetails {
 const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
   const [open, setOpen] = useState(false);
 
-  const handleClick =(e: any) => {
+  const handleClick = (e: any) => {
     setOpen(!open);
-  }
+  };
 
   useEffect(() => {
     const handleToggle = (e: MouseEvent) => {
       if (open) {
         const target = e.target as HTMLElement;
-        if (!target.closest('.parent-div') || !target.closest('.menu-div')) {
+        if (!target.closest(".parent-div") || !target.closest(".menu-div")) {
           setOpen(false);
         }
       }
-    }
+    };
 
-    document.addEventListener('click', handleToggle);
+    document.addEventListener("click", handleToggle);
 
-    return () => document.removeEventListener('click', handleToggle);
+    return () => document.removeEventListener("click", handleToggle);
   }, [open]);
 
   useEffect(() => {
     if (open) {
-      document.body.classList.add('no-scroll');
+      document.body.classList.add("no-scroll");
     } else {
-      document.body.classList.remove('no-scroll');
+      document.body.classList.remove("no-scroll");
     }
   }, [open]);
 
@@ -45,13 +45,21 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
       <div className="flex-1 flex-between">
         <div className="flex-between">
           <Image
-            src={`${type === 'XAF' ? '/assets/cam-flag.png' : (type === 'IVC' ? '/assets/ivc-flag.png' : '/assets/usa-flag.png')}`}
+            src={`${
+              type === "XAF"
+                ? "/assets/cam-flag.png"
+                : type === "IVC"
+                ? "/assets/ivc-flag.png"
+                : "/assets/usa-flag.png"
+            }`}
             alt={type}
             width={21}
             height={21}
             className="object-contain rounded-full"
           />
-          <h2 className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-dark3 ml-2">Wallet {type}</h2>
+          <h2 className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-dark3 ml-2">
+            Wallet {type}
+          </h2>
         </div>
         <div className="flex-between gap-2">
           <div className="w-6 h-6 flex-center rounded-full overflow-hidden bg-gray-200">
@@ -77,10 +85,20 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
 
       <div className="flex-1 flex flex-col">
         <div className="flex-between">
-          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-placeholder-text flex-1">Solde disponible</span><span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-normal text-dark3 text-right flex-1">{deposit} {type}</span>
+          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-placeholder-text flex-1">
+            Solde disponible
+          </span>
+          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-normal text-dark3 text-right flex-1">
+            {deposit} {type}
+          </span>
         </div>
         <div className="flex-between">
-          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-placeholder-text flex-1">Solde Collecte</span><span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-normal text-dark3 text-right flex-1">{withdraw} {type}</span>
+          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-semibold text-placeholder-text flex-1">
+            Solde Collecte
+          </span>
+          <span className="text-[12px] leading-[34.5px] tracking-[-0.5px] font-normal text-dark3 text-right flex-1">
+            {withdraw} {type}
+          </span>
         </div>
       </div>
       <div className="flex-between w-full gap-1 relative">
@@ -88,7 +106,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
           <div
             className="primary-btn flex-between flex-1 h-[34px] px-2 cursor-pointer"
             onClick={handleClick}
-            >
+          >
             <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center select-none">
               Recharger
             </span>
@@ -99,26 +117,29 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
                 width={9}
                 height={9}
                 className="object-contain"
-                />
+              />
             </div>
           </div>
           {open && (
             <div className="relative">
-            <div className="fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10" />
-            <div className="menu-div top-1 left-0 w-[213px] h-[87px] animate-in fade-in-10 slide-in-from-top-10 ease-in-out rounded-[15px] z-10 px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white">
-              <MenuOption options={[
-                {label: 'par montant', path: '/recharge-wallet'},
-                {label: 'Via dépôt bancaire', path: '/recharge-wallet'},
-              ]} />
-            </div>
+              <div className="fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10" />
+              <div className="menu-div top-1 left-0 w-[213px] h-[87px] animate-in fade-in-10 slide-in-from-top-10 ease-in-out rounded-[15px] z-10 px-[22px] absolute flex-center flex-col gap-[18px] before:absolute before:-top-3 before:left-10 before:w-[30px] before:h-[30px] before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white">
+                <MenuOption
+                  options={[
+                    { label: "par montant", path: "/recharge-wallet" },
+                    { label: "Via dépôt bancaire", path: "/recharge-wallet" },
+                  ]}
+                />
+              </div>
             </div>
           )}
         </div>
-        <div
-          className="bg-dark3 flex-between w-full h-[34px] px-2 cursor-pointer rounded-[9px]"
-        >
+        <div className="bg-dark3 flex-between w-full h-[34px] px-2 cursor-pointer rounded-[9px]">
           <div className="w-full flex items-center">
-            <Link href='/convert' className="text-[12px] text-white leading-[34.5px] tracking-[-0.5%] flex-1 text-center">
+            <Link
+              href="/convert"
+              className="text-[12px] text-white leading-[34.5px] tracking-[-0.5%] flex-1 text-center"
+            >
               Convertir
             </Link>
             <div className="bg-white w-6 h-6 rounded-full flex-center">
@@ -134,7 +155,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
         </div>
       </div>
     </article>
-  )
-}
+  );
+};
 
-export default Wallet
+export default Wallet;
