@@ -1,12 +1,12 @@
 "use client";
 
-import React from 'react'
-import {  } from 'react'
+import React from "react";
+import {} from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useFormStatus } from 'react-dom';
+import { useFormStatus } from "react-dom";
 
 import {
   Form,
@@ -15,14 +15,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
-import { ActionnairesSchema } from '@/validation';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from '@/components/ui/checkbox';
-
+import { ActionnairesSchema } from "@/validation";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const VousForm: React.FC = () => {
   const pathname = usePathname();
@@ -31,34 +30,44 @@ const VousForm: React.FC = () => {
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
-  })
+    defaultValues: {
+      name: "John Doe",
+      email: "testemail@xyz.com",
+      poste: "always checking on all",
+      percentage: "50",
+      director: "non",
+    },
+  });
 
-  
   function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    router.push(`${pathname}/get-otp`);
+    console.log(values);
+    router.back();
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className='w-full px-[15px] py-[18px] rounded-[19px] border space-y-3'>
-          <span className='text-[13px] leading-[17px] font-semibold'>Details</span>
+        <div className="w-full px-[15px] py-[18px] rounded-[19px] border space-y-3">
+          <span className="text-[13px] leading-[17px] font-semibold">
+            Details
+          </span>
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Nom Complet</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Nom Complet
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
                     className="input pr-20"
                     {...field}
-                    />
+                  />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
@@ -76,7 +85,7 @@ const VousForm: React.FC = () => {
                     placeholder="Votre adresse mail"
                     className="input pr-20"
                     {...field}
-                    />
+                  />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
@@ -94,7 +103,7 @@ const VousForm: React.FC = () => {
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
                     className="input pr-20"
                     {...field}
-                    />
+                  />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
@@ -105,14 +114,16 @@ const VousForm: React.FC = () => {
             name="percentage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Pourcentage d’actions</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Pourcentage d’actions
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
                     className="input pr-20"
                     {...field}
-                    />
+                  />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
@@ -125,15 +136,17 @@ const VousForm: React.FC = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex-between">
-                  <FormLabel className='text-[12px] leading-[24px] font-light'>Le Directeur est politiquement exposé</FormLabel>
+                  <FormLabel className="text-[12px] leading-[24px] font-light">
+                    Le Directeur est politiquement exposé
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex-between relative"
-                      >
+                    >
                       <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl className='peer-checked:text-primary'>
+                        <FormControl className="peer-checked:text-primary">
                           <RadioGroupItem value="non" />
                         </FormControl>
                         <FormLabel className="text-[12px] leading-[18px] text-[#808080]">
@@ -171,7 +184,8 @@ const VousForm: React.FC = () => {
               </FormControl>
               <div className="leading-none">
                 <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
-                  Je certifie la conformité des informations remplies dans ce formulaire 
+                  Je certifie la conformité des informations remplies dans ce
+                  formulaire
                 </FormLabel>
               </div>
             </FormItem>
@@ -187,7 +201,7 @@ const VousForm: React.FC = () => {
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};
 
 export default VousForm;

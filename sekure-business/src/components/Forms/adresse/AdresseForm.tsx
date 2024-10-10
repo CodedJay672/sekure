@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,20 +15,28 @@ import {
 } from "@/components/ui/form";
 import { AdresseSchema } from "@/validation";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-
 const AdresseForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
-  })
+    defaultValues: {
+      pays: "Cameroun",
+      region: "Cameroun",
+      postal: "Cameroun",
+      city: "Cameroun",
+      quartier: "Entrez votre nom comme sur votre pièce d’identité",
+      appartement: "Entrez votre nom comme sur votre pièce d’identité",
+    },
+  });
 
-  
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
+    router.push(`/signup/business/actionnaires`);
   }
 
   return (
@@ -47,7 +56,7 @@ const AdresseForm = () => {
                       placeholder="Cameroun"
                       className="input pr-20 w-[213px]"
                       {...field}
-                      />
+                    />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
                 </FormItem>
@@ -59,14 +68,16 @@ const AdresseForm = () => {
               name="region"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">Region / State</FormLabel>
+                  <FormLabel className="text-xs font-light">
+                    Region / State
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Cameroun"
                       {...field}
                       className="input pr-20 w-[213px]"
-                      />
+                    />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
                 </FormItem>
@@ -78,33 +89,37 @@ const AdresseForm = () => {
               name="postal"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">Code Postal / ZIP</FormLabel>
+                  <FormLabel className="text-xs font-light">
+                    Code Postal / ZIP
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Cameroun"
                       {...field}
                       className="input pr-20 w-[213px]"
-                      />
+                    />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">Ville / City</FormLabel>
+                  <FormLabel className="text-xs font-light">
+                    Ville / City
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Cameroun"
                       {...field}
                       className="input pr-20 w-[213px]"
-                      />
+                    />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
                 </FormItem>
@@ -117,7 +132,9 @@ const AdresseForm = () => {
             name="quartier"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Quartier / Street</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Quartier / Street
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -136,7 +153,9 @@ const AdresseForm = () => {
             name="appartement"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Appartement /  Suite / Etage/ Point repère</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Appartement / Suite / Etage/ Point repère
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -150,10 +169,13 @@ const AdresseForm = () => {
             )}
           />
         </div>
-        
+
         <br />
         <div className="w-full flex justify-between">
-          <Button type="button" className="border-2 border-primary w-[224.24px] h-[50px] bg-transparent text-primary font-bold">
+          <Button
+            type="button"
+            className="border-2 border-primary w-[224.24px] h-[50px] bg-transparent text-primary font-bold"
+          >
             Retour
           </Button>
           <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
@@ -162,7 +184,7 @@ const AdresseForm = () => {
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default AdresseForm
+export default AdresseForm;

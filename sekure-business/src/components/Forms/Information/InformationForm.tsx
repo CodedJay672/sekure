@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,37 +18,53 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-
 const InformationForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
-  })
+    defaultValues: {
+      name: "John Doe",
+      type: "test email",
+      sector: "Finance",
+      description: "Trying to describe the information below",
+      date_of_creation: "",
+      number_registered: "1234567890",
+      number_impot: "090182736",
+      number_telephone: "1900923774",
+      web: "www.johndoeinc.com",
+    },
+  });
 
-  
   function onSubmit(values: z.infer<typeof InformationSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
+    router.push(`/signup/business/adresse`);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">Transfert de devises</span>
+        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">
+          Transfert de devises
+        </span>
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Nom De l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Nom De l’entreprise
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
                     className="input pr-20"
                     {...field}
-                    />
+                  />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
               </FormItem>
@@ -59,7 +76,9 @@ const InformationForm = () => {
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Type de l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Type de l’entreprise
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -78,7 +97,9 @@ const InformationForm = () => {
             name="sector"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Secteur d’activité</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Secteur d’activité
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -91,13 +112,15 @@ const InformationForm = () => {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Nom De l’entreprise</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Nom De l’entreprise
+                </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
@@ -111,9 +134,11 @@ const InformationForm = () => {
             )}
           />
         </div>
-        
+
         <br />
-        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">Transfert de devises</span>
+        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">
+          Transfert de devises
+        </span>
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
@@ -125,7 +150,7 @@ const InformationForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="date"
                     placeholder="Votre mot de passe"
                     className="input pr-20"
                     {...field}
@@ -180,7 +205,9 @@ const InformationForm = () => {
         </div>
 
         <br />
-        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">Transfert de devises</span>
+        <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">
+          Transfert de devises
+        </span>
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
@@ -233,7 +260,7 @@ const InformationForm = () => {
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default InformationForm
+export default InformationForm;
