@@ -34,29 +34,33 @@ const CustomBreadcrumb = () => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {pathArray.length > 1 &&
-          pathArray.map((path, index) => (
-            <React.Fragment key={`${id}-${index}`}>
+        {pathArray.map((path, index) => (
+          <React.Fragment key={`${id}-${index}`}>
+            {index + 1 === pathArray.length ? (
               <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link
-                    className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-[#CFCFCF]"
-                    href={`/${path}`}
-                  >
-                    {path.charAt(0).toUpperCase()}
-                    {path.slice(1)}
-                  </Link>
-                </BreadcrumbLink>
+                <BreadcrumbPage className="font-semibold text-[24px] leading-[27px] tracking-[-1px]">
+                  {page.charAt(0).toUpperCase()}
+                  {page.slice(1)}
+                </BreadcrumbPage>
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
-            </React.Fragment>
-          ))}
-        <BreadcrumbItem>
-          <BreadcrumbPage className="font-semibold text-[24px] leading-[27px] tracking-[-1px]">
-            {page.charAt(0).toUpperCase()}
-            {page.slice(1)}
-          </BreadcrumbPage>
-        </BreadcrumbItem>
+            ) : (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link
+                      className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-[#CFCFCF]"
+                      href={`/${path}`}
+                    >
+                      {path.charAt(0).toUpperCase()}
+                      {path.slice(1)}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </>
+            )}
+          </React.Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );
