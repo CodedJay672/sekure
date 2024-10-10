@@ -20,7 +20,14 @@ const CustomBreadcrumb = () => {
   const [pathArray, setPathArray] = useState<string[]>([]);
 
   useEffect(() => {
-    const path = [...pathname.split("/").filter((path) => path !== "")];
+    const path = [
+      ...pathname.split("/").map((path) => {
+        if (path === "") {
+          return "accueil";
+        }
+        return path;
+      }),
+    ];
     const lastPath = setPage(path.pop() || "");
     setPathArray(Array.from(new Set(path)));
 
@@ -31,27 +38,29 @@ const CustomBreadcrumb = () => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {pathArray.map((path, index) => (
-          <React.Fragment key={`${id}-${index}`}>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-[#CFCFCF]"
-                  href={`/${path}`}
-                >
-                  {path}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-          </React.Fragment>
-        ))}
+        {pathArray.length > 1 &&
+          pathArray.map((path, index) => (
+            <React.Fragment key={`${id}-${index}`}>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link
+                    className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-[#CFCFCF]"
+                    href={`/${path}`}
+                  >
+                    {path.charAt(0).toUpperCase()}
+                    {path.slice(1)}
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+            </React.Fragment>
+          ))}
         <BreadcrumbItem>
           <BreadcrumbPage className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-dark3">
-            {page}
+            {page.charAt(0).toUpperCase()}
+            {page.slice(1)}
           </BreadcrumbPage>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
       </BreadcrumbList>
     </Breadcrumb>
   );
