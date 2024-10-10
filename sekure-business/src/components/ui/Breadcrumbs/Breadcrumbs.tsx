@@ -20,19 +20,15 @@ const CustomBreadcrumb = () => {
   const [pathArray, setPathArray] = useState<string[]>([]);
 
   useEffect(() => {
-    const path = [
-      ...pathname.split("/").map((path) => {
-        if (path === "") {
-          return "accueil";
-        }
-        return path;
-      }),
-    ];
-    const lastPath = setPage(path.pop() || "");
+    const path = pathname
+      .slice(1)
+      .split("/")
+      .map((str) => {
+        if (str === "") return "accueil";
+        return str;
+      });
     setPathArray(Array.from(new Set(path)));
-
-    console.log(path);
-    console.log(lastPath);
+    setPage(path.pop() || "");
   }, [pathname]);
 
   return (
@@ -56,7 +52,7 @@ const CustomBreadcrumb = () => {
             </React.Fragment>
           ))}
         <BreadcrumbItem>
-          <BreadcrumbPage className="font-semibold text-[24px] leading-[27px] tracking-[-1px] text-dark3">
+          <BreadcrumbPage className="font-semibold text-[24px] leading-[27px] tracking-[-1px]">
             {page.charAt(0).toUpperCase()}
             {page.slice(1)}
           </BreadcrumbPage>

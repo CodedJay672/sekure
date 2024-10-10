@@ -13,24 +13,10 @@ import Image from "next/image";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { Data } from "@/constants/types";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import CreateCardForm from "@/components/Forms/CreateCardForm";
 import RechargeCardForm from "@/components/Forms/RechargeCardForm";
 
-interface DetailsProps {
-  params: {
-    id: string;
-  };
-}
-
-const CardDetails: React.FC<DetailsProps> = ({ params }) => {
+const CardDetails: React.FC = () => {
   const [tableData, setTableData] = React.useState<Data[]>(data);
   const [query, setQuery] = React.useState<string>("");
 
@@ -39,10 +25,6 @@ const CardDetails: React.FC<DetailsProps> = ({ params }) => {
       return item.date.toString().toLowerCase().includes(query.toLowerCase());
     });
   }, [query]);
-
-  const { id } = params;
-
-  const card = data.find((data) => data.no === Number(id));
 
   return (
     <section className="wrapper max-w-full">
@@ -67,54 +49,35 @@ const CardDetails: React.FC<DetailsProps> = ({ params }) => {
               $54200.50
             </span>
           </div>
-          <div className="flex-between mt-3 gap-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="default"
-                  type="button"
-                  className="primary-btn text-xs leading-[34.5px] tracking-[-0.5%]font-normal text-center pr-[3px]"
-                >
-                  Créer une carte
-                  <RiAddCircleFill size={24} className="fill-white ml-4" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[383px]">
-                <DialogHeader>
-                  <DialogTitle>Créer une carte</DialogTitle>
-                  <DialogDescription className="sr-only">
-                    Créer une carte
-                  </DialogDescription>
-                </DialogHeader>
-                <CreateCardForm btnText="Créer" />
-              </DialogContent>
-            </Dialog>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  type="button"
-                  className="bg-black text-white text-xs leading-[34.5px] tracking-[-0.5%] font-normal text-center pr-[4px]"
-                >
-                  Recharger une carte
-                  <Image
-                    src="/assets/images/forward.png"
-                    alt="deposit"
-                    width={24}
-                    height={24}
-                    className="object-contain mx-2"
-                  />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[383px]">
-                <DialogHeader>
-                  <DialogTitle>Recharger une carte</DialogTitle>
-                  <DialogDescription className="sr-only">
-                    Recharger une carte
-                  </DialogDescription>
-                </DialogHeader>
-                <RechargeCardForm btnText="Recharger" />
-              </DialogContent>
-            </Dialog>
+          <div className="flex-between mt-3">
+            <Button
+              variant="default"
+              type="button"
+              className="primary-btn rounded-[9px] w-[154px] text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[3px]"
+            >
+              Créer une carte
+              <RiAddCircleFill
+                size={24}
+                color="white"
+                className="fill-white ml-4"
+              />
+            </Button>
+
+            <Button
+              type="button"
+              className="bg-black rounded-[9px] w-[164px] text-white text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[2px]"
+            >
+              Recharger une carte
+              <div className="w-5 h-5 rounded-full bg-white p-1 ml-[2px] flex-center">
+                <Image
+                  src="/assets/icons-pack/forward-arrow.svg"
+                  alt="deposit"
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
+              </div>
+            </Button>
           </div>
         </div>
         <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
