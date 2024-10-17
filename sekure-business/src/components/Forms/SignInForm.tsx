@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,25 +18,25 @@ import { signinSchema } from "../../validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { handleSignIn } from "@/app/actions/authActions";
 
 const SignInForm = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const [globalError, setGlobalError] = useState<string>("");
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "testemail@xyz.com",
-      password: "1234567890",
+      email: "",
+      password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof signinSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    router.push(`${pathname}/get-otp`);
+  async function onSubmit(values: z.infer<typeof signinSchema>) {
+    try {
+      const result = await handleSignIn(values);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

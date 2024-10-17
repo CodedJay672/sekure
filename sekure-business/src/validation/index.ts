@@ -76,10 +76,18 @@ export const businessFieldSchema = z.object({
 });
 
 export const signinSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8, {
-    message: "Le mot de passe doit contenir au moins 8 caractères",
-  }),
+  email: z
+    .string({
+      invalid_type_error: "L'email doit être une chaîne de caractères",
+    })
+    .email(),
+  password: z
+    .string({
+      invalid_type_error: "Le mot de passe doit être une chaîne de caractères",
+    })
+    .min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères",
+    }),
 });
 
 export const recPwdSchema = z.object({
