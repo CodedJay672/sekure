@@ -11,9 +11,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { rechargeCardSchema } from "../../validation";
+import { rechargeCardSchema } from "../../_validation";
 import { ArrowRightIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import Currency from "../ui/shared/Currency";
@@ -22,16 +22,15 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import SuccessAlert from "../Alert/SuccessAlert";
 
-
-const RechargeCardForm = ({ btnText}: { btnText: string }) => {
+const RechargeCardForm = ({ btnText }: { btnText: string }) => {
   const form = useForm<z.infer<typeof rechargeCardSchema>>({
     resolver: zodResolver(rechargeCardSchema),
-  })
+  });
 
   function onSubmit(values: z.infer<typeof rechargeCardSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
 
   return (
@@ -59,8 +58,8 @@ const RechargeCardForm = ({ btnText}: { btnText: string }) => {
         />
 
         <div className="mb-44 flex gap-2">
-          <DetailsTag data={{ key: 'Frais', value: '1%' }} />
-          <DetailsTag data={{ key: 'Montant debité', value: '51 500 XAF' }} />
+          <DetailsTag data={{ key: "Frais", value: "1%" }} />
+          <DetailsTag data={{ key: "Montant debité", value: "51 500 XAF" }} />
         </div>
 
         <FormField
@@ -86,9 +85,7 @@ const RechargeCardForm = ({ btnText}: { btnText: string }) => {
         <Dialog>
           <DialogTrigger className="w-[330px]">
             <Button type="submit" className="primary-btn w-full">
-              <span className="flex-1">
-                {btnText}
-              </span>
+              <span className="flex-1">{btnText}</span>
               <ArrowRightIcon size={10} color="#fff" />
             </Button>
           </DialogTrigger>
@@ -98,7 +95,7 @@ const RechargeCardForm = ({ btnText}: { btnText: string }) => {
         </Dialog>
       </form>
     </Form>
-  )
-}
+  );
+};
 
 export default RechargeCardForm;

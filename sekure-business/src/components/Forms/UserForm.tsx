@@ -11,26 +11,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { userSchema } from "../../validation";
+import { userSchema } from "../../_validation";
 import { Input } from "../ui/input";
 
 const UserForm = () => {
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
-  })
+  });
 
-  
   function onSubmit(values: z.infer<typeof userSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[791.86px] flex flex-wrap gap-5">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-[791.86px] flex flex-wrap gap-5"
+      >
         <FormField
           control={form.control}
           name="firstName"
@@ -86,7 +88,7 @@ const UserForm = () => {
         />
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default UserForm
+export default UserForm;

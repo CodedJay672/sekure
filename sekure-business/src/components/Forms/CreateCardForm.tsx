@@ -11,28 +11,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { cardCreateSchema } from "../../validation";
+import { cardCreateSchema } from "../../_validation";
 import { ArrowRightIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import DetailsTag from "../ui/shared/DetailsTag";
 import { Button } from "../ui/button";
 
-
 interface CreateCardFormProps {
   btnText: string;
 }
 
-const CreateCardForm:React.FC<CreateCardFormProps> = ({ btnText }) => {
+const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
-  })
+  });
 
   function onSubmit(values: z.infer<typeof cardCreateSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
 
   return (
@@ -51,7 +50,10 @@ const CreateCardForm:React.FC<CreateCardFormProps> = ({ btnText }) => {
                     className="input w-full bg-notif"
                     {...field}
                   />
-                  <span className="text-[8px] font-normal leading-6 text-placeholder-text">Ideake pour les paiements sur Alibab et Netflix, taux du dollars à 685 Fcfa</span>
+                  <span className="text-[8px] font-normal leading-6 text-placeholder-text">
+                    Ideake pour les paiements sur Alibab et Netflix, taux du
+                    dollars à 685 Fcfa
+                  </span>
                 </div>
               </FormControl>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -78,18 +80,20 @@ const CreateCardForm:React.FC<CreateCardFormProps> = ({ btnText }) => {
         />
 
         <div className="mb-44 flex gap-2">
-          <DetailsTag data={{ key: 'Montant debité', value: '51 500 XAF' }} />
+          <DetailsTag data={{ key: "Montant debité", value: "51 500 XAF" }} />
         </div>
 
-        <Button variant="default" type="submit" className="primary-btn flex-between w-full">
-          <span className="flex-1 text-center">
-            {btnText} 
-          </span>
+        <Button
+          variant="default"
+          type="submit"
+          className="primary-btn flex-between w-full"
+        >
+          <span className="flex-1 text-center">{btnText}</span>
           <ArrowRightIcon size={16} color="#fff" />
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
 export default CreateCardForm;

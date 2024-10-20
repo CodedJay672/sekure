@@ -80,7 +80,7 @@ export const signinSchema = z.object({
     .string({
       invalid_type_error: "L'email doit être une chaîne de caractères",
     })
-    .email(),
+    .email("L'email doit être valide"),
   password: z
     .string({
       invalid_type_error: "Le mot de passe doit être une chaîne de caractères",

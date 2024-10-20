@@ -11,33 +11,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { businessNameSchema } from "../../validation";
+import { businessNameSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 const BusinessForm = () => {
   const form = useForm<z.infer<typeof businessNameSchema>>({
     resolver: zodResolver(businessNameSchema),
-  })
+  });
 
-  
   function onSubmit(values: z.infer<typeof businessNameSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-[791.86px] flex flex-wrap gap-5">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-[791.86px] flex flex-wrap gap-5"
+      >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light">Business name</FormLabel>
+              <FormLabel className="text-xs font-light">
+                Business name
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
@@ -55,7 +59,9 @@ const BusinessForm = () => {
           name="number"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light">Business Registration Number</FormLabel>
+              <FormLabel className="text-xs font-light">
+                Business Registration Number
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Steve"
@@ -73,7 +79,9 @@ const BusinessForm = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light">Business Address</FormLabel>
+              <FormLabel className="text-xs font-light">
+                Business Address
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
@@ -85,13 +93,15 @@ const BusinessForm = () => {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light">Business Email</FormLabel>
+              <FormLabel className="text-xs font-light">
+                Business Email
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
@@ -103,7 +113,7 @@ const BusinessForm = () => {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="description"
@@ -123,7 +133,7 @@ const BusinessForm = () => {
         />
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default BusinessForm
+export default BusinessForm;

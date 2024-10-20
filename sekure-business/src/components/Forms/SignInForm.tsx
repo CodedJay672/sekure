@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,15 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signinSchema } from "../../validation";
+import { signinSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { handleSignIn } from "@/app/actions/authActions";
+import { authenticateUser } from "@/_lib/actions";
 
 const SignInForm = () => {
-  const [globalError, setGlobalError] = useState<string>("");
-
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
@@ -33,9 +30,9 @@ const SignInForm = () => {
 
   async function onSubmit(values: z.infer<typeof signinSchema>) {
     try {
-      const result = await handleSignIn(values);
+      const res = await authenticateUser(values);
     } catch (error) {
-      console.log(error);
+      throw new Error("Une erreur s'est produite");
     }
   }
 

@@ -5,8 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
-import { handleSignOut } from "@/app/actions/authActions";
-import { Button } from "../ui/button";
+import { deleteSession } from "@/_lib/session";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
@@ -74,7 +73,7 @@ const Sidebar: React.FC = () => {
             </span>
           </Link>
         ))}
-        <form action={handleSignOut}>
+        <form action={deleteSession}>
           <button
             type="submit"
             className="w-full h-9 px-6 mb-3 flex items-center hover:bg-white group transition-all"

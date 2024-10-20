@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-   --primary: #18BC7A;
-   --dark2: #D9D9D9;
-   --dark: #242424;
-   --secondary: #f5f5f5;
-   --dark3: #1E1E1E;
-   --danger: #DC473E;
-   --notif: #E9E9E9;
-   --input: #F5F5F5;
-   --placeholder-text: #A9A9A9;
-   --primary-fade: #D5F1E6;
+    --primary: #18bc7a;
+    --dark2: #d9d9d9;
+    --dark: #242424;
+    --secondary: #f5f5f5;
+    --dark3: #1e1e1e;
+    --danger: #dc473e;
+    --notif: #e9e9e9;
+    --input: #f5f5f5;
+    --placeholder-text: #a9a9a9;
+    --primary-fade: #d5f1e6;
   }
 }
 
@@ -23,7 +23,7 @@
   }
 
   body {
-    @apply  max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
+    @apply max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
   }
 }
 

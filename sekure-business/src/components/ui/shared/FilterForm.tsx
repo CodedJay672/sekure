@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,20 +11,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { filterSchema } from "@/validation";
+} from "@/components/ui/select";
+import { filterSchema } from "@/_validation";
 
 const FilterForm = () => {
   const form = useForm<z.infer<typeof filterSchema>>({
     resolver: zodResolver(filterSchema),
-  })
+  });
 
   function onSubmit(data: z.infer<typeof filterSchema>) {
     alert(data);
@@ -38,11 +38,12 @@ const FilterForm = () => {
           name="type"
           render={({ field }) => (
             <FormItem className="border-b border-b-[#e9e9e9]">
-              <FormLabel className="text-[10px] leading-[24px] font-normal">Type</FormLabel>
+              <FormLabel className="text-[10px] leading-[24px] font-normal">
+                Type
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]"
-                  >
+                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
                     <SelectValue placeholder="montant de depart" />
                   </SelectTrigger>
                 </FormControl>
@@ -65,9 +66,11 @@ const FilterForm = () => {
               <FormLabel>Statut</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]"
-                  >
-                    <SelectValue placeholder="montant de depart" className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]" />
+                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
+                    <SelectValue
+                      placeholder="montant de depart"
+                      className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white">
@@ -89,9 +92,11 @@ const FilterForm = () => {
               <FormLabel>Pays</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]"
-                  >
-                    <SelectValue placeholder="montant de depart" className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]" />
+                  <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
+                    <SelectValue
+                      placeholder="montant de depart"
+                      className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]"
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white">
@@ -112,11 +117,16 @@ const FilterForm = () => {
             <FormItem className="border-b border-b-[#e9e9e9]">
               <FormLabel>Montant de à</FormLabel>
               <div>
-                <Select onValueChange={field.onChange} defaultValue={field.value?.depart}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.depart}
+                >
                   <FormControl>
-                    <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]"
-                    >
-                      <SelectValue placeholder="montant de depart" className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]" />
+                    <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
+                      <SelectValue
+                        placeholder="montant de depart"
+                        className="w-[306px] h-[45px] border border-[#AEAEAE] bg-[#AEAEAE]"
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="bg-white">
@@ -126,10 +136,12 @@ const FilterForm = () => {
                   </SelectContent>
                 </Select>
                 <FormMessage className="text-[10px] font-normal leading-6 text-[#a9a9a9]" />
-                <Select onValueChange={field.onChange} defaultValue={field.value?.fin}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.fin}
+                >
                   <FormControl>
-                    <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]"
-                    >
+                    <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
                       <SelectValue placeholder="montant de fin" />
                     </SelectTrigger>
                   </FormControl>
@@ -151,7 +163,10 @@ const FilterForm = () => {
             <FormItem>
               <FormLabel>Date de à</FormLabel>
               <div>
-                <Select onValueChange={field.onChange} defaultValue={field.value?.depart}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.depart}
+                >
                   <FormControl>
                     <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
                       <SelectValue placeholder="Date de depart (JJ/MM/AA)" />
@@ -164,7 +179,10 @@ const FilterForm = () => {
                   </SelectContent>
                 </Select>
                 <FormMessage className="text-[10px] font-normal leading-6 text-[#a9a9a9]" />
-                <Select onValueChange={field.onChange} defaultValue={field.value?.fin}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.fin}
+                >
                   <FormControl>
                     <SelectTrigger className="w-[306px] h-[45px] bg-[#e9e9e9] text-[10px] font-normal leading-6 text-[#a9a9a9]">
                       <SelectValue placeholder="Date de fin (JJ/MM/AA)" />
@@ -182,16 +200,22 @@ const FilterForm = () => {
           )}
         />
         <div className="w-[306px] flex flex-col justify-center items-center gap-1">
-          <Button type="submit" className="w-full bg-primary text-white text-[10px] leading-[34.5px] rounded-[9px]">
+          <Button
+            type="submit"
+            className="w-full bg-primary text-white text-[10px] leading-[34.5px] rounded-[9px]"
+          >
             Valider le filtre
           </Button>
-          <Button type="button" className="w-full bg-notif text-black text-[10px] leading-[34.5px] rounded-[9px]">
+          <Button
+            type="button"
+            className="w-full bg-notif text-black text-[10px] leading-[34.5px] rounded-[9px]"
+          >
             Réinitialiser
           </Button>
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default FilterForm
+export default FilterForm;
