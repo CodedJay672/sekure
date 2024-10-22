@@ -111,7 +111,7 @@ export default function RootLayout({
                 </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
                   Recevez vos paiements facilement depuis différents pays
-                  d'Afrique et du monde et à travers différents moyens de
+                  d&apos;Afrique et du monde et à travers différents moyens de
                   paiement
                 </p>
               </div>
