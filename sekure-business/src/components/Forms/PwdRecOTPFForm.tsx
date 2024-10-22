@@ -12,26 +12,50 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
+import { useState } from "react";
+import { verifyEmail } from "@/_lib/actions";
+import { useToast } from "@/hooks/use-toast";
+import { encrypt } from "../../_lib/session";
 
 const PwdRecOTPFForm = () => {
+  const { toast } = useToast();
+  const [userToken, setUserToken] = useState(() => {
+    const token = localStorage.getItem("token");
+    return token ? JSON.parse(token) : null;
+  });
   const router = useRouter();
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
   });
+  const pending = form.formState.isSubmitting;
 
-  function onSubmit(values: z.infer<typeof OTPSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    router.push("/");
+  async function onSubmit(values: z.infer<typeof OTPSchema>) {
+    try {
+      //verify otp sent to email
+      const data = await verifyEmail(values);
+
+      if (!data) {
+        return null;
+      }
+
+      localStorage.setItem("token", JSON.stringify(data.token));
+      setUserToken(data.token);
+
+      toast({
+        title: "Succès",
+        description: data.message,
+        type: "foreground",
+      });
+      router.replace("/");
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   return (
@@ -77,6 +101,7 @@ const PwdRecOTPFForm = () => {
           <Button
             type="submit"
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
+            disabled={pending}
           >
             Me connecter
           </Button>

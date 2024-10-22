@@ -5,10 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
-import { deleteSession } from "@/_lib/session";
+import { signOut } from "@/_lib/actions";
+import { useRouter } from "next/navigation";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <nav className="w-[234px] flex-between flex-col gap-24 sticky">
@@ -73,25 +75,27 @@ const Sidebar: React.FC = () => {
             </span>
           </Link>
         ))}
-        <form action={deleteSession}>
-          <button
-            type="submit"
-            className="w-full h-9 px-6 mb-3 flex items-center hover:bg-white group transition-all"
-          >
-            <Image
-              priority
-              unoptimized
-              src={icon8}
-              alt="logout"
-              width={14}
-              height={14}
-              className="group-hover:color-primary object-contain transition-all"
-            />
-            <span className="text-dark3 text-[11px] font-normal leading-[16.5px] group-hover:text-primary group-hover:decoration-transparent ml-4">
-              Déconnexion
-            </span>
-          </button>
-        </form>
+        <button
+          type="submit"
+          className="w-full h-9 px-6 mb-3 flex items-center hover:bg-white group transition-all"
+          onClick={async () => {
+            await signOut();
+            router.replace("/signin");
+          }}
+        >
+          <Image
+            priority
+            unoptimized
+            src={icon8}
+            alt="logout"
+            width={14}
+            height={14}
+            className="group-hover:color-primary object-contain transition-all"
+          />
+          <span className="text-dark3 text-[11px] font-normal leading-[16.5px] group-hover:text-primary group-hover:decoration-transparent ml-4">
+            Déconnexion
+          </span>
+        </button>
       </div>
     </nav>
   );

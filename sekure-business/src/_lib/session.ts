@@ -1,4 +1,5 @@
 "use server";
+
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -11,6 +12,16 @@ const cookie = {
     sameSite: "lax",
     secure: true,
     path: "/",
+  },
+  maxAge: 60 * 60 * 24 * 1000,
+};
+
+const token = {
+  name: "token",
+  options: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
   },
   maxAge: 60 * 60 * 24 * 1000,
 };
@@ -46,9 +57,6 @@ export async function createSession(userId: number) {
       sameSite: "lax",
       expires,
     });
-
-    //redirect to otp verification page
-    redirect("/signin/get-otp");
   } catch (error) {
     console.log("error redirecting user", error);
   }
@@ -56,16 +64,15 @@ export async function createSession(userId: number) {
 
 export async function verifySession() {
   const userCookie = cookies().get(cookie.name)?.value;
-  const session = userCookie
-    ? await decrypt({ name: cookie.name, value: userCookie })
-    : null;
+  const session = await decrypt(userCookie);
 
   if (!session?.userId) {
     redirect("/signin");
   }
+
+  return session;
 }
 
 export async function deleteSession() {
   cookies().delete(cookie.name);
-  redirect("/signin");
 }
