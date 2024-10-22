@@ -25,7 +25,7 @@ const Table: React.FC<TableProps> = ({ heading, variant, columns, data }) => {
     return tableData.filter((item) => {
       return item.date.toString().toLowerCase().includes(query.toLowerCase());
     });
-  }, [query]);
+  }, [query, tableData]);
 
   return (
     <section

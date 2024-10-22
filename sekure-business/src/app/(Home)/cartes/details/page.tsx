@@ -13,8 +13,6 @@ import Image from "next/image";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { Data } from "@/constants/types";
-import CreateCardForm from "@/components/Forms/CreateCardForm";
-import RechargeCardForm from "@/components/Forms/RechargeCardForm";
 
 const CardDetails: React.FC = () => {
   const [tableData, setTableData] = React.useState<Data[]>(data);
@@ -24,7 +22,7 @@ const CardDetails: React.FC = () => {
     return tableData.filter((item) => {
       return item.date.toString().toLowerCase().includes(query.toLowerCase());
     });
-  }, [query]);
+  }, [query, tableData]);
 
   return (
     <section className="wrapper max-w-full">

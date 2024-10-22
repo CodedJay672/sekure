@@ -5,7 +5,6 @@ import "../../app/globals.css";
 import Image from "next/image";
 import { IoIosArrowDown } from "react-icons/io";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,7 +17,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -33,18 +31,29 @@ export default function RootLayout({
                 className="object-contain"
               />
               <div className="flex-center p-1 bg-primary rounded-[6px]">
-                <h1 className="text-white font-bold text-[17px] leading-[22.19px]">Business</h1>
+                <h1 className="text-white font-bold text-[17px] leading-[22.19px]">
+                  Business
+                </h1>
               </div>
             </Link>
 
-            <Link href="/contacter" className="text-[12.5px] leading-[15.13px] text-black font-normal">
+            <Link
+              href="/contacter"
+              className="text-[12.5px] leading-[15.13px] text-black font-normal"
+            >
               Contacter
             </Link>
-            <Link href="/termes-conditions" className="text-[12.5px] leading-[15.13px] text-black font-normal">
-            Termes et conditions
+            <Link
+              href="/termes-conditions"
+              className="text-[12.5px] leading-[15.13px] text-black font-normal"
+            >
+              Termes et conditions
             </Link>
-            
-            <Link href="/termes-conditions" className="text-[12.5px] leading-[15.13px] flex text-black font-normal">
+
+            <Link
+              href="/termes-conditions"
+              className="text-[12.5px] leading-[15.13px] flex text-black font-normal"
+            >
               <Image
                 src="/assets/images/union.png"
                 alt="locale"
@@ -59,9 +68,7 @@ export default function RootLayout({
         </header>
         <main className="max-w-[1552px] h-auto pl-20 flex bg-white pb-7 relative">
           <div className="flex flex-col h-auto flex-between mr-16">
-            <div className="mt-10">
-              {children}
-            </div>
+            <div className="mt-10">{children}</div>
             <footer className="w-[448px] h-[143px] mt-10">
               <div className="w-full flex">
                 <Image
@@ -73,7 +80,16 @@ export default function RootLayout({
               </div>
               <div>
                 <p className="text-[9px] leading-[15px] font-normal text-[#B7B7B7]">
-                To learn about which Revolut company serves you or if you have any questions, please contact us through our in-app chat.  Revolut Ltd is registered in England and Wales (No. 08804411), 7 Westferry Circus, Canary Wharf, London, England, E14 4HD and is authorised by the Financial Conduct Authority under the Electronic Money Regulations 2011 (Firm Reference 900562). Revolut Travel Ltd is authorised by the Financial Conduct Authority to undertake insurance distribution activities (FCA No: 780586). Our insurance products are arranged by Revolut Travel Ltd and Revolut Ltd, which is an appointed 
+                  To learn about which Revolut company serves you or if you have
+                  any questions, please contact us through our in-app chat.
+                  Revolut Ltd is registered in England and Wales (No. 08804411),
+                  7 Westferry Circus, Canary Wharf, London, England, E14 4HD and
+                  is authorised by the Financial Conduct Authority under the
+                  Electronic Money Regulations 2011 (Firm Reference 900562).
+                  Revolut Travel Ltd is authorised by the Financial Conduct
+                  Authority to undertake insurance distribution activities (FCA
+                  No: 780586). Our insurance products are arranged by Revolut
+                  Travel Ltd and Revolut Ltd, which is an appointed
                 </p>
               </div>
             </footer>
@@ -90,9 +106,13 @@ export default function RootLayout({
                 />
               </div>
               <div className="flex flex-col w-[250px] pt-2">
-                <h2 className="text-[15px] leading-[17px] font-semibold">Collectez de l’argent</h2>
+                <h2 className="text-[15px] leading-[17px] font-semibold">
+                  Collectez de l’argent
+                </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
-                  Recevez vos paiements facilement depuis différents pays d'Afrique et du monde et à travers différents moyens de paiement
+                  Recevez vos paiements facilement depuis différents pays
+                  d'Afrique et du monde et à travers différents moyens de
+                  paiement
                 </p>
               </div>
             </div>
@@ -108,9 +128,12 @@ export default function RootLayout({
                 />
               </div>
               <div className="flex flex-col w-[250px] pt-2">
-                <h2 className="text-[15px] leading-[17px] font-semibold">Transfert de devises</h2>
+                <h2 className="text-[15px] leading-[17px] font-semibold">
+                  Transfert de devises
+                </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
-                  Envoyez des fonds sous toutes les devises et directement dans des comptes d’utilisateurs
+                  Envoyez des fonds sous toutes les devises et directement dans
+                  des comptes d’utilisateurs
                 </p>
               </div>
             </div>
@@ -126,9 +149,13 @@ export default function RootLayout({
                 />
               </div>
               <div className="flex flex-col w-[250px] pt-2">
-                <h2 className="text-[15px] leading-[17px] font-semibold">Cartes virtuelles</h2>
+                <h2 className="text-[15px] leading-[17px] font-semibold">
+                  Cartes virtuelles
+                </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
-                  Offres des cartes virtuelles en USD VISA et MASTERCARD stables , économiques et faciles à prendre en main pour vos utilisateurs
+                  Offres des cartes virtuelles en USD VISA et MASTERCARD stables
+                  , économiques et faciles à prendre en main pour vos
+                  utilisateurs
                 </p>
               </div>
             </div>
@@ -144,9 +171,12 @@ export default function RootLayout({
                 />
               </div>
               <div className="flex flex-col w-[250px] pt-2">
-                <h2 className="text-[15px] leading-[17px] font-semibold">Paiements en ligne</h2>
+                <h2 className="text-[15px] leading-[17px] font-semibold">
+                  Paiements en ligne
+                </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
-                  Offres et gerez des paiements flexibles pour les  achats en ligne en toute sécurité et rapidité de vos utilisateurs.
+                  Offres et gerez des paiements flexibles pour les achats en
+                  ligne en toute sécurité et rapidité de vos utilisateurs.
                 </p>
               </div>
             </div>
@@ -162,9 +192,13 @@ export default function RootLayout({
                 />
               </div>
               <div className="flex flex-col w-[250px] pt-2">
-                <h2 className="text-[15px] leading-[17px] font-semibold">Gestion des utilisateurs</h2>
+                <h2 className="text-[15px] leading-[17px] font-semibold">
+                  Gestion des utilisateurs
+                </h2>
                 <p className="text-[12px] leading-[18px] text-[#808080]">
-                  Visualisez et analyser les mouvements d’argent de vos différents utilisateurs, découvrez comment vos volumes de transactions evoluent avec le temps
+                  Visualisez et analyser les mouvements d’argent de vos
+                  différents utilisateurs, découvrez comment vos volumes de
+                  transactions evoluent avec le temps
                 </p>
               </div>
             </div>
