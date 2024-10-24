@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./_lib/session";
 
 export default async function middleware(req: NextRequest) {
@@ -14,10 +14,12 @@ export default async function middleware(req: NextRequest) {
     const session = await decrypt(cookie);
 
     //if user is not authenticated, redirect to login page
-    if (!session?.userId) {
+    if (!session?.token) {
       return NextResponse.redirect(new URL("/signin", req.nextUrl));
     }
   }
+
+  return NextResponse.next();
 }
 
 export const config = {

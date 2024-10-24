@@ -1,8 +1,7 @@
 "use server";
 
 import { OTPSchema, signinSchema } from "@/_validation";
-import { createSession, deleteSession, verifySession } from "./session";
-import { redirect } from "next/navigation";
+import { createSession, deleteSession } from "./session";
 
 export const authenticateUser = async ({
   email,
@@ -34,46 +33,43 @@ export const authenticateUser = async ({
     }
 
     const data = await response.json();
-    await createSession(data?.user?.id);
+
+    return data;
   } catch (error) {
     console.log("error", error);
   }
-
-  redirect("/signin/get-otp");
 };
 
-export const verifyEmail = async ({ otp }: { otp: string }) => {
+export const signIn = async ({ otp }: { otp: string }) => {
   try {
-    //verify otp field before sending to server
+    //validate the otp
     const parsedOTP = OTPSchema.safeParse({ otp });
 
     if (!parsedOTP.success) {
       return {
-        errors: parsedOTP.error.flatten().fieldErrors,
+        errrors: parsedOTP.error.flatten().fieldErrors,
       };
     }
-
-    //verify session to get user id
-    const session = await verifySession();
 
     const response = await fetch(`${process.env.BACKEND_API_URL}/otp/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ user_id: session?.userId, otp }),
+      body: JSON.stringify({ user_id: 3, otp }),
     });
 
+    // if (!response.ok) {
+    //   throw new Error("failed to fetch user data");
+    // }
+
     const data = await response.json();
+    console.log(data.token);
 
-    //register the token into the localstorage
-    if (!data.success) {
-      return null;
-    }
-
-    return data;
+    //authenticate the user to get the user token
+    await createSession(data.token);
   } catch (error) {
-    console.log("error", error);
+    throw new Error("Failed to authenticate the user");
   }
 };
 

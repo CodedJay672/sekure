@@ -4,6 +4,7 @@ import Link from "next/link";
 import "../../app/globals.css";
 import Image from "next/image";
 import { IoIosArrowDown } from "react-icons/io";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -203,6 +204,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
+          <Toaster />
         </main>
       </body>
     </html>

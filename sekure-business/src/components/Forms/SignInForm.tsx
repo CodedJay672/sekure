@@ -18,8 +18,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { authenticateUser } from "@/_lib/actions";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 const SignInForm = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
@@ -31,9 +36,14 @@ const SignInForm = () => {
   async function onSubmit(values: z.infer<typeof signinSchema>) {
     try {
       const res = await authenticateUser(values);
+      toast({
+        description: res.message,
+      });
     } catch (error) {
       throw new Error("Une erreur s'est produite");
     }
+
+    router.replace("/signin/get-otp");
   }
 
   return (

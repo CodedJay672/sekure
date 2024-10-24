@@ -12,18 +12,8 @@ const cookie = {
     sameSite: "lax",
     secure: true,
     path: "/",
+    maxAge: 60 * 60 * 24 * 1000,
   },
-  maxAge: 60 * 60 * 24 * 1000,
-};
-
-const token = {
-  name: "token",
-  options: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: true,
-  },
-  maxAge: 60 * 60 * 24 * 1000,
 };
 
 export async function encrypt(payload: any) {
@@ -47,10 +37,10 @@ export async function decrypt(session: any) {
 }
 
 //helper functions to create, verify and delete sessions
-export async function createSession(userId: number) {
+export async function createSession(token: string) {
   try {
-    const expires = new Date(Date.now() + cookie.maxAge);
-    const session = await encrypt({ userId, expires });
+    const expires = new Date(Date.now() + cookie.options.maxAge);
+    const session = await encrypt({ token, expires });
 
     cookies().set(cookie.name, session, {
       ...cookie.options,
@@ -58,7 +48,7 @@ export async function createSession(userId: number) {
       expires,
     });
   } catch (error) {
-    console.log("error redirecting user", error);
+    console.log("error authenticating user", error);
   }
 }
 
@@ -66,7 +56,7 @@ export async function verifySession() {
   const userCookie = cookies().get(cookie.name)?.value;
   const session = await decrypt(userCookie);
 
-  if (!session?.userId) {
+  if (!session?.token) {
     redirect("/signin");
   }
 

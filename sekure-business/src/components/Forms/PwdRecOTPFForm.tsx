@@ -17,17 +17,9 @@ import Link from "next/link";
 import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { useState } from "react";
-import { verifyEmail } from "@/_lib/actions";
-import { useToast } from "@/hooks/use-toast";
-import { encrypt } from "../../_lib/session";
+import { signIn } from "@/_lib/actions";
 
 const PwdRecOTPFForm = () => {
-  const { toast } = useToast();
-  const [userToken, setUserToken] = useState(() => {
-    const token = localStorage.getItem("token");
-    return token ? JSON.parse(token) : null;
-  });
   const router = useRouter();
 
   const form = useForm<z.infer<typeof OTPSchema>>({
@@ -36,26 +28,8 @@ const PwdRecOTPFForm = () => {
   const pending = form.formState.isSubmitting;
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
-    try {
-      //verify otp sent to email
-      const data = await verifyEmail(values);
-
-      if (!data) {
-        return null;
-      }
-
-      localStorage.setItem("token", JSON.stringify(data.token));
-      setUserToken(data.token);
-
-      toast({
-        title: "Succès",
-        description: data.message,
-        type: "foreground",
-      });
-      router.replace("/");
-    } catch (error) {
-      console.log("error", error);
-    }
+    await signIn(values);
+    router.replace("/");
   }
 
   return (
