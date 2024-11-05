@@ -59,14 +59,14 @@ const SignInForm = () => {
         toast({
           description: "Vous êtes connecté",
         });
+
+        //redirect to the get otp page
+        router.replace("/signin/get-otp");
       } else {
         toast({
           description: "Erreur de connexion",
         });
       }
-
-      //redirect to the get otp page
-      router.replace("/signin/get-otp");
     },
     onError: (error) => {
       toast({
