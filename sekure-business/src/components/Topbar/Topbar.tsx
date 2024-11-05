@@ -1,14 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import UserDropdown from "../ui/shared/UserDropdown";
 import Notifications from "../ui/shared/Notifications";
 import Switch from "../ui/shared/switch/Switch";
 import CustomBreadcrumb from "../ui/Breadcrumbs/Breadcrumbs";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
+  const dispatch = useAppDispatch();
+
+  //initialize the redux store with user data in the local storage
+  useEffect(() => {
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
+
+    if (user) {
+      const payload = {
+        user,
+      };
+      dispatch(updateConnexionData(payload));
+    }
+  }, []);
   const handleToggle = () => {
     setIsOn(!isOn);
   };

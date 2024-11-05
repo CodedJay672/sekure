@@ -56,6 +56,10 @@ const SignInForm = () => {
     onSuccess: (data) => {
       if (data && "user" in data) {
         dispatch(updateConnexionData(data));
+
+        //persist in local storage
+        localStorage.setItem("user", JSON.stringify(data.user));
+
         toast({
           description: "Vous êtes connecté",
         });

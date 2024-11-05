@@ -1,21 +1,12 @@
 "use server";
 
-import { AuthUser } from "@/_lib/features/users/connexionSlice";
-import { verifySession, getCookie } from "@/_lib/session";
+import { verifySession } from "@/_lib/session";
 import { cache } from "react";
 
-export const getUser = cache(async () => {
+export const getUser = cache(async (id: number) => {
   try {
     //verify user session to get user data
     const session = await verifySession("session");
-
-    //get user data from the session
-    const user = await getCookie("user");
-
-    const parsedUser = JSON.parse(user);
-
-    //get the user id
-    const { id } = parsedUser.user;
 
     //fetch user data from the backend
     const response = await fetch(`${process.env.BACKEND_API_URL}/users/${id}`, {
@@ -29,9 +20,9 @@ export const getUser = cache(async () => {
     }
 
     //parse the response to json format
-    const data: AuthUser = await response.json();
+    const user = await response.json();
 
-    return data;
+    return user;
   } catch (error) {
     console.log("error fetching user", error);
   }

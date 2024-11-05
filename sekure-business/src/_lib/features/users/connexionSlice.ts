@@ -39,10 +39,12 @@ export interface User {
 
 export interface AuthUser {
   user: User;
+  isLogged?: boolean;
 }
 
 const initialState: AuthUser = {
   user: {} as User,
+  isLogged: false,
 };
 
 const connexionSlice = createSlice({
@@ -51,9 +53,9 @@ const connexionSlice = createSlice({
   reducers: {
     updateConnexionData: (state, action: PayloadAction<AuthUser>) => {
       //update the connexion data with the user data
-      const user = action.payload;
+      const { user } = action.payload;
 
-      Object.assign(state, { user });
+      Object.assign(state, { user, isLogged: true });
     },
   },
 });

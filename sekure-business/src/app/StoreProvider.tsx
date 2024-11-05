@@ -14,5 +14,5 @@ export default function StoreProvider({
     storeRef.current = store;
   }
 
-  return <Provider store={storeRef.current}>{children}</Provider>;
+  return <Provider store={store}>{children}</Provider>;
 }

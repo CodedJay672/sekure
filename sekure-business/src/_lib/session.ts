@@ -73,7 +73,7 @@ export async function verifySession(name: string) {
   const session = await getCookie(name);
   const parsedSession = JSON.parse(session);
 
-  if (!parsedSession?.token) {
+  if (!parsedSession?.value?.token) {
     redirect("/signin");
   }
 

@@ -1,4 +1,3 @@
-import { verifySession } from "@/_lib/session";
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
 import Table from "@/components/Table/Table";
