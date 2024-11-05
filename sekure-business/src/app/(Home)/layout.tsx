@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../../app/globals.css";
+import "../globals.css";
 import Topbar from "@/components/Topbar/Topbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
+import Provider from "@/utils/providers/tanstackProvider";
+import StoreProvider from "../StoreProvider";
+import { getCookie, verifySession } from "@/_lib/session";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
   description: "Sekure provides card services for businesses.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   convertmodal,
   rechargemodal,
@@ -25,14 +28,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Topbar />
-        <main className="w-full overflow-hidden flex justify-between items-start mt-3">
-          <Sidebar />
-          {convertmodal}
-          {rechargemodal}
-          {children}
-        </main>
-        <Toaster />
+        <StoreProvider>
+          <Provider>
+            <Topbar />
+            <main className="w-full overflow-hidden flex justify-between items-start mt-3">
+              <Sidebar />
+              {convertmodal}
+              {rechargemodal}
+              {children}
+            </main>
+            <Toaster />
+          </Provider>
+        </StoreProvider>
       </body>
     </html>
   );

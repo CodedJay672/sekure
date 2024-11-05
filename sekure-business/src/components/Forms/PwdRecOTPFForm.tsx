@@ -18,18 +18,33 @@ import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { signIn } from "@/_lib/actions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
   });
-  const pending = form.formState.isSubmitting;
+
+  const {
+    mutate: userSignIn,
+    data,
+    isPending,
+  } = useMutation({
+    mutationFn: async (values: { otp: string }) => {
+      return await signIn(values);
+    },
+    onSuccess: (data) => {
+      router.replace("/");
+    },
+  });
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
-    await signIn(values);
-    router.replace("/");
+    userSignIn(values);
   }
 
   return (
@@ -75,7 +90,7 @@ const PwdRecOTPFForm = () => {
           <Button
             type="submit"
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
-            disabled={pending}
+            disabled={isPending}
           >
             Me connecter
           </Button>

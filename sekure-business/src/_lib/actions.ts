@@ -1,7 +1,13 @@
 "use server";
 
 import { OTPSchema, signinSchema } from "@/_validation";
-import { createSession, deleteSession } from "./session";
+import {
+  createSession,
+  createUserSession,
+  deleteSession,
+  getCookie,
+} from "./session";
+import { AuthUser } from "./features/users/connexionSlice";
 
 export const authenticateUser = async ({
   email,
@@ -32,7 +38,10 @@ export const authenticateUser = async ({
       throw new Error("Error while fetching session data");
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as AuthUser;
+
+    // 2. create a session for the user
+    await createUserSession(data.user);
 
     return data;
   } catch (error) {
@@ -45,6 +54,18 @@ export const signIn = async ({ otp }: { otp: string }) => {
     //validate the otp
     const parsedOTP = OTPSchema.safeParse({ otp });
 
+    //get the user cookie and verify the user_id
+    const user = await getCookie("user");
+
+    if (!user) {
+      throw new Error();
+    }
+
+    const parsedUser = JSON.parse(user);
+
+    //destruct the user_id from the user object
+    const { id } = parsedUser.value;
+
     if (!parsedOTP.success) {
       return {
         errrors: parsedOTP.error.flatten().fieldErrors,
@@ -56,23 +77,19 @@ export const signIn = async ({ otp }: { otp: string }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ user_id: 3, otp }),
+      body: JSON.stringify({ user_id: id, otp }),
     });
 
-    // if (!response.ok) {
-    //   throw new Error("failed to fetch user data");
-    // }
-
     const data = await response.json();
-    console.log(data.token);
 
     //authenticate the user to get the user token
-    await createSession(data.token);
+    await createSession(data?.token);
   } catch (error) {
     throw new Error("Failed to authenticate the user");
   }
 };
 
 export const signOut = async () => {
-  await deleteSession();
+  await deleteSession("user");
+  await deleteSession("session");
 };

@@ -20,10 +20,21 @@ import Link from "next/link";
 import { authenticateUser } from "@/_lib/actions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+//import the redux store deps
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useAppStore,
+} from "@/_lib/redux/hooks";
 
 const SignInForm = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -33,17 +44,39 @@ const SignInForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof signinSchema>) {
-    try {
-      const res = await authenticateUser(values);
-      toast({
-        description: res.message,
-      });
-    } catch (error) {
-      throw new Error("Une erreur s'est produite");
-    }
+  const {
+    mutate: getAuthorizedUser,
+    data,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: async (values: { email: string; password: string }) => {
+      return await authenticateUser(values);
+    },
+    onSuccess: (data) => {
+      if (data && "user" in data) {
+        dispatch(updateConnexionData(data));
+        toast({
+          description: "Vous êtes connecté",
+        });
+      } else {
+        toast({
+          description: "Erreur de connexion",
+        });
+      }
 
-    router.replace("/signin/get-otp");
+      //redirect to the get otp page
+      router.replace("/signin/get-otp");
+    },
+    onError: (error) => {
+      toast({
+        description: error.message,
+      });
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof signinSchema>) {
+    getAuthorizedUser(values);
   }
 
   return (
@@ -95,6 +128,7 @@ const SignInForm = () => {
           <Button
             type="submit"
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
+            disabled={isPending}
           >
             Suivant
           </Button>

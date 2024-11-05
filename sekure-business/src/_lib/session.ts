@@ -3,18 +3,10 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { User } from "./features/users/connexionSlice";
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET);
-const cookie = {
-  name: "session",
-  options: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: true,
-    path: "/",
-    maxAge: 60 * 60 * 24 * 1000,
-  },
-};
+const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 export async function encrypt(payload: any) {
   return new SignJWT(payload)
@@ -36,33 +28,58 @@ export async function decrypt(session: any) {
   }
 }
 
+export async function setCookie(name: string, value: object) {
+  const expires = new Date(Date.now() + MAX_AGE);
+  const session = await encrypt({ value, expires });
+
+  cookies().set(name, session, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+    expires,
+    path: "/",
+  });
+}
+
+export async function getCookie(name: string) {
+  const userCookie = cookies().get(name)?.value;
+  const session = await decrypt(userCookie);
+
+  if (!session) {
+    throw new Error("invalid session");
+  }
+
+  return JSON.stringify(session);
+}
+
 //helper functions to create, verify and delete sessions
 export async function createSession(token: string) {
   try {
-    const expires = new Date(Date.now() + cookie.options.maxAge);
-    const session = await encrypt({ token, expires });
-
-    cookies().set(cookie.name, session, {
-      ...cookie.options,
-      sameSite: "lax",
-      expires,
-    });
+    await setCookie("session", { token });
+  } catch (error) {
+    console.log("error authenticating user", error);
+  }
+}
+//helper functions to create, verify and delete sessions
+export async function createUserSession(user: User) {
+  try {
+    await setCookie("user", user);
   } catch (error) {
     console.log("error authenticating user", error);
   }
 }
 
-export async function verifySession() {
-  const userCookie = cookies().get(cookie.name)?.value;
-  const session = await decrypt(userCookie);
+export async function verifySession(name: string) {
+  const session = await getCookie(name);
+  const parsedSession = JSON.parse(session);
 
-  if (!session?.token) {
+  if (!parsedSession?.token) {
     redirect("/signin");
   }
 
-  return session;
+  return parsedSession;
 }
 
-export async function deleteSession() {
-  cookies().delete(cookie.name);
+export async function deleteSession(name: string) {
+  cookies().delete(name);
 }

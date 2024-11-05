@@ -1,10 +1,11 @@
+import { verifySession } from "@/_lib/session";
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
 import Table from "@/components/Table/Table";
 import Wallet from "@/components/Wallet/Wallet";
 import { bigTable, cardDetails, data } from "@/constants";
 
-export default async function Home() {
+export default function Home() {
   return (
     <section className="wrapper">
       <div className="overflow-hidden flex-1 flex flex-col gap-4">

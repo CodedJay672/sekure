@@ -1,8 +1,8 @@
-import Image from "next/image"
+import Image from "next/image";
+import Provider from "@/utils/providers/tanstackProvider";
+import StoreProvider from "@/app/StoreProvider";
 
-const Layout = ({ children }: {
-  children: React.ReactNode
-}) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
@@ -14,7 +14,7 @@ const Layout = ({ children }: {
         className="absolute -top-6 -right-24 2xl:right-14 z-50"
       />
     </>
-  )
-}
+  );
+};
 
 export default Layout;
