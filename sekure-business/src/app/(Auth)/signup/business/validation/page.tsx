@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
-import { createUserAccount } from "@/_data/user";
+import { createUserAccount } from "@/_lib/actions";
 import { NewUser } from "@/utils/types/types";
 
 const Validation: React.FC = () => {
