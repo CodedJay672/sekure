@@ -165,8 +165,7 @@
 }
 
 :root {
-  font-family: "Lufga";
-  /* line-height: 5dvi; */
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 @layer base {

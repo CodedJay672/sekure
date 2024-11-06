@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RxCaretRight } from "react-icons/rx";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,10 +17,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const Actionnaires: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const ActionSchema = z.object({
     receive_mail: z.boolean().default(false).optional(),
@@ -34,9 +49,17 @@ const Actionnaires: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof ActionSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //add the new data to the userData
+    const newDatas = {
+      ...JSON.parse(userInfo as string),
+      ...values,
+    };
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(newDatas));
     router.push(`/signup/business/legal`);
   }
 

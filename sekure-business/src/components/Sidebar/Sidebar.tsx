@@ -7,10 +7,13 @@ import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
 import { signOut } from "@/_lib/actions";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { logout } from "@/_lib/features/users/connexionSlice";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   return (
     <nav className="w-[234px] flex-between flex-col gap-24 sticky">
@@ -80,6 +83,8 @@ const Sidebar: React.FC = () => {
           className="w-full h-9 px-6 mb-3 flex items-center hover:bg-white group transition-all"
           onClick={async () => {
             await signOut();
+            localStorage.clear();
+            dispatch(logout());
             router.replace("/signin");
           }}
         >

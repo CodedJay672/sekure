@@ -1,49 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AuthUser } from "@/utils/providers/types/types";
 
-interface Roles {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  name: "admin" | "user";
-  active: 1 | 0;
-  updated_by: string | "";
-  pivot: {
-    id_user: number;
-    id_role: number;
-  };
-}
-
-export interface User {
-  id: number;
-  full_name: string | "";
-  poste: string | "";
-  date_birth: string | "";
-  pourcentage_action: number | 0;
-  email: string | "";
-  nationality: string | "";
-  street: string | "";
-  localisation: string | "";
-  city: string | "";
-  etat: string | "";
-  zip: string | "";
-  document1: File | null;
-  document2: File | null;
-  phone: string | "";
-  active: 1 | 0;
-  updated_by: string | "";
-  image: string | "";
-  email_verified_at: string | "";
-  created_at: string | "";
-  updated_at: string | "";
-}
-
-export interface AuthUser {
-  user: User;
-  isLogged?: boolean;
-}
-
-const initialState: AuthUser = {
-  user: {} as User,
+export const initialState: AuthUser = {
+  user: {},
   isLogged: false,
 };
 
@@ -57,11 +16,17 @@ const connexionSlice = createSlice({
 
       Object.assign(state, { user, isLogged: true });
     },
+
+    //add the logout action
+    logout: (state) => {
+      //clear the user data and set isLogged to false
+      Object.assign(state, { user: {}, isLogged: false });
+    },
   },
 });
 
 //export the action to update the connexion data when users sign in
-export const { updateConnexionData } = connexionSlice.actions;
+export const { updateConnexionData, logout } = connexionSlice.actions;
 
 //export the reducer
 export default connexionSlice.reducer;

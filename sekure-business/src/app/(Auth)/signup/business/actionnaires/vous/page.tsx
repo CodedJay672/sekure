@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {} from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,27 +22,50 @@ import { ActionnairesSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const VousForm: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { pending } = useFormStatus();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
     defaultValues: {
-      name: "John Doe",
-      email: "testemail@xyz.com",
-      poste: "always checking on all",
-      percentage: "50",
+      full_name_user: "",
+      email_user: "",
+      poste_user: "",
+      pourcentage_action_user: "",
       director: "non",
     },
   });
 
   function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //add the new data to the userData
+    const newDatas = {
+      ...JSON.parse(userInfo as string),
+      ...values,
+    };
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(newDatas));
     router.back();
   }
 
@@ -55,7 +78,7 @@ const VousForm: React.FC = () => {
           </span>
           <FormField
             control={form.control}
-            name="name"
+            name="full_name_user"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -75,7 +98,7 @@ const VousForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="email_user"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">Email</FormLabel>
@@ -93,7 +116,7 @@ const VousForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="poste"
+            name="poste_user"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">Poste</FormLabel>
@@ -111,7 +134,7 @@ const VousForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="percentage"
+            name="pourcentage_action_user"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">

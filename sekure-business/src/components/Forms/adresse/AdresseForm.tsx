@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,26 +17,51 @@ import {
 import { AdresseSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const AdresseForm = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
     defaultValues: {
-      pays: "Cameroun",
-      region: "Cameroun",
-      postal: "Cameroun",
-      city: "Cameroun",
-      quartier: "Entrez votre nom comme sur votre pièce d’identité",
-      appartement: "Entrez votre nom comme sur votre pièce d’identité",
+      poste_user: "",
+      country_company: "",
+      zip_company: "",
+      city_company: "",
+      street_company: "",
+      address_company: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //add the new data to the userData
+    const newDatas = {
+      ...JSON.parse(userInfo as string),
+      ...values,
+    };
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(newDatas));
+
+    //step 3
     router.push(`/signup/business/actionnaires`);
   }
 
@@ -46,7 +72,7 @@ const AdresseForm = () => {
           <div className="flex flex-wrap justify-between">
             <FormField
               control={form.control}
-              name="pays"
+              name="poste_user"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">Pays</FormLabel>
@@ -65,7 +91,7 @@ const AdresseForm = () => {
 
             <FormField
               control={form.control}
-              name="region"
+              name="country_company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -86,7 +112,7 @@ const AdresseForm = () => {
 
             <FormField
               control={form.control}
-              name="postal"
+              name="zip_company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -107,7 +133,7 @@ const AdresseForm = () => {
 
             <FormField
               control={form.control}
-              name="city"
+              name="city_company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -129,7 +155,7 @@ const AdresseForm = () => {
 
           <FormField
             control={form.control}
-            name="quartier"
+            name="street_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -150,7 +176,7 @@ const AdresseForm = () => {
 
           <FormField
             control={form.control}
-            name="appartement"
+            name="address_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">

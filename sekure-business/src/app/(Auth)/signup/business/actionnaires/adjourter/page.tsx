@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,33 +20,56 @@ import { AdresseInfoSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import FileUploader from "@/components/ui/shared/FileUploader";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const AdjourterForm: React.FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof AdresseInfoSchema>>({
     resolver: zodResolver(AdresseInfoSchema),
     defaultValues: {
-      nom: "John Doe",
-      poste: "Allow access",
-      date: "12/01/2024",
-      percentage: "20",
-      email: "testemail@xyz.com",
-      tel: "12345678901",
-      naionalite: "Nigeria",
-      rue: "done",
-      apartment: "new apartment",
-      cite: "Lagos",
-      etat: "checking the etat variable",
-      zip: "1100011",
+      full_name_user: "",
+      poste_user: "",
+      date_birth_user: "",
+      pourcentage_action_user: "",
+      email_user: "",
+      phone_user: "",
+      nationality_user: "",
+      rue: "",
+      street_user: "",
+      city_user: "",
+      etat_user: "",
+      zip_user: "",
       receive_mail: false,
     },
   });
 
   function onSubmit(values: z.infer<typeof AdresseInfoSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //add the new data to the userData
+    const newDatas = {
+      ...JSON.parse(userInfo as string),
+      ...values,
+    };
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(newDatas));
     router.back();
   }
 
@@ -59,7 +82,7 @@ const AdjourterForm: React.FC = () => {
           </span>
           <FormField
             control={form.control}
-            name="nom"
+            name="full_name_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -79,7 +102,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="poste"
+            name="poste_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Poste</FormLabel>
@@ -97,7 +120,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="date"
+            name="date_birth_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -117,7 +140,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="percentage"
+            name="pourcentage_action_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -137,7 +160,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="email_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Email</FormLabel>
@@ -155,7 +178,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="tel"
+            name="phone_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -179,7 +202,7 @@ const AdjourterForm: React.FC = () => {
           </span>
           <FormField
             control={form.control}
-            name="naionalite"
+            name="nationality_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -217,7 +240,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="apartment"
+            name="street_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -237,7 +260,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="cite"
+            name="city_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Cité</FormLabel>
@@ -255,7 +278,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="etat"
+            name="etat_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Etat</FormLabel>
@@ -273,7 +296,7 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="zip"
+            name="zip_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Zip Code</FormLabel>
@@ -296,7 +319,7 @@ const AdjourterForm: React.FC = () => {
           </span>
           <FormField
             control={form.control}
-            name="id_card"
+            name="document1_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-[12px] leading-[24px] font-light">
@@ -313,7 +336,7 @@ const AdjourterForm: React.FC = () => {
 
           <FormField
             control={form.control}
-            name="id_card"
+            name="document2_user"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-[12px] leading-[24px] font-light">

@@ -1,15 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/_data/user";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 
 const UserDropdown: React.FC = () => {
   const Router = useRouter();
+  const dispatch = useAppDispatch();
   const id = useAppSelector((state) => state.connexion.user.id);
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
       return await getUser(id);
@@ -22,6 +24,11 @@ const UserDropdown: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  if (isSuccess) {
+    dispatch(updateConnexionData({ user: user }));
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
   return (
     <div
       className="flex relative cursor-pointer"
@@ -29,7 +36,7 @@ const UserDropdown: React.FC = () => {
     >
       <div className="flex flex-col justify-center items-end mr-2">
         <h3 className="text-[11px] leading-[16.5px] font-semibold">
-          {user?.full_name}
+          {user?.first_name}
         </h3>
         <p className="text-[7px] leading-[10.5px] font-normal">business Name</p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">

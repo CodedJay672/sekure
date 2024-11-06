@@ -1,13 +1,7 @@
 "use server";
 
 import { OTPSchema, signinSchema } from "@/_validation";
-import {
-  createSession,
-  createUserSession,
-  deleteSession,
-  getCookie,
-} from "./session";
-import { AuthUser } from "./features/users/connexionSlice";
+import { createSession, deleteSession, getCookie } from "./session";
 
 export const authenticateUser = async ({
   email,
@@ -38,11 +32,7 @@ export const authenticateUser = async ({
       throw new Error("Error while fetching session data");
     }
 
-    const data = (await response.json()) as AuthUser;
-
-    // 2. create a session for the user
-    await createUserSession(data.user);
-
+    const data = await response.json();
     return data;
   } catch (error) {
     console.log("error", error);

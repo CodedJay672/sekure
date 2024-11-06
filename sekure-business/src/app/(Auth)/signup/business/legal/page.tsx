@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,19 +18,36 @@ import { usePathname, useRouter } from "next/navigation";
 import { LegalSchema } from "@/_validation";
 import { Checkbox } from "@/components/ui/checkbox";
 import DocumentUploader from "@/components/ui/shared/UploadDocument";
+import { createUser } from "@/_lib/features/Auth/authSlice";
+import { useAppDispatch } from "@/_lib/redux/hooks";
 
 const LegalForm: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof LegalSchema>>({
     resolver: zodResolver(LegalSchema),
   });
 
   function onSubmit(values: z.infer<typeof LegalSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(values));
     router.push(`/signup/business/validation`);
   }
 

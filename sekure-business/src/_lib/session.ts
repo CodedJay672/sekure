@@ -3,7 +3,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { User } from "./features/users/connexionSlice";
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET);
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
@@ -56,14 +55,6 @@ export async function getCookie(name: string) {
 export async function createSession(token: string) {
   try {
     await setCookie("session", { token });
-  } catch (error) {
-    console.log("error authenticating user", error);
-  }
-}
-//helper functions to create, verify and delete sessions
-export async function createUserSession(user: User) {
-  try {
-    await setCookie("user", user);
   } catch (error) {
     console.log("error authenticating user", error);
   }

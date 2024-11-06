@@ -31,9 +31,7 @@ const CustomTab: React.FC = () => {
     });
 
     setTabs([...newTabs]);
-
-    console.log(tabs);
-  }, [pathname, CustomTab, tabs]);
+  }, [pathname]);
 
   return (
     <div className="flex-between mt-3 gap-2">

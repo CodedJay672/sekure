@@ -1,13 +1,36 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import UserCard from "@/components/Cards/UserCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import React from "react";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
+import { createUserAccount } from "@/_data/user";
+import { NewUser } from "@/utils/providers/types/types";
 
 const Validation: React.FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const state = useAppSelector((state) => state?.newUser) as NewUser;
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
+
+  const handleSubmit = async () => {
+    console.log(state);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <span className="text-[12px] leading-[17px] font-normal text-[#8F8F8F]">
@@ -16,11 +39,11 @@ const Validation: React.FC = () => {
       <div className="w-full px-[15px] py-[18px] rounded-[19px] border flex flex-col gap-[25px]">
         <div className="w-[400px]">
           <h2 className="text-[12px] leading-[17px] font-semibold mb-3">
-            WAGAPAY
+            {state.name_company}
           </h2>
           <p className="text-[12px] leading-[18px]">
-            wagapay est une fintech qui permet de faire des paiements de facture
-            et en sans vous deplacer
+            {state?.name_company} est une fintech qui permet de faire des
+            paiements de facture et en sans vous deplacer
           </p>
         </div>
 
@@ -29,7 +52,9 @@ const Validation: React.FC = () => {
             <p className="text-[12px] leading-[18px] font-normal">Nom Légal</p>
           </div>
           <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">WAGAPAY</p>
+            <p className="text-[12px] leading-[18px] font-normal">
+              {state.name_company?.toUpperCase()}
+            </p>
           </div>
           <div>
             <p className="text-[12px] leading-[18px] font-normal">
@@ -37,13 +62,17 @@ const Validation: React.FC = () => {
             </p>
           </div>
           <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">WAGAPAY</p>
+            <p className="text-[12px] leading-[18px] font-normal">
+              {state.sector_activity_company?.toUpperCase()}
+            </p>
           </div>
           <div>
             <p className="text-[12px] leading-[18px] font-normal">Secteur</p>
           </div>
           <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">WAGAPAY</p>
+            <p className="text-[12px] leading-[18px] font-normal">
+              {state.sector_activity_company?.toUpperCase()}
+            </p>
           </div>
           <div>
             <p className="text-[12px] leading-[18px] font-normal">
@@ -51,13 +80,17 @@ const Validation: React.FC = () => {
             </p>
           </div>
           <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">WAGAPAY</p>
+            <p className="text-[12px] leading-[18px] font-normal">
+              {state.city_company?.toUpperCase()}
+            </p>
           </div>
           <div>
             <p className="text-[12px] leading-[18px] font-normal">Numéros</p>
           </div>
           <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">WAGAPAY</p>
+            <p className="text-[12px] leading-[18px] font-normal">
+              {state.phone_company}
+            </p>
           </div>
         </div>
 
@@ -68,7 +101,7 @@ const Validation: React.FC = () => {
           <div className="flex-1 flex flex-col gap-2">
             <div className="flex bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
               <Image
-                src="/assets/icons-pack/uploadDocument.png"
+                src={`/assets/icons-pack/uploadDocument.png`}
                 alt="uploaded document"
                 width={14.22}
                 height={14.65}
@@ -110,16 +143,9 @@ const Validation: React.FC = () => {
       </div>
 
       <UserCard
-        name="Kamga Kamta Steve"
-        email="kamkamsteve@gmail.com"
-        poste="CTO"
-        parte="50%"
-      />
-
-      <UserCard
-        name="Kamga Kamta Steve"
-        email="kamkamsteve@gmail.com"
-        poste="CTO"
+        name={state.full_name_user}
+        email={state.email_user}
+        poste={state.poste_user}
         parte="50%"
       />
 
@@ -133,7 +159,7 @@ const Validation: React.FC = () => {
         </Button>
         <Button
           className="primary-btn w-[224.24px] h-[50px]"
-          onClick={() => router.push("/")}
+          onClick={() => handleSubmit()}
         >
           Continuer
         </Button>

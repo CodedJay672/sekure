@@ -1,8 +1,6 @@
-import Image from "next/image"
+import Image from "next/image";
 
-const Layout = ({ children }: {
-  children: React.ReactNode
-}) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
@@ -14,7 +12,7 @@ const Layout = ({ children }: {
         className="absolute -top-20 -right-24 2xl:right-14 z-50"
       />
     </>
-  )
-}
+  );
+};
 
 export default Layout;

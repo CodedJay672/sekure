@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,28 +20,37 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const SignupForm = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  //clear the userData from the localStorage
+  useEffect(() => {
+    localStorage.removeItem("userData");
+  }, []);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      fullName: "John Doe",
-      businessName: "John Doe Inc.",
+      full_name_user: "",
+      name_company: "",
       receive_mail: false,
-      pays: "test information",
-      email: "testemail@gmail.com",
-      password: "1234567890",
+      country_company: "",
+      email_user: "",
+      password_user: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    router.push(`${pathname}/get-otp`);
+    dispatch(createUser(values));
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(values));
+    router.push(`${pathname}/business/informations`);
   }
 
   return (
@@ -48,7 +58,7 @@ const SignupForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
-          name="fullName"
+          name="full_name_user"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[12px] leading-6">
@@ -69,7 +79,7 @@ const SignupForm = () => {
 
         <FormField
           control={form.control}
-          name="businessName"
+          name="name_company"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[12px] leading-6">
@@ -112,7 +122,7 @@ const SignupForm = () => {
 
         <FormField
           control={form.control}
-          name="pays"
+          name="country_company"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[10px] leading-[15px] font-normal">
@@ -133,7 +143,7 @@ const SignupForm = () => {
 
         <FormField
           control={form.control}
-          name="email"
+          name="email_user"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[10px] leading-[15px] font-normal">
@@ -154,7 +164,7 @@ const SignupForm = () => {
 
         <FormField
           control={form.control}
-          name="password"
+          name="password_user"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[10px] leading-[15px] font-normal">

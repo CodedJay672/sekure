@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,29 +18,53 @@ import { InformationSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const InformationForm = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      const userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
     defaultValues: {
-      name: "John Doe",
-      type: "test email",
-      sector: "Finance",
-      description: "Trying to describe the information below",
-      date_of_creation: "",
-      number_registered: "1234567890",
-      number_impot: "090182736",
-      number_telephone: "1900923774",
-      web: "www.johndoeinc.com",
+      name_company: "",
+      type: "",
+      sector_activity_company: "",
+      description_company: "",
+      created_company: "",
+      registry_number_company: "",
+      matricule_number_company: "",
+      phone_company: "",
+      website_link_company: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof InformationSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    //update the userData
+    dispatch(createUser(values));
+
+    //add the new data to the userData
+    const newDatas = {
+      ...JSON.parse(userInfo as string),
+      ...values,
+    };
+
+    //persist in the localStorage
+    localStorage.setItem("userData", JSON.stringify(newDatas));
+    //step 2
     router.push(`/signup/business/adresse`);
   }
 
@@ -52,7 +77,7 @@ const InformationForm = () => {
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
-            name="name"
+            name="name_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -94,7 +119,7 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="sector"
+            name="sector_activity_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -115,7 +140,7 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="description"
+            name="description_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -142,7 +167,7 @@ const InformationForm = () => {
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
-            name="date_of_creation"
+            name="created_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -163,7 +188,7 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="number_registered"
+            name="registry_number_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -184,7 +209,7 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="number_impot"
+            name="matricule_number_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -211,7 +236,7 @@ const InformationForm = () => {
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
-            name="number_telephone"
+            name="phone_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -232,7 +257,7 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="web"
+            name="website_link_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">

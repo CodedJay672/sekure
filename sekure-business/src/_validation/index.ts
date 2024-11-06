@@ -57,12 +57,12 @@ export const searchSchema = z.object({
 });
 
 export const signupSchema = z.object({
-  fullName: z.string(),
-  businessName: z.string(),
+  full_name_user: z.string(),
+  name_company: z.string(),
   receive_mail: z.boolean().default(false).optional(),
-  pays: z.string(),
-  email: z.string().email(),
-  password: z.string().min(8, {
+  country_company: z.string(),
+  email_user: z.string().email(),
+  password_user: z.string().min(8, {
     message: "Le mot de passe doit contenir au moins 8 caractères",
   }),
 });
@@ -127,31 +127,31 @@ export const filterSchema = z.object({
 });
 
 export const InformationSchema = z.object({
-  name: z.string(),
+  name_company: z.string(),
   type: z.string(),
-  sector: z.string(),
-  description: z.string(),
-  date_of_creation: z.string().date(),
-  number_registered: z.string(),
-  number_impot: z.string(),
-  number_telephone: z.string(),
-  web: z.string(),
+  sector_activity_company: z.string(),
+  description_company: z.string(),
+  created_company: z.string().date(),
+  registry_number_company: z.string(),
+  matricule_number_company: z.string(),
+  phone_company: z.string(),
+  website_link_company: z.string(),
 });
 
 export const AdresseSchema = z.object({
-  pays: z.string(),
-  region: z.string(),
-  postal: z.string(),
-  city: z.string(),
-  quartier: z.string(),
-  appartement: z.string(),
+  poste_user: z.string(),
+  country_company: z.string(),
+  zip_company: z.string(),
+  city_company: z.string(),
+  street_company: z.string(),
+  address_company: z.string(),
 });
 
 export const ActionnairesSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  poste: z.string(),
-  percentage: z.string(),
+  full_name_user: z.string(),
+  email_user: z.string().email(),
+  poste_user: z.string(),
+  pourcentage_action_user: z.string(),
   receive_mail: z.boolean().default(false).optional(),
   director: z.enum(["non", "oui"], {
     required_error: "please select one option here...",
@@ -159,20 +159,20 @@ export const ActionnairesSchema = z.object({
 });
 
 export const AdresseInfoSchema = z.object({
-  nom: z.string(),
-  poste: z.string(),
-  date: z.string().date(),
-  percentage: z.string(),
-  email: z.string().email(),
-  tel: z.string(),
-  naionalite: z.string(),
+  full_name_user: z.string(),
+  poste_user: z.string(),
+  date_birth_user: z.string().date(),
+  pourcentage_action_user: z.string(),
+  email_user: z.string().email(),
+  phone_user: z.string(),
+  nationality_user: z.string(),
   rue: z.string(),
-  apartment: z.string(),
-  cite: z.string(),
-  etat: z.string(),
-  zip: z.string(),
-  id_card: z.custom<File[]>(),
-  id_address: z.custom<File[]>(),
+  street_user: z.string(),
+  city_user: z.string(),
+  etat_user: z.string(),
+  zip_user: z.string(),
+  document1_user: z.custom<File[]>(),
+  document2_user: z.custom<File[]>(),
   receive_mail: z.boolean().default(false).optional(),
 });
 

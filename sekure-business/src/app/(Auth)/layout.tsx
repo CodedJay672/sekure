@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import "../../app/globals.css";
+import "../globals.css";
 import Image from "next/image";
 import { IoIosArrowDown } from "react-icons/io";
 import { Toaster } from "@/components/ui/toaster";
