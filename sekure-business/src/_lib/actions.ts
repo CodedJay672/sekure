@@ -59,7 +59,7 @@ export const createUserAccount = async (data: NewUser) => {
     // return userData
     return userData;
   } catch (error) {
-    throw new Error("error while fetching user");
+    throw new Error("failed to fetch");
   }
 };
 

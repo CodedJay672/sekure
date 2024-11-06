@@ -5,30 +5,39 @@ import UserCard from "@/components/Cards/UserCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import { createUserAccount } from "@/_lib/actions";
 import { NewUser } from "@/utils/types/types";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 const Validation: React.FC = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const { toast } = useToast();
   const state = useAppSelector((state) => state?.newUser) as NewUser;
+  const {
+    mutate: signUp,
+    data,
+    error,
+    isSuccess,
+  } = useMutation({
+    mutationFn: async () => {
+      return await createUserAccount(state);
+    },
+  });
 
-  useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
-
-    if (userInfo) {
-      const userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+  const handleSubmit = () => {
+    signUp();
+    if (isSuccess) {
+      console.log(data);
+      router.push("/auth/signup/business/success");
     }
-  }, [userInfo]);
-
-  const handleSubmit = async () => {
-    console.log(state);
+    if (error) {
+      toast({
+        description:
+          "Une erreur s'est produite lors de la création de votre compte",
+      });
+    }
   };
 
   return (
@@ -146,7 +155,7 @@ const Validation: React.FC = () => {
         name={state.full_name_user}
         email={state.email_user}
         poste={state.poste_user}
-        parte="50%"
+        parte={state.pourcentage_action_user}
       />
 
       <br />

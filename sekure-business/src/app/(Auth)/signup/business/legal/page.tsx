@@ -14,7 +14,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LegalSchema } from "@/_validation";
 import { Checkbox } from "@/components/ui/checkbox";
 import DocumentUploader from "@/components/ui/shared/UploadDocument";
@@ -22,10 +22,10 @@ import { createUser } from "@/_lib/features/Auth/authSlice";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 
 const LegalForm: React.FC = () => {
-  const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
+  let userData: any = null;
 
   useEffect(() => {
     setUserInfo(
@@ -33,7 +33,7 @@ const LegalForm: React.FC = () => {
     );
 
     if (userInfo) {
-      const userData = JSON.parse(userInfo);
+      userData = JSON.parse(userInfo);
       dispatch(createUser(userData));
     }
   }, [userInfo]);
@@ -43,11 +43,26 @@ const LegalForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof LegalSchema>) {
+    const newData = {
+      ...values,
+      certificat_constitution_company: URL.createObjectURL(
+        values?.certificat_constitution_company[0]
+      ),
+      proof_address_companys: URL.createObjectURL(
+        values?.proof_address_companys[0]
+      ),
+      acte_constitutif_company: URL.createObjectURL(
+        values?.acte_constitutif_company[0]
+      ),
+    };
     //update the userData
-    dispatch(createUser(values));
+    dispatch(createUser(newData));
 
     //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(values));
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ ...userData, ...newData })
+    );
     router.push(`/signup/business/validation`);
   }
 
@@ -60,7 +75,7 @@ const LegalForm: React.FC = () => {
         <div className="w-full px-[15px] pt-2 pb-[18px] rounded-[19px] border">
           <FormField
             control={form.control}
-            name="certificate"
+            name="certificat_constitution_company"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">
@@ -80,7 +95,7 @@ const LegalForm: React.FC = () => {
 
           <FormField
             control={form.control}
-            name="proof_of_address"
+            name="proof_address_companys"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">
@@ -101,7 +116,7 @@ const LegalForm: React.FC = () => {
 
           <FormField
             control={form.control}
-            name="constitution_status"
+            name="acte_constitutif_company"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">

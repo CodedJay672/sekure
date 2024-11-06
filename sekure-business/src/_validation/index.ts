@@ -177,8 +177,8 @@ export const AdresseInfoSchema = z.object({
 });
 
 export const LegalSchema = z.object({
-  certificate: z.custom<File[]>(),
-  proof_of_address: z.custom<File[]>(),
-  constitution_status: z.custom<File[]>(),
+  certificat_constitution_company: z.custom<File[]>(),
+  proof_address_companys: z.custom<File[]>(),
+  acte_constitutif_company: z.custom<File[]>(),
   receive_mail: z.boolean().default(false).optional(),
 });

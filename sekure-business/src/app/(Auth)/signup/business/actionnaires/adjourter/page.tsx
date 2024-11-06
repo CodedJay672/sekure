@@ -59,13 +59,18 @@ const AdjourterForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof AdresseInfoSchema>) {
+    const newData = {
+      ...values,
+      document1_user: URL.createObjectURL(values?.document1_user[0]),
+      document2_user: URL.createObjectURL(values?.document2_user[0]),
+    };
     //update the userData
-    dispatch(createUser(values));
+    dispatch(createUser(newData));
 
     //add the new data to the userData
     const newDatas = {
       ...JSON.parse(userInfo as string),
-      ...values,
+      ...newData,
     };
 
     //persist in the localStorage

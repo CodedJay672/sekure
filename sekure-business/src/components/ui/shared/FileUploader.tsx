@@ -35,7 +35,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
       <input {...getInputProps()} className="cursor-pointer" />
       {filePath ? (
         <>
-          <div className="flex flex-1 justify-center w-full bg-[#F3F3F3]">
+          <div className="flex flex-1 justify-center w-full bg-[#F3F3F3] py-4">
             <Image
               src={filePath}
               alt="uploaded"
