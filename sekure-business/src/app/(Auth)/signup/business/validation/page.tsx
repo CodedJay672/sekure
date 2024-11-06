@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_data/user";
-import { NewUser } from "@/utils/providers/types/types";
+import { NewUser } from "@/utils/types/types";
 
 const Validation: React.FC = () => {
   const router = useRouter();

@@ -5,11 +5,12 @@ import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "@/_data/user";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import { Login } from "@/utils/types/types";
 
 const UserDropdown: React.FC = () => {
   const Router = useRouter();
   const dispatch = useAppDispatch();
-  const id = useAppSelector((state) => state.connexion.user.id);
+  const id = useAppSelector((state) => (state.connexion.user as Login)?.id);
 
   const { data, isPending, isSuccess } = useQuery({
     queryKey: ["user", id],
@@ -25,7 +26,7 @@ const UserDropdown: React.FC = () => {
   }
 
   if (isSuccess) {
-    dispatch(updateConnexionData({ user: user }));
+    dispatch(updateConnexionData({ user }));
     localStorage.setItem("user", JSON.stringify(user));
   }
 

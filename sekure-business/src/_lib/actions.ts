@@ -1,7 +1,8 @@
 "use server";
 
-import { OTPSchema, signinSchema } from "@/_validation";
+import { OTPSchema, signinSchema, signupSchema } from "@/_validation";
 import { createSession, deleteSession, getCookie } from "./session";
+import { NewUser, NewUserResponse } from "@/utils/types/types";
 
 export const authenticateUser = async ({
   email,
@@ -36,6 +37,29 @@ export const authenticateUser = async ({
     return data;
   } catch (error) {
     console.log("error", error);
+  }
+};
+
+export const createUserAccount = async (data: NewUser) => {
+  try {
+    const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error("failed to create user");
+    }
+
+    const userData = (await res.json()) as NewUserResponse;
+
+    // return userData
+    return userData;
+  } catch (error) {
+    throw new Error("error while fetching user");
   }
 };
 
