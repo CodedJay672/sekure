@@ -27,6 +27,7 @@ const AdjourterForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
+  let userData: any;
 
   useEffect(() => {
     setUserInfo(
@@ -34,7 +35,7 @@ const AdjourterForm: React.FC = () => {
     );
 
     if (userInfo) {
-      const userData = JSON.parse(userInfo);
+      userData = JSON.parse(userInfo);
       dispatch(createUser(userData));
     }
   }, [userInfo]);
@@ -61,15 +62,19 @@ const AdjourterForm: React.FC = () => {
   function onSubmit(values: z.infer<typeof AdresseInfoSchema>) {
     const newData = {
       ...values,
-      document1_user: URL.createObjectURL(values?.document1_user[0]),
-      document2_user: URL.createObjectURL(values?.document2_user[0]),
+      document1_user: values?.document1_user
+        ? URL.createObjectURL(values?.document1_user[0])
+        : null,
+      document2_user: values?.document2_user
+        ? URL.createObjectURL(values?.document2_user[0])
+        : null,
     };
     //update the userData
     dispatch(createUser(newData));
 
     //add the new data to the userData
     const newDatas = {
-      ...JSON.parse(userInfo as string),
+      ...userData,
       ...newData,
     };
 

@@ -5,7 +5,8 @@ import UserCard from "@/components/Cards/UserCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
 import { NewUser } from "@/utils/types/types";
 import { useMutation } from "@tanstack/react-query";
@@ -14,13 +15,29 @@ import { useToast } from "@/hooks/use-toast";
 const Validation: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
   const state = useAppSelector((state) => state?.newUser) as NewUser;
+  let userData: any = null;
+
+  useEffect(() => {
+    setUserInfo(
+      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+    );
+
+    if (userInfo) {
+      userData = JSON.parse(userInfo);
+      dispatch(createUser(userData));
+    }
+  }, [userInfo]);
+
   const {
     mutate: signUp,
     data,
     error,
     isSuccess,
   } = useMutation({
+    mutationKey: ["createUser", state],
     mutationFn: async () => {
       return await createUserAccount(state);
     },

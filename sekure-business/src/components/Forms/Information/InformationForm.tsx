@@ -25,6 +25,7 @@ const InformationForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
+  let userData: any;
 
   useEffect(() => {
     setUserInfo(
@@ -32,7 +33,7 @@ const InformationForm = () => {
     );
 
     if (userInfo) {
-      const userData = JSON.parse(userInfo);
+      userData = JSON.parse(userInfo);
       dispatch(createUser(userData));
     }
   }, [userInfo]);
@@ -58,7 +59,7 @@ const InformationForm = () => {
 
     //add the new data to the userData
     const newDatas = {
-      ...JSON.parse(userInfo as string),
+      ...userData,
       ...values,
     };
 

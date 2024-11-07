@@ -1,6 +1,6 @@
 "use server";
 
-import { OTPSchema, signinSchema, signupSchema } from "@/_validation";
+import { OTPSchema, signinSchema } from "@/_validation";
 import { createSession, deleteSession, getCookie } from "./session";
 import { NewUser, NewUserResponse } from "@/utils/types/types";
 
@@ -47,16 +47,15 @@ export const createUserAccount = async (data: NewUser) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, id_role: 2 }),
     });
 
     if (!res.ok) {
-      throw new Error("failed to create user");
+      throw new Error("Network failed" + res.statusText);
     }
 
-    const userData = (await res.json()) as NewUserResponse;
+    const userData = await res.json();
 
-    // return userData
     return userData;
   } catch (error) {
     throw new Error("failed to fetch");

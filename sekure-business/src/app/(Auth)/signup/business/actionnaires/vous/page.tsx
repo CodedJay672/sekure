@@ -6,7 +6,6 @@ import {} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useFormStatus } from "react-dom";
 
 import {
   Form,
@@ -17,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ActionnairesSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -26,11 +25,10 @@ import { useAppDispatch } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const VousForm: React.FC = () => {
-  const pathname = usePathname();
   const router = useRouter();
-  const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
+  let userData: any;
 
   useEffect(() => {
     setUserInfo(
@@ -38,7 +36,7 @@ const VousForm: React.FC = () => {
     );
 
     if (userInfo) {
-      const userData = JSON.parse(userInfo);
+      userData = JSON.parse(userInfo);
       dispatch(createUser(userData));
     }
   }, [userInfo]);
@@ -60,7 +58,7 @@ const VousForm: React.FC = () => {
 
     //add the new data to the userData
     const newDatas = {
-      ...JSON.parse(userInfo as string),
+      ...userData,
       ...values,
     };
 

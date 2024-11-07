@@ -45,15 +45,15 @@ const LegalForm: React.FC = () => {
   function onSubmit(values: z.infer<typeof LegalSchema>) {
     const newData = {
       ...values,
-      certificat_constitution_company: URL.createObjectURL(
-        values?.certificat_constitution_company[0]
-      ),
-      proof_address_companys: URL.createObjectURL(
-        values?.proof_address_companys[0]
-      ),
-      acte_constitutif_company: URL.createObjectURL(
-        values?.acte_constitutif_company[0]
-      ),
+      certificat_constitution_company: values?.certificat_constitution_company
+        ? URL.createObjectURL(values?.certificat_constitution_company[0])
+        : null,
+      proof_address_companys: values?.proof_address_companys
+        ? URL.createObjectURL(values?.proof_address_companys[0])
+        : null,
+      acte_constitutif_company: values?.acte_constitutif_company
+        ? URL.createObjectURL(values?.acte_constitutif_company[0])
+        : null,
     };
     //update the userData
     dispatch(createUser(newData));
