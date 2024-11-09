@@ -25,6 +25,7 @@ const Topbar: React.FC = () => {
       dispatch(updateConnexionData(payload));
     }
   }, []);
+
   const handleToggle = () => {
     setIsOn(!isOn);
   };

@@ -50,7 +50,7 @@ const AdjourterForm: React.FC = () => {
       email_user: "",
       phone_user: "",
       nationality_user: "",
-      rue: "",
+      localisation_user: "",
       street_user: "",
       city_user: "",
       etat_user: "",
@@ -232,10 +232,12 @@ const AdjourterForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="rue"
+            name="localisation_user"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Rue</FormLabel>
+                <FormLabel className="text-xs font-light">
+                  Localisation User
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"

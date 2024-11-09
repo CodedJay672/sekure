@@ -24,11 +24,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //import the redux store deps
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import {
-  useAppDispatch,
-  useAppSelector,
-  useAppStore,
-} from "@/_lib/redux/hooks";
+import { useAppDispatch } from "@/_lib/redux/hooks";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -55,13 +51,14 @@ const SignInForm = () => {
     },
     onSuccess: (data) => {
       if (data && "user" in data) {
-        dispatch(updateConnexionData(data));
+        //update the redux store
+        dispatch(updateConnexionData(data.user));
 
         //persist in local storage
-        localStorage.setItem("user", JSON.stringify(data.user));
+        // localStorage.setItem("user", JSON.stringify(data.user));
 
         toast({
-          description: "Vous êtes connecté",
+          description: data.message,
         });
 
         //redirect to the get otp page

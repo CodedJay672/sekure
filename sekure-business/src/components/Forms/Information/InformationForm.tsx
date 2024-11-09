@@ -42,7 +42,7 @@ const InformationForm = () => {
     resolver: zodResolver(InformationSchema),
     defaultValues: {
       name_company: "",
-      type: "",
+      email_company: "",
       sector_activity_company: "",
       description_company: "",
       created_company: "",
@@ -99,11 +99,11 @@ const InformationForm = () => {
 
           <FormField
             control={form.control}
-            name="type"
+            name="email_company"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
-                  Type de l’entreprise
+                  Email de l’entreprise
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -145,7 +145,7 @@ const InformationForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
-                  Nom De l’entreprise
+                  Description de l’entreprise
                 </FormLabel>
                 <FormControl>
                   <Textarea

@@ -1,20 +1,26 @@
+import { User } from "@/utils/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthUser } from "@/utils/types/types";
+
+//interface for the connexion data
+export interface AuthUser {
+  user: User | {};
+  isLoggedIn: boolean;
+}
 
 export const initialState: AuthUser = {
   user: {},
-  isLogged: false,
+  isLoggedIn: false,
 };
 
 const connexionSlice = createSlice({
   name: "connexion",
   initialState,
   reducers: {
-    updateConnexionData: (state, action: PayloadAction<AuthUser>) => {
+    updateConnexionData: (state, action: PayloadAction<User>) => {
       //update the connexion data with the user data
-      const { user } = action.payload;
+      const user = action.payload;
 
-      Object.assign(state, { user, isLogged: true });
+      Object.assign(state, { user, isLoggedIn: true });
     },
 
     //add the logout action

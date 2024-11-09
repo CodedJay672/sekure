@@ -45,60 +45,23 @@ export interface NewUser {
   acte_constitutif_company: Binary | null;
 }
 
-export interface Login {
-  id: number;
-  full_name: string | "";
-  poste: string | "";
-  date_birth: string | "";
-  pourcentage_action: number | 0;
-  email: string | "";
-  nationality: string | "";
-  street: string | "";
-  localisation: string | "";
-  city: string | "";
-  etat: string | "";
-  zip: string | "";
-  document1: File | null;
-  document2: File | null;
-  phone: string | "";
-  active: 1 | 0;
-  updated_by: string | "";
-  image: string | "";
-  email_verified_at: string | "";
-  created_at: string | "";
-  updated_at: string | "";
-}
-
-interface Roles {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  name: "admin" | "user";
-  active: 1 | 0;
-  updated_by: string | "";
-  pivot: {
-    id_user: number;
-    id_role: number;
-  };
-}
-
-export interface AuthUser {
-  user: Login | {};
-  isLogged?: boolean;
-}
-
 export interface NewUserResponse {
   success: boolean;
   message: string;
-  company: Company;
+  company: UserCompany;
   user: User;
 }
 
-interface Company {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
+//interface for user
+export interface UserCompany {
+  id: number;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  address: string | null;
+  prix_card: number | null;
+  active: number;
+  updated_by: number | null;
   sector_activity: string | null;
   description_company: string;
   created_company: string;
@@ -111,30 +74,53 @@ interface Company {
   city: string;
   street: string;
   localisation: string;
+  pourcentage_action: number | null;
+  certificat_constitution: string | null;
   proof_address: string | null;
   acte_constitutif: string | null;
-  updated_at: string;
   created_at: string;
-  id: number;
+  updated_at: string;
+  pivot: { id_user: number; id_company: number };
 }
 
-interface User {
+export interface Role {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  active: number;
+  updated_by: number | null;
+  pivot: { id_user: number; id_role: number };
+}
+
+export interface User {
+  id: number;
   full_name: string | null;
   poste: string;
   date_birth: string;
-  pourcentage_action: string;
+  pourcentage_action: number;
   email: string;
   nationality: string;
   street: string;
   localisation: string;
   city: string;
-  etat: string | null;
+  etat: string;
   zip: string;
   document1: string | null;
   document2: string | null;
   phone: string;
+  active: number;
+  updated_by: number | null;
   image: string | null;
-  updated_at: string;
+  email_verified_at: string | null;
   created_at: string;
-  id: number;
+  updated_at: string;
+  roles: Role[];
+  user_company: UserCompany[];
+}
+
+export interface ApiResponse {
+  success: boolean;
+  message: string;
+  user: User[] | null;
 }

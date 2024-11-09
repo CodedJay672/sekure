@@ -44,9 +44,9 @@ const VousForm: React.FC = () => {
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
     defaultValues: {
-      full_name_user: "",
-      email_user: "",
       poste_user: "",
+      email_user: "",
+      phone_user: "",
       pourcentage_action_user: "",
       director: "non",
     },
@@ -76,12 +76,10 @@ const VousForm: React.FC = () => {
           </span>
           <FormField
             control={form.control}
-            name="full_name_user"
+            name="poste_user"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Nom Complet
-                </FormLabel>
+                <FormLabel className="text-xs font-light">Poste User</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -114,10 +112,10 @@ const VousForm: React.FC = () => {
           />
           <FormField
             control={form.control}
-            name="poste_user"
+            name="phone_user"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">Poste</FormLabel>
+                <FormLabel className="text-xs font-light">Phone User</FormLabel>
                 <FormControl>
                   <Input
                     type="text"

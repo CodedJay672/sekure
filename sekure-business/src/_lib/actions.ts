@@ -1,7 +1,7 @@
 "use server";
 
 import { OTPSchema, signinSchema } from "@/_validation";
-import { createSession, deleteSession, getCookie } from "./session";
+import { createSession, deleteSession } from "./session";
 import { NewUser, NewUserResponse } from "@/utils/types/types";
 
 export const authenticateUser = async ({
@@ -42,48 +42,42 @@ export const authenticateUser = async ({
 
 export const createUserAccount = async (data: NewUser) => {
   try {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => formData.append(key, data[key]));
+    formData.append("id_role", "2");
+
     const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify({ ...data, id_role: 2 }),
+      body: formData,
     });
 
     if (!res.ok) {
-      throw new Error("Network failed" + res.statusText);
+      throw new Error(res.statusText);
     }
 
-    const userData = await res.json();
+    const userData = (await res.json()) as NewUserResponse;
 
     return userData;
   } catch (error) {
-    throw new Error("failed to fetch");
+    throw new Error(`${error}`);
   }
 };
 
-export const signIn = async ({ otp }: { otp: string }) => {
+export const signIn = async ({ id, otp }: { id: number; otp: string }) => {
   try {
     //validate the otp
     const parsedOTP = OTPSchema.safeParse({ otp });
-
-    //get the user cookie and verify the user_id
-    const user = await getCookie("user");
-
-    if (!user) {
-      throw new Error();
-    }
-
-    const parsedUser = JSON.parse(user);
-
-    //destruct the user_id from the user object
-    const { id } = parsedUser.value;
 
     if (!parsedOTP.success) {
       return {
         errrors: parsedOTP.error.flatten().fieldErrors,
       };
     }
+
+    console.log("id", id, "otp", otp);
 
     const response = await fetch(`${process.env.BACKEND_API_URL}/otp/verify`, {
       method: "POST",
@@ -93,12 +87,16 @@ export const signIn = async ({ otp }: { otp: string }) => {
       body: JSON.stringify({ user_id: id, otp }),
     });
 
+    // if (!response.ok) {
+    //   throw new Error(`${response}`);
+    // }
+
     const data = await response.json();
 
     //authenticate the user to get the user token
     await createSession(data?.token);
   } catch (error) {
-    throw new Error("Failed to authenticate the user");
+    throw new Error(`${error}`);
   }
 };
 

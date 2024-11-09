@@ -56,38 +56,12 @@ export const searchSchema = z.object({
   }),
 });
 
-export const signupSchema = z.object({
-  full_name_user: z.string(),
-  name_company: z.string(),
-  receive_mail: z.boolean().default(false).optional(),
-  country_company: z.string(),
-  email_user: z.string().email(),
-  password_user: z.string().min(8, {
-    message: "Le mot de passe doit contenir au moins 8 caractères",
-  }),
-});
-
 export const businessFieldSchema = z.object({
   otp: z.string().min(6, {
     message: "La recherche doit contenir au moins 2 caractères",
   }),
   terms_condition: z.boolean().default(false).optional(),
   receive_mail: z.boolean().default(false).optional(),
-});
-
-export const signinSchema = z.object({
-  email: z
-    .string({
-      invalid_type_error: "L'email doit être une chaîne de caractères",
-    })
-    .email("L'email doit être valide"),
-  password: z
-    .string({
-      invalid_type_error: "Le mot de passe doit être une chaîne de caractères",
-    })
-    .min(8, {
-      message: "Le mot de passe doit contenir au moins 8 caractères",
-    }),
 });
 
 export const recPwdSchema = z.object({
@@ -126,9 +100,35 @@ export const filterSchema = z.object({
   }),
 });
 
+export const signinSchema = z.object({
+  email: z
+    .string({
+      invalid_type_error: "L'email doit être une chaîne de caractères",
+    })
+    .email("L'email doit être valide"),
+  password: z
+    .string({
+      invalid_type_error: "Le mot de passe doit être une chaîne de caractères",
+    })
+    .min(8, {
+      message: "Le mot de passe doit contenir au moins 8 caractères",
+    }),
+});
+
+export const signupSchema = z.object({
+  full_name_user: z.string(),
+  name_company: z.string(),
+  receive_mail: z.boolean().default(false).optional(),
+  country_company: z.string(),
+  email_user: z.string().email(),
+  password_user: z.string().min(8, {
+    message: "Le mot de passe doit contenir au moins 8 caractères",
+  }),
+});
+
 export const InformationSchema = z.object({
   name_company: z.string(),
-  type: z.string(),
+  email_company: z.string(),
   sector_activity_company: z.string(),
   description_company: z.string(),
   created_company: z.string().date(),
@@ -139,8 +139,8 @@ export const InformationSchema = z.object({
 });
 
 export const AdresseSchema = z.object({
-  poste_user: z.string(),
-  country_company: z.string(),
+  localisation_company: z.string(),
+  state_company: z.string(),
   zip_company: z.string(),
   city_company: z.string(),
   street_company: z.string(),
@@ -148,9 +148,9 @@ export const AdresseSchema = z.object({
 });
 
 export const ActionnairesSchema = z.object({
-  full_name_user: z.string(),
-  email_user: z.string().email(),
   poste_user: z.string(),
+  email_user: z.string().email(),
+  phone_user: z.string(),
   pourcentage_action_user: z.string(),
   receive_mail: z.boolean().default(false).optional(),
   director: z.enum(["non", "oui"], {
@@ -166,7 +166,7 @@ export const AdresseInfoSchema = z.object({
   email_user: z.string().email(),
   phone_user: z.string(),
   nationality_user: z.string(),
-  rue: z.string(),
+  localisation_user: z.string(),
   street_user: z.string(),
   city_user: z.string(),
   etat_user: z.string(),

@@ -10,11 +10,14 @@ import { Login } from "@/utils/types/types";
 const UserDropdown: React.FC = () => {
   const Router = useRouter();
   const dispatch = useAppDispatch();
-  const id = useAppSelector((state) => (state.connexion.user as Login)?.id);
+  const id = useAppSelector((state) => state.connexion.user.user?.id);
 
-  const { data, isPending, isSuccess } = useQuery({
+  const { data, isPending, isSuccess, isError } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
+      if (id === undefined) {
+        throw new Error("User ID is undefined");
+      }
       return await getUser(id);
     },
   });
@@ -23,6 +26,10 @@ const UserDropdown: React.FC = () => {
 
   if (isPending) {
     return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error...</div>;
   }
 
   if (isSuccess) {

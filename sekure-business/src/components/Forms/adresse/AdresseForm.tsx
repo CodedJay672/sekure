@@ -40,8 +40,8 @@ const AdresseForm = () => {
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
     defaultValues: {
-      poste_user: "",
-      country_company: "",
+      localisation_company: "",
+      state_company: "",
       zip_company: "",
       city_company: "",
       street_company: "",
@@ -73,10 +73,12 @@ const AdresseForm = () => {
           <div className="flex flex-wrap justify-between">
             <FormField
               control={form.control}
-              name="poste_user"
+              name="localisation_company"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">Pays</FormLabel>
+                  <FormLabel className="text-xs font-light">
+                    Localisation
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -92,7 +94,7 @@ const AdresseForm = () => {
 
             <FormField
               control={form.control}
-              name="country_company"
+              name="state_company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">

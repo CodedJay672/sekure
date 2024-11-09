@@ -46,8 +46,10 @@ const Validation: React.FC = () => {
   const handleSubmit = () => {
     signUp();
     if (isSuccess) {
-      console.log(data);
-      router.push("/auth/signup/business/success");
+      toast({
+        description: data.message,
+      });
+      router.push("/signin");
     }
     if (error) {
       toast({

@@ -18,13 +18,29 @@ import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { signIn } from "@/_lib/actions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useEffect, useState } from "react";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import { User } from "@/utils/types/types";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
+  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const { id } = useAppSelector((state) => state.connexion.user as User);
+  let userData;
+
+  useEffect(() => {
+    setUserInfo(localStorage.getItem("user"));
+
+    if (userInfo) {
+      userData = JSON.parse(userInfo);
+      dispatch(updateConnexionData(userData));
+    }
+  }, [userInfo]);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
@@ -35,10 +51,14 @@ const PwdRecOTPFForm = () => {
     data,
     isPending,
   } = useMutation({
+    mutationKey: ["signin"],
     mutationFn: async (values: { otp: string }) => {
-      return await signIn(values);
+      return signIn({ id, ...values });
     },
     onSuccess: (data) => {
+      toast({
+        description: "Vous êtes connecté",
+      });
       router.replace("/");
     },
   });
