@@ -8,7 +8,6 @@ import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
-import { NewUser } from "@/utils/types/types";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,12 +16,12 @@ const Validation: React.FC = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
-  const state = useAppSelector((state) => state?.newUser) as NewUser;
-  let userData: any = null;
+  const state = useAppSelector((state) => state?.auth);
+  let userData = null;
 
   useEffect(() => {
     setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
+      localStorage.getItem("user") ? localStorage.getItem("user") : null
     );
 
     if (userInfo) {

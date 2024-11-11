@@ -182,3 +182,7 @@ export const LegalSchema = z.object({
   acte_constitutif_company: z.custom<File[]>(),
   receive_mail: z.boolean().default(false).optional(),
 });
+
+export const ProfileSchema = z.object({
+  user_image: z.custom<File[]>(),
+});
