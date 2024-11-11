@@ -1,52 +1,24 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/_data/user";
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { Login } from "@/utils/types/types";
+import { useAppSelector } from "@/_lib/redux/hooks";
 
 const UserDropdown: React.FC = () => {
-  const Router = useRouter();
-  const dispatch = useAppDispatch();
-  const id = useAppSelector((state) => state.connexion.user.user?.id);
-
-  const { data, isPending, isSuccess, isError } = useQuery({
-    queryKey: ["user", id],
-    queryFn: async () => {
-      if (id === undefined) {
-        throw new Error("User ID is undefined");
-      }
-      return await getUser(id);
-    },
-  });
-
-  const user = data?.user[0];
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error...</div>;
-  }
-
-  if (isSuccess) {
-    dispatch(updateConnexionData({ user }));
-    localStorage.setItem("user", JSON.stringify(user));
-  }
+  const router = useRouter();
+  const user = useAppSelector((state) => state.connexion.user);
 
   return (
     <div
       className="flex relative cursor-pointer"
-      onClick={() => Router.push("/profil")}
+      onClick={() => router.push("/profil")}
     >
       <div className="flex flex-col justify-center items-end mr-2">
         <h3 className="text-[11px] leading-[16.5px] font-semibold">
-          {user?.first_name}
+          {user?.poste}
         </h3>
-        <p className="text-[7px] leading-[10.5px] font-normal">business Name</p>
+        <p className="text-[7px] leading-[10.5px] font-normal">
+          {user?.user_company[0].name}
+        </p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">
           Id: DT{user?.id}
         </span>

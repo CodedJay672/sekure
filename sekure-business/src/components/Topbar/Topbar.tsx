@@ -19,10 +19,7 @@ const Topbar: React.FC = () => {
     const user = userString ? JSON.parse(userString) : null;
 
     if (user) {
-      const payload = {
-        user,
-      };
-      dispatch(updateConnexionData(payload));
+      dispatch(updateConnexionData(user));
     }
   }, []);
 

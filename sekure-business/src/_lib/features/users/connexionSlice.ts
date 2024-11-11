@@ -3,12 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //interface for the connexion data
 export interface AuthUser {
-  user: User | {};
+  user: User | null;
   isLoggedIn: boolean;
 }
 
 export const initialState: AuthUser = {
-  user: {},
+  user: null,
   isLoggedIn: false,
 };
 
