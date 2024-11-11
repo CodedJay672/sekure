@@ -42,16 +42,12 @@ export const authenticateUser = async ({
 
 export const createUserAccount = async (data: NewUser) => {
   try {
-    const formData = new FormData();
-    Object.keys(data).forEach((key) => formData.append(key, data[key]));
-    formData.append("id_role", "2");
-
     const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      body: formData,
+      body: JSON.stringify(data),
     });
 
     if (!res.ok) {
