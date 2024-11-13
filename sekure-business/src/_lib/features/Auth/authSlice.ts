@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NewUser } from "@/utils/types/types";
+import { NewUser, User } from "@/utils/types/types";
 
-export const initialState: NewUser | {} = {};
+export const initialState = {
+  user: {} as NewUser,
+};
 
 const authSlice = createSlice({
   name: "newUser",
   initialState,
   reducers: {
     //add the create user action
-    createUser: (state, action: PayloadAction<any>) => {
+    createUser: (state, action: PayloadAction<NewUser>) => {
       //update the state with the userData
-      return { ...state, ...action.payload };
+      state.user = action.payload;
     },
   },
 });

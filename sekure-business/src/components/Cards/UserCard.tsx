@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { RxCaretRight } from "react-icons/rx";
 
 interface UserCardProps {
-  name: string;
-  poste: string;
-  email: string;
-  parte: string;
+  name?: string;
+  poste?: string;
+  email?: string;
+  parte?: string;
 }
 
 const UserCard: React.FC<UserCardProps> = ({ name, poste, email, parte }) => {

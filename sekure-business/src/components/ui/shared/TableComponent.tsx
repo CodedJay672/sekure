@@ -4,7 +4,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "../sheet";
 
 interface Column {
@@ -14,19 +14,31 @@ interface Column {
 }
 
 interface TableComponentProps {
-  variant?: 'big' | 'small';
+  variant?: "big" | "small";
   columns: Column[];
   data: Data[];
 }
 
-const TableComponent: React.FC<TableComponentProps> = ({ variant, columns, data }) => {
+const TableComponent: React.FC<TableComponentProps> = ({
+  variant,
+  columns,
+  data,
+}) => {
   return (
-    <div className={`${variant === 'big' ? 'mt-4' : ''} w-full flex-1 overflow-auto`}>
+    <div
+      className={`${
+        variant === "big" ? "mt-4" : ""
+      } w-full flex-1 overflow-auto`}
+    >
       <table className="w-full min-w-max text-[11px] text-left text-dark3">
         <thead className="text-[11px] leading-[14.36px] text-white bg-dark rounded-[10px] sticky top-0 z-10">
           <tr>
             {columns.map((column) => (
-              <th scope="col" className="px-2 py-2 w-auto min-w-[70px]" key={column.id}>
+              <th
+                scope="col"
+                className="px-2 py-2 w-auto min-w-[70px]"
+                key={column.id}
+              >
                 {column.header}
               </th>
             ))}
@@ -37,13 +49,20 @@ const TableComponent: React.FC<TableComponentProps> = ({ variant, columns, data 
             data.map((row, idx) => (
               <Sheet key={idx}>
                 <SheetTrigger asChild>
-                    <tr className={`bg-white dark:bg-gray-800 ${idx % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900' : ''} text-[11px] hover:bg-[#F3F3F3] cursor-pointer`}>
-                      {columns.map((column) => (
-                        <td className="px-2 py-6 min-w-[70px]" key={`${idx}-${column.id}`}>
-                          {row[column.accessor || column.id] ?? ''}
-                        </td>
-                      ))}
-                    </tr>
+                  <tr
+                    className={`bg-white dark:bg-gray-800 ${
+                      idx % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : ""
+                    } text-[11px] hover:bg-[#F3F3F3] cursor-pointer`}
+                  >
+                    {columns.map((column) => (
+                      <td
+                        className="px-2 py-6 min-w-[70px]"
+                        key={`${idx}-${column.id}`}
+                      >
+                        {row[column.accessor || column.id] ?? ""}
+                      </td>
+                    ))}
+                  </tr>
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -56,7 +75,10 @@ const TableComponent: React.FC<TableComponentProps> = ({ variant, columns, data 
             ))
           ) : (
             <tr>
-              <td colSpan={columns.length + 1} className="text-center py-4 text-dark3">
+              <td
+                colSpan={columns.length + 1}
+                className="text-center py-4 text-dark3"
+              >
                 No data available
               </td>
             </tr>
@@ -64,7 +86,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ variant, columns, data 
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default TableComponent
+export default TableComponent;

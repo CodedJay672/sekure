@@ -15,20 +15,20 @@ const Validation: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  const state = useAppSelector((state) => state?.auth);
-  let userData = null;
+  const state = useAppSelector((state) => state.auth?.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("user") ? localStorage.getItem("user") : null
-    );
+    const userData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(createUser(parsedUserData));
+      } catch (error) {
+        console.log("error getting user data" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const {
     mutate: signUp,
@@ -66,7 +66,7 @@ const Validation: React.FC = () => {
       <div className="w-full px-[15px] py-[18px] rounded-[19px] border flex flex-col gap-[25px]">
         <div className="w-[400px]">
           <h2 className="text-[12px] leading-[17px] font-semibold mb-3">
-            {state.name_company}
+            {state?.name_company}
           </h2>
           <p className="text-[12px] leading-[18px]">
             {state?.name_company} est une fintech qui permet de faire des
@@ -80,7 +80,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state.name_company?.toUpperCase()}
+              {state?.name_company?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -90,7 +90,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state.sector_activity_company?.toUpperCase()}
+              {state?.sector_activity_company?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -98,7 +98,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state.sector_activity_company?.toUpperCase()}
+              {state?.sector_activity_company?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -108,7 +108,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state.city_company?.toUpperCase()}
+              {state?.city_company?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -116,7 +116,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state.phone_company}
+              {state?.phone_company}
             </p>
           </div>
         </div>
@@ -170,10 +170,10 @@ const Validation: React.FC = () => {
       </div>
 
       <UserCard
-        name={state.full_name_user}
-        email={state.email_user}
-        poste={state.poste_user}
-        parte={state.pourcentage_action_user}
+        name={state?.full_name_user}
+        email={state?.email_user}
+        poste={state?.poste_user}
+        parte={state?.pourcentage_action_user}
       />
 
       <br />

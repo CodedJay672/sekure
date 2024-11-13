@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState, useCallback } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { updateProfilePicture } from "@/_lib/features/users/connexionSlice";
 
 interface FileUploaderProps {
   fieldOnChange: (files: File[]) => void;
@@ -11,12 +13,14 @@ interface FileUploaderProps {
 const ProfileHeader: React.FC<FileUploaderProps> = ({ fieldOnChange }) => {
   const [file, setFile] = useState<File[]>([]);
   const [filePath, setFilePath] = useState("");
+  const dispatch = useAppDispatch();
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
       setFile(acceptedFiles);
       fieldOnChange(acceptedFiles);
       setFilePath(URL.createObjectURL(acceptedFiles[0]));
+      dispatch(updateProfilePicture(filePath));
     },
     [file, fieldOnChange]
   );

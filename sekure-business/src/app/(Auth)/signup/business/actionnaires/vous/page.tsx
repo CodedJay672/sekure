@@ -21,25 +21,26 @@ import { ActionnairesSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const VousForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  let userData: any;
+  const state = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
+    const userData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(createUser(parsedUserData));
+      } catch (error) {
+        console.log("error updating storage" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
@@ -53,18 +54,17 @@ const VousForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
-    //update the userData
-    dispatch(createUser(values));
+    const updatedUserData = Object.assign({}, state, values);
 
-    //add the new data to the userData
-    const newDatas = {
-      ...userData,
-      ...values,
-    };
+    try {
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      dispatch(createUser(values));
 
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(newDatas));
-    router.back();
+      //go back to the actionaires page when the user  submits
+      router.back();
+    } catch (error) {
+      console.log("error updating storage" + error);
+    }
   }
 
   return (

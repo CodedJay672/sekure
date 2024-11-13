@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import SearchBar from "../ui/shared/SearchBar";
 import Filter from "../ui/shared/Filter";
 import Pagination from "../ui/shared/Pagination";
@@ -8,18 +8,32 @@ import TableComponent from "../ui/shared/TableComponent";
 import { Data, ITableColumn } from "@/constants/types";
 import { usePathname } from "next/navigation";
 import TableDetailComponent from "../ui/shared/TableDetailComponent";
+import { getAllTransactions } from "@/_data/transactionStatistics";
+import { useQuery } from "@tanstack/react-query";
 
 interface TableProps {
   variant?: "big" | "small";
   heading?: string;
   columns: ITableColumn[];
-  data: Data[];
 }
 
-const Table: React.FC<TableProps> = ({ heading, variant, columns, data }) => {
-  const [tableData, setTableData] = React.useState<Data[]>(data);
+const Table: React.FC<TableProps> = ({ heading, variant, columns }) => {
+  const [tableData, setTableData] = React.useState<any[]>([]);
   const [query, setQuery] = React.useState<string>("");
   const pathname = usePathname();
+
+  const { data, isSuccess } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: async () => {
+      return await getAllTransactions();
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccess && data?.data.data) {
+      setTableData(data.data.data);
+    }
+  }, [isSuccess, data]);
 
   const filteredData = useMemo(() => {
     return tableData.filter((item) => {

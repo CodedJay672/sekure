@@ -17,25 +17,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const Actionnaires: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
+  const state = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
+    const userData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      const userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(createUser(parsedUserData));
+      } catch (error) {}
     }
-  }, [userInfo]);
+  }, []);
 
   const ActionSchema = z.object({
     receive_mail: z.boolean().default(false).optional(),
@@ -49,17 +49,6 @@ const Actionnaires: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof ActionSchema>) {
-    //update the userData
-    dispatch(createUser(values));
-
-    //add the new data to the userData
-    const newDatas = {
-      ...JSON.parse(userInfo as string),
-      ...values,
-    };
-
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(newDatas));
     router.push(`/signup/business/legal`);
   }
 

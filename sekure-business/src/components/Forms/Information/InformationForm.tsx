@@ -18,25 +18,28 @@ import { InformationSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const InformationForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [userInfo, setUserInfo] = useState<string | null>(null);
-  let userData: any;
+  const state = useAppSelector((state) => state.auth?.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
+    const storageData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (storageData) {
+      try {
+        const parsedData = JSON.parse(storageData);
+        setUserInfo(parsedData);
+        dispatch(createUser(parsedData));
+      } catch (error) {
+        console.log("error parsing data" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
@@ -54,19 +57,21 @@ const InformationForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof InformationSchema>) {
-    //update the userData
-    dispatch(createUser(values));
-
     //add the new data to the userData
-    const newDatas = {
-      ...userData,
-      ...values,
-    };
+    const newDatas = Object.assign({}, state, values);
 
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(newDatas));
-    //step 2
-    router.push(`/signup/business/adresse`);
+    try {
+      //persist in the localStorage
+      localStorage.setItem("userData", JSON.stringify(newDatas));
+
+      //update the userData
+      dispatch(createUser(values));
+
+      //step 2
+      router.push(`/signup/business/adresse`);
+    } catch (error) {
+      console.log("error updating localstorage" + error);
+    }
   }
 
   return (

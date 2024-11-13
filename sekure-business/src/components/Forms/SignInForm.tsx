@@ -44,7 +44,6 @@ const SignInForm = () => {
     mutate: getAuthorizedUser,
     data,
     isPending,
-    error,
   } = useMutation({
     mutationFn: async (values: { email: string; password: string }) => {
       return await authenticateUser(values);

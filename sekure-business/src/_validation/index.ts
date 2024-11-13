@@ -184,5 +184,5 @@ export const LegalSchema = z.object({
 });
 
 export const ProfileSchema = z.object({
-  user_image: z.custom<File[]>(),
+  image: z.custom<File[]>(),
 });

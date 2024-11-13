@@ -51,7 +51,7 @@ const UserDropdown: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           <FormField
             control={form.control}
-            name="user_image"
+            name="image"
             render={({ field }) => (
               <FormItem>
                 <FormControl>

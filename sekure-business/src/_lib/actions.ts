@@ -2,7 +2,7 @@
 
 import { OTPSchema, signinSchema } from "@/_validation";
 import { createSession, deleteSession } from "./session";
-import { NewUser, NewUserResponse } from "@/utils/types/types";
+import { ApiResponse, NewUser } from "@/utils/types/types";
 
 export const authenticateUser = async ({
   email,
@@ -47,14 +47,14 @@ export const createUserAccount = async (data: NewUser) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, id_role: 2 }),
     });
 
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
+    // if (!res.ok) {
+    //   throw new Error(res.statusText);
+    // }
 
-    const userData = (await res.json()) as NewUserResponse;
+    const userData = (await res.json()) as ApiResponse;
 
     return userData;
   } catch (error) {

@@ -20,25 +20,26 @@ import { AdresseInfoSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import FileUploader from "@/components/ui/shared/FileUploader";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const AdjourterForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  let userData: any;
+  const state = useAppSelector((state) => state.auth?.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
+    const userData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (userData) {
+      try {
+        const parsedData = JSON.parse(userData);
+        dispatch(createUser(parsedData));
+      } catch (error) {
+        console.log("fetch storage error" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof AdresseInfoSchema>>({
     resolver: zodResolver(AdresseInfoSchema),
@@ -69,18 +70,15 @@ const AdjourterForm: React.FC = () => {
         ? URL.createObjectURL(values?.document2_user[0])
         : null,
     };
-    //update the userData
-    dispatch(createUser(newData));
 
-    //add the new data to the userData
-    const newDatas = {
-      ...userData,
-      ...newData,
-    };
-
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(newDatas));
-    router.back();
+    const updatedUserData = Object.assign({}, state, newData);
+    try {
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      dispatch(createUser(newData));
+      router.back();
+    } catch (error) {
+      console.log("failed to update storage" + error);
+    }
   }
 
   return (

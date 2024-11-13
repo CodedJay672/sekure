@@ -8,29 +8,21 @@ import {
   BarElement,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { useAppSelector } from "@/_lib/redux/hooks";
 
 ChartJs.register(CategoryScale, LinearScale, Tooltip, BarElement);
 
 const BarChart = () => {
+  const state = useAppSelector(
+    (state) => state.transactions.transactionSummary?.evolution_transactions
+  );
+
   const data = {
-    labels: [
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-      "01-07 JANV",
-    ],
+    labels: state?.map((item) => item.date),
     datasets: [
       {
         BorderRadius: 10,
-        data: [130, 180, 250, 130, 95, 95, 170, 50, 140, 160, 50, 140],
+        data: state?.map((item) => item.total),
         backgroundColor: "#18BC7A",
         barThickness: 4,
       },

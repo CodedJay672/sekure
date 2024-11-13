@@ -19,24 +19,25 @@ import { LegalSchema } from "@/_validation";
 import { Checkbox } from "@/components/ui/checkbox";
 import DocumentUploader from "@/components/ui/shared/UploadDocument";
 import { createUser } from "@/_lib/features/Auth/authSlice";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 
 const LegalForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  let userData: any = null;
+  const state = useAppSelector((state) => state.auth?.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
+    const userData = localStorage.getItem("userData");
 
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(createUser(parsedUserData));
+      } catch (error) {
+        console.log("error getting userData" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof LegalSchema>>({
     resolver: zodResolver(LegalSchema),
@@ -55,15 +56,17 @@ const LegalForm: React.FC = () => {
         ? URL.createObjectURL(values?.acte_constitutif_company[0])
         : null,
     };
-    //update the userData
-    dispatch(createUser(newData));
 
-    //persist in the localStorage
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({ ...userData, ...newData })
-    );
-    router.push(`/signup/business/validation`);
+    const updatedUserData = Object.assign({}, state, newData);
+    try {
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      dispatch(createUser(newData));
+
+      // move to the validation page
+      router.push(`/signup/business/validation`);
+    } catch (error) {
+      console.log("error updating storage" + error);
+    }
   }
 
   return (

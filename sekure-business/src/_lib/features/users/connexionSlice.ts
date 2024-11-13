@@ -23,6 +23,11 @@ const connexionSlice = createSlice({
       Object.assign(state, { user, isLoggedIn: true });
     },
 
+    updateProfilePicture: (state, action: PayloadAction<string>) => {
+      //update the profile picture
+      state.user!.image = action.payload;
+    },
+
     //add the logout action
     logout: (state) => {
       //clear the user data and set isLogged to false
@@ -32,7 +37,8 @@ const connexionSlice = createSlice({
 });
 
 //export the action to update the connexion data when users sign in
-export const { updateConnexionData, logout } = connexionSlice.actions;
+export const { updateConnexionData, updateProfilePicture, logout } =
+  connexionSlice.actions;
 
 //export the reducer
 export default connexionSlice.reducer;

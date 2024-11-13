@@ -17,25 +17,25 @@ import {
 import { AdresseSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 
 const AdresseForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  let userData: any;
+  const state = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
-    setUserInfo(
-      localStorage.getItem("userData") ? localStorage.getItem("userData") : null
-    );
-
-    if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(createUser(userData));
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData);
+        dispatch(createUser(parsedUserData));
+      } catch (error) {
+        console.log("error parsing user data" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
@@ -50,20 +50,16 @@ const AdresseForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
-    //update the userData
-    dispatch(createUser(values));
+    const updatedUserData = Object.assign({}, state, values);
+    try {
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      dispatch(createUser(values));
 
-    //add the new data to the userData
-    const newDatas = {
-      ...userData,
-      ...values,
-    };
-
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(newDatas));
-
-    //step 3
-    router.push(`/signup/business/actionnaires`);
+      //step 3
+      router.push(`/signup/business/actionnaires`);
+    } catch (error) {
+      console.log("error updating storage" + error);
+    }
   }
 
   return (
