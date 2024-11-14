@@ -29,7 +29,6 @@ const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const { id } = useAppSelector((state) => state.connexion?.user as User);
   const state = useAppSelector((state) => state.connexion?.user);
 
   useEffect(() => {
@@ -49,16 +48,11 @@ const PwdRecOTPFForm = () => {
     resolver: zodResolver(OTPSchema),
   });
 
-  const {
-    mutate: userSignIn,
-    data,
-    isPending,
-  } = useMutation({
+  const { mutate: userSignIn, isPending } = useMutation({
     mutationKey: ["signin"],
     mutationFn: async (values: { otp: string }) => {
-      if (id) {
-        return signIn({ id, ...values });
-      }
+      const id = state?.id as number;
+      return signIn({ id, ...values });
     },
     onSuccess: (data) => {
       toast({
