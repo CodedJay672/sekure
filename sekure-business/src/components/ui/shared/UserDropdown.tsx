@@ -19,8 +19,7 @@ import ProfileHeader from "./ProfileHeader";
 
 const UserDropdown: React.FC = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.connexion.user);
+  const user = useAppSelector((state) => state.connexion?.user);
 
   const form = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
@@ -40,7 +39,7 @@ const UserDropdown: React.FC = () => {
           {user?.poste}
         </h3>
         <p className="text-[7px] leading-[10.5px] font-normal">
-          {user?.user_company[0].name}
+          {user?.user_company?.[0]?.name}
         </p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">
           Id: DT{user?.id}

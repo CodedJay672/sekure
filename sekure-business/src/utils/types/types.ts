@@ -87,29 +87,29 @@ export interface Role {
 }
 
 export interface User {
-  id: number;
-  full_name: string | null;
-  poste: string;
-  date_birth: string;
-  pourcentage_action: number;
-  email: string;
-  nationality: string;
-  street: string;
-  localisation: string;
-  city: string;
-  etat: string;
-  zip: string;
-  document1: string | null;
-  document2: string | null;
-  phone: string;
-  active: number;
-  updated_by: number | null;
-  image: string | null;
-  email_verified_at: string | null;
-  created_at: string;
-  updated_at: string;
-  roles: Role[];
-  user_company: UserCompany[];
+  id?: number;
+  full_name?: string | null;
+  poste?: string;
+  date_birth?: string;
+  pourcentage_action?: number;
+  email?: string;
+  nationality?: string;
+  street?: string;
+  localisation?: string;
+  city?: string;
+  etat?: string;
+  zip?: string;
+  document1?: string | null;
+  document2?: string | null;
+  phone?: string;
+  active?: number;
+  updated_by?: number | null;
+  image?: string | null;
+  email_verified_at?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  roles?: Role[];
+  user_company?: UserCompany[];
 }
 
 export interface ApiResponse {

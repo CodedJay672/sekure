@@ -1,7 +1,14 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
+import { User } from "@/utils/types/types";
 import { cache } from "react";
+
+interface IUserResponse {
+  success: boolean;
+  message: string;
+  user: User[];
+}
 
 export const getUser = cache(async (id: number) => {
   try {
@@ -20,7 +27,7 @@ export const getUser = cache(async (id: number) => {
     }
 
     //parse the response to json format
-    const user = await response.json();
+    const user = (await response.json()) as IUserResponse;
 
     return user;
   } catch (error) {

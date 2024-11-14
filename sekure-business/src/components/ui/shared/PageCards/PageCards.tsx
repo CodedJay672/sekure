@@ -9,7 +9,7 @@ import { updateTransactionsData } from "@/_lib/features/transactions/transaction
 const PageCards = () => {
   const state = useAppSelector((state) => state.connexion.user);
   const dispatch = useAppDispatch();
-  const id = state?.user_company[0]?.id;
+  const id = state?.user_company?.[0]?.id;
 
   const { data, isSuccess } = useQuery({
     queryKey: ["transactionStatistics", id],

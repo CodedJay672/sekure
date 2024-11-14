@@ -21,7 +21,7 @@ import { signIn } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { User } from "@/utils/types/types";
 
@@ -29,18 +29,21 @@ const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  const { id } = useAppSelector((state) => state.connexion.user as User);
-  let userData;
+  const { id } = useAppSelector((state) => state.connexion?.user as User);
+  const state = useAppSelector((state) => state.connexion?.user);
 
   useEffect(() => {
-    setUserInfo(localStorage.getItem("user"));
+    const userInfo = localStorage.getItem("user");
 
     if (userInfo) {
-      userData = JSON.parse(userInfo);
-      dispatch(updateConnexionData(userData));
+      try {
+        const parsedUserInfo = JSON.parse(userInfo);
+        dispatch(updateConnexionData(parsedUserInfo));
+      } catch (error) {
+        console.log("error getting user info" + error);
+      }
     }
-  }, [userInfo]);
+  }, []);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
@@ -53,7 +56,9 @@ const PwdRecOTPFForm = () => {
   } = useMutation({
     mutationKey: ["signin"],
     mutationFn: async (values: { otp: string }) => {
-      return signIn({ id, ...values });
+      if (id) {
+        return signIn({ id, ...values });
+      }
     },
     onSuccess: (data) => {
       toast({
@@ -64,7 +69,15 @@ const PwdRecOTPFForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
-    userSignIn(values);
+    const email_verified_at = Date.now().toLocaleString();
+    const updatedUserInfo = { ...state, email_verified_at } as User;
+    try {
+      userSignIn(values);
+      dispatch(updateConnexionData(updatedUserInfo));
+      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
+    } catch (error) {
+      console.log("failed to update user info" + error);
+    }
   }
 
   return (

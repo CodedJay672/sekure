@@ -6,22 +6,50 @@ import UserDropdown from "../ui/shared/UserDropdown";
 import Notifications from "../ui/shared/Notifications";
 import Switch from "../ui/shared/switch/Switch";
 import CustomBreadcrumb from "../ui/Breadcrumbs/Breadcrumbs";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "@/_data/user";
 
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
   const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.connexion?.user);
 
-  //initialize the redux store with user data in the local storage
   useEffect(() => {
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
+    const loggedInUser = localStorage.getItem("user");
 
-    if (user) {
-      dispatch(updateConnexionData(user));
+    if (loggedInUser) {
+      try {
+        const parsedUser = JSON.parse(loggedInUser);
+        dispatch(updateConnexionData(parsedUser));
+      } catch (error) {
+        console.log("failed to initialize user" + error);
+      }
     }
   }, []);
+
+  //initialize the redux store with user data in the local storage
+  const { data, isSuccess } = useQuery({
+    queryKey: ["getUser", state?.id],
+    queryFn: async () => {
+      if (state?.id) {
+        return await getUser(state?.id);
+      }
+    },
+  });
+
+  //dispatch the user info on Success
+  if (isSuccess) {
+    if (data?.user[0]) {
+      try {
+        localStorage.setItem("user", JSON.stringify(data?.user[0]));
+        dispatch(updateConnexionData(data.user[0]));
+      } catch (error) {
+        console.log("cannot update storage" + error);
+      }
+    }
+  }
 
   const handleToggle = () => {
     setIsOn(!isOn);
