@@ -2,10 +2,13 @@
 
 import { useState, useEffect, useId } from "react";
 import Image from "next/image";
-import { DialogOverlay } from "../dialog";
 
-const CustomDropdown = () => {
-  const [selected, setSelected] = useState("per Jour");
+interface ICustomDropdown {
+  period: string;
+  onChange: (period: string) => void;
+}
+
+const CustomDropdown: React.FC<ICustomDropdown> = ({ period, onChange }) => {
   const [open, setOpen] = useState(false);
   const id = useId();
 
@@ -45,7 +48,7 @@ const CustomDropdown = () => {
       onClick={() => setOpen(!open)}
     >
       <p className="text-[12px] leading-3 -tracking-[0.5px] font-medium text-center select-none">
-        {selected}
+        {period}
       </p>
       {open && (
         <>
@@ -58,7 +61,7 @@ const CustomDropdown = () => {
                 key={option.id}
                 className="w-full flex-between px-[22px] cursor-pointer hover:bg-gray-100 transition-all"
                 onClick={() => {
-                  setSelected(option.label);
+                  onChange(option.label);
                 }}
               >
                 <span className="text-[11px] text-black leading-[24px] flex-1 text-nowrap select-none">

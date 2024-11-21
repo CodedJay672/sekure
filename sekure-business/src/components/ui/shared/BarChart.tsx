@@ -8,15 +8,14 @@ import {
   BarElement,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { useAppSelector } from "@/_lib/redux/hooks";
 
 ChartJs.register(CategoryScale, LinearScale, Tooltip, BarElement);
 
-const BarChart = () => {
-  const state = useAppSelector(
-    (state) => state.transactions.transactionSummary?.evolution_transactions
-  );
+interface State {
+  state: any[] | undefined;
+}
 
+const BarChart: React.FC<State> = ({ state }) => {
   const data = {
     labels: state?.map((item) => item.date),
     datasets: [

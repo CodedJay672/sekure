@@ -1,7 +1,7 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
-import { User } from "@/utils/types/types";
+import { AllUsers, User } from "@/utils/types/types";
 import { cache } from "react";
 
 interface IUserResponse {
@@ -32,5 +32,27 @@ export const getUser = cache(async (id: number) => {
     return user;
   } catch (error) {
     console.log("error fetching user", error);
+  }
+});
+
+export const getAllUsers = cache(async () => {
+  try {
+    const session = await verifySession("session");
+
+    const response = await fetch(`${process.env.BACKEND_API_URL}/users`, {
+      headers: {
+        Authorization: `Bearer ${session?.token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("failed to fetch users");
+    }
+
+    const users = (await response.json()) as AllUsers;
+
+    return users;
+  } catch (error) {
+    throw new Error("failed to fetch users");
   }
 });

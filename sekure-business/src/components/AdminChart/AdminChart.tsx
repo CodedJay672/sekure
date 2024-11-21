@@ -1,12 +1,18 @@
+"use client";
+
 import { BsFillTriangleFill } from "react-icons/bs";
 import CustomDropdown from "../ui/shared/CustomDropdown";
 import BarChart from "../ui/shared/BarChart";
+import { useState } from "react";
 
 interface AdminChartProps {
   variant?: "detailed" | "simple";
+  state?: any;
 }
 
-const AdminChart: React.FC<AdminChartProps> = ({ variant }) => {
+const AdminChart: React.FC<AdminChartProps> = ({ variant, state }) => {
+  const [period, setPeriod] = useState("per Jour");
+
   return (
     <div className="flex-1 bg-white px-[27px] py-[14px] rounded-[10px]">
       <div className="flex-between">
@@ -24,10 +30,10 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant }) => {
           )}
         </div>
         <div className="flex-center pt-2 relative">
-          <CustomDropdown />
+          <CustomDropdown period={period} onChange={setPeriod} />
           {variant === "detailed" && (
             <div className="ml-3">
-              <h2 className="text-xs font-light">Cette semaine</h2>
+              <h2 className="text-xs font-light">Cette {period}</h2>
               <div className="flex-between gap-4">
                 <p className="text-[16px] font-bold leading-[16px]">
                   XAF 4 256 850
@@ -43,7 +49,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant }) => {
       </div>
 
       <div className="w-full overflow-hidden mt-3 pb-4">
-        <BarChart />
+        <BarChart state={state} />
       </div>
     </div>
   );

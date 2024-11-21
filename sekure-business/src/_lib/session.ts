@@ -28,7 +28,7 @@ export async function decrypt(session: any) {
 }
 
 export async function setCookie(name: string, value: object) {
-  const expires = new Date(Date.now() + MAX_AGE);
+  const expires = new Date(Date.now() + MAX_AGE * 1000);
   const session = await encrypt({ value, expires });
 
   cookies().set(name, session, {

@@ -1,6 +1,6 @@
 import Card from "@/components/Cards/Cards";
-import Table from "@/components/Table/Table";
-import { bigTable, cardDetails, data } from "@/constants";
+import UserTable from "@/components/Table/UserTable/UserTable";
+import { cardDetails } from "@/constants";
 import React from "react";
 
 const Utilisateurs: React.FC = () => {
@@ -14,11 +14,7 @@ const Utilisateurs: React.FC = () => {
         </section>
         <div className="w-full bg-white">
           <section className="w-full">
-            <Table
-              heading="Liste des utilisateurs"
-              variant="big"
-              columns={bigTable}
-            />
+            <UserTable />
           </section>
         </div>
       </div>

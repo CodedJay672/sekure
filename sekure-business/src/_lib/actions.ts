@@ -73,8 +73,6 @@ export const signIn = async ({ id, otp }: { id: number; otp: string }) => {
       };
     }
 
-    console.log("id", id, "otp", otp);
-
     const response = await fetch(`${process.env.BACKEND_API_URL}/otp/verify`, {
       method: "POST",
       headers: {

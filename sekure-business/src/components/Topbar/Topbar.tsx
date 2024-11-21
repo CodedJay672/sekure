@@ -17,17 +17,13 @@ const Topbar: React.FC = () => {
   const state = useAppSelector((state) => state.connexion?.user);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-
-    if (loggedInUser) {
-      try {
-        const parsedUser = JSON.parse(loggedInUser);
-        dispatch(updateConnexionData(parsedUser));
-      } catch (error) {
-        console.log("failed to initialize user" + error);
+    if (state === null) {
+      const user = localStorage.getItem("user");
+      if (user) {
+        dispatch(updateConnexionData(JSON.parse(user)));
       }
     }
-  }, []);
+  }, [state, dispatch]);
 
   //initialize the redux store with user data in the local storage
   const { data, isSuccess } = useQuery({
@@ -37,19 +33,14 @@ const Topbar: React.FC = () => {
         return await getUser(state?.id);
       }
     },
+    enabled: !!state?.id, // Only run the query if state.id is truthy
   });
 
-  //dispatch the user info on Success
-  if (isSuccess) {
-    if (data?.user[0]) {
-      try {
-        localStorage.setItem("user", JSON.stringify(data?.user[0]));
-        dispatch(updateConnexionData(data.user[0]));
-      } catch (error) {
-        console.log("cannot update storage" + error);
-      }
+  useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(updateConnexionData(data.user[0]));
     }
-  }
+  }, [isSuccess, data, dispatch]);
 
   const handleToggle = () => {
     setIsOn(!isOn);

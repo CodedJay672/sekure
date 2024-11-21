@@ -1,8 +1,8 @@
 "use client";
 
-import { bigTable, data } from "@/constants";
+import { bigTable } from "@/constants";
 import { Button } from "../ui/button";
-import TableComponent from "../ui/shared/TableComponent";
+// import TableComponent from "../ui/shared/TableComponent";
 import { usePathname, useRouter } from "next/navigation";
 
 const EquipeTab: React.FC = () => {
@@ -20,14 +20,14 @@ const EquipeTab: React.FC = () => {
           type="button"
           className="text-xs leading-[34.5px] font-semibold text-white bg-primary h-[34px]"
           onClick={() => router.push(`${pathname}/invite-members`)}
-          >
+        >
           Inviter un membre
         </Button>
       </div>
 
-      <TableComponent variant="big" columns={bigTable} data={data} />
+      {/* <TableComponent variant="big" columns={bigTable} data={data} /> */}
     </>
-  )
-}
+  );
+};
 
 export default EquipeTab;

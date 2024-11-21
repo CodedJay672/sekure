@@ -88,7 +88,7 @@ export interface Role {
 
 export interface User {
   id?: number;
-  full_name?: string | null;
+  full_name?: string;
   poste?: string;
   date_birth?: string;
   pourcentage_action?: number;
@@ -112,6 +112,31 @@ export interface User {
   user_company?: UserCompany[];
 }
 
+interface Pagination {
+  current_page: number;
+  data: User[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: Array<{
+    url?: string;
+    label: string;
+    active: boolean;
+  }>;
+  next_page_url?: string;
+  path: string;
+  per_page: number;
+  prev_page_url?: string;
+  to: number;
+  total: number;
+}
+
+export interface AllUsers {
+  success: boolean;
+  data: Pagination;
+}
+
 export interface ApiResponse {
   success: boolean;
   message: string;
@@ -120,8 +145,7 @@ export interface ApiResponse {
 }
 
 //transaction types
-interface TransactionSummary {
-  success: boolean;
+export interface TransactionSummary {
   total_transaction: number | string;
   transaction_pending: number | string;
   transaction_success: number | string;
@@ -139,6 +163,7 @@ interface TransactionSummary {
 
 // Interface for the main object with success field as BooleanLike
 export interface Transactions {
+  success: true | false;
   transactionSummary: TransactionSummary | null;
 }
 
@@ -167,4 +192,108 @@ interface Link {
   url: string | null;
   label: string;
   active: boolean;
+}
+
+//interface for the cards fetched from the api
+export interface CardsResponse<T> {
+  status: boolean;
+  data: DataResponse<T>;
+}
+
+export interface DataResponse<T> {
+  current_page: number;
+  data: T[];
+  first_page_url?: string;
+  from?: number | null;
+  last_page: number;
+  last_page_url?: string;
+  links: LinkItem[];
+  next_page_url?: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url?: string | null;
+  to?: number | null;
+  total: number;
+}
+
+interface LinkItem {
+  url?: string | null;
+  label: string;
+  active: "true" | "false";
+}
+
+// cards stats
+export interface CardStats {
+  number_card: number;
+  number_card_block: number;
+  number_card_active: number;
+  numbe_card_type_visa: number;
+  number_card_type_master: number;
+  number_card_inactive: number;
+  evolution_card: {
+    date: string;
+    total: number;
+  }[];
+}
+
+// user roles
+export interface RolesResponse {
+  success: boolean;
+  data: RolesData;
+}
+
+export interface RolesData {
+  current_page: number;
+  data: RoleData[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: Link[];
+  next_page_url?: string;
+  path: string;
+  per_page: number;
+  prev_page_url?: string;
+  to: number;
+  total: number;
+}
+
+export interface RoleData {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  active: number;
+  updated_by?: number | null;
+  users: UserRole[];
+}
+
+export interface UserRole {
+  id: number;
+  full_name?: string;
+  poste?: string;
+  date_birth?: string;
+  pourcentage_action?: number;
+  email: string;
+  nationality?: string;
+  street?: string;
+  localisation?: string;
+  city?: string;
+  etat?: string;
+  zip?: string;
+  document1?: any;
+  document2?: any;
+  phone: string;
+  active: number;
+  updated_by?: number | null;
+  image?: any;
+  email_verified_at?: string | null;
+  created_at: string;
+  updated_at: string;
+  pivot: Pivot;
+}
+
+interface Pivot {
+  id_role: number;
+  id_user: number;
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
-import { AllTransactions } from "@/utils/types/types";
+import { AllTransactions, TransactionSummary } from "@/utils/types/types";
 import { cache } from "react";
 
 export const getTransactionStatistics = cache(async (id: number) => {
@@ -13,7 +13,6 @@ export const getTransactionStatistics = cache(async (id: number) => {
       `${process.env.BACKEND_API_URL}/transaction/statistiques?company=${id}`,
       {
         headers: {
-          Accept: "application/json",
           Authorization: `Bearer ${session.token}`,
         },
       }
@@ -24,7 +23,7 @@ export const getTransactionStatistics = cache(async (id: number) => {
     }
 
     //parse the response to json format
-    const data = await response.json();
+    const data = (await response.json()) as TransactionSummary;
 
     return data;
   } catch (error) {
@@ -41,7 +40,6 @@ export const getAllTransactions = async () => {
       `${process.env.BACKEND_API_URL}/transactions`,
       {
         headers: {
-          Accept: "application/json",
           Authorization: `Bearer ${session.token}`,
         },
       }

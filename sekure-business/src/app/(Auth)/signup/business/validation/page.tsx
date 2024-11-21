@@ -30,32 +30,26 @@ const Validation: React.FC = () => {
     }
   }, []);
 
-  const {
-    mutate: signUp,
-    data,
-    error,
-    isSuccess,
-  } = useMutation({
+  const { mutate: signUp, data } = useMutation({
     mutationKey: ["createUser", state],
     mutationFn: async () => {
       return await createUserAccount(state);
+    },
+    onSuccess: () => {
+      toast({
+        description: data?.message,
+      });
+      router.push("/signin");
+    },
+    onError: (error) => {
+      toast({
+        description: error?.message,
+      });
     },
   });
 
   const handleSubmit = () => {
     signUp();
-    if (isSuccess) {
-      toast({
-        description: data.message,
-      });
-      router.push("/signin");
-    }
-    if (error) {
-      toast({
-        description:
-          "Une erreur s'est produite lors de la création de votre compte",
-      });
-    }
   };
 
   return (

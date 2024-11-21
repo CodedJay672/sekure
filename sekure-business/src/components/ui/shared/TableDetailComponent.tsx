@@ -1,29 +1,27 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Data } from "@/constants/types";
 
-interface Column {
-  id: string;
+export interface ColumnDefs<T> {
+  accessor: keyof T;
   header: string;
-  accessor?: string;
 }
 
-interface TableComponentProps {
+interface TableComponentProps<T> {
   variant?: "big" | "small";
-  columns: Column[];
-  data: Data[];
+  columns: ColumnDefs<T>[];
+  data: T[];
 }
 
-const TableDetailComponent: React.FC<TableComponentProps> = ({
+const TableDetailComponent = <T extends Record<string, unknown>>({
   variant,
   columns,
   data,
-}) => {
+}: TableComponentProps<T>) => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleClick = (id: string | number) => {
+  const handleClick = (id: unknown) => {
     router.push(`${pathname}/details`);
   };
 
@@ -36,11 +34,11 @@ const TableDetailComponent: React.FC<TableComponentProps> = ({
       <table className="w-full min-w-max text-[11px] text-left text-dark3">
         <thead className="text-[11px] leading-[14.36px] text-white bg-dark rounded-[10px] sticky top-0 z-10">
           <tr>
-            {columns.map((column) => (
+            {columns.map((column, idx) => (
               <th
                 scope="col"
                 className="px-2 py-2 w-auto min-w-[70px]"
-                key={column.id}
+                key={idx}
               >
                 {column.header}
               </th>
@@ -57,12 +55,9 @@ const TableDetailComponent: React.FC<TableComponentProps> = ({
                 } text-[11px] hover:bg-[#F3F3F3] cursor-pointer`}
                 onClick={() => handleClick(row.id)}
               >
-                {columns.map((column) => (
-                  <td
-                    className="px-2 py-6 min-w-[70px]"
-                    key={`${idx}-${column.id}`}
-                  >
-                    {row[column.accessor || column.id] ?? ""}
+                {columns.map((column, columnIdx) => (
+                  <td className="px-2 py-6 min-w-[70px]" key={columnIdx}>
+                    {row[column.accessor]}
                   </td>
                 ))}
               </tr>

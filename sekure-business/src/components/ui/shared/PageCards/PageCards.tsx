@@ -39,7 +39,7 @@ const PageCards = () => {
       <Card
         data1={{ title: "Total Collectes", value: data?.total_collection }}
         data2={{ title: "Reussies", value: data?.collection_failed }}
-        data3={{ title: "Echoues", value: data?.collection_success }}
+        data3={{ title: "Echoues", value: data?.collection_successs }}
       />
     </div>
   );

@@ -5,15 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
-import { signOut } from "@/_lib/actions";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/_lib/redux/hooks";
-import { logout } from "@/_lib/features/users/connexionSlice";
+import { useState } from "react";
+import ConfirmAlert from "../Alert/ConfirmAlert";
+import { Dialog, DialogContent, DialogOverlay } from "../ui/dialog";
+import { Button } from "../ui/button";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
 
   return (
     <nav className="w-[234px] flex-between flex-col gap-24 sticky">
@@ -78,29 +81,40 @@ const Sidebar: React.FC = () => {
             </span>
           </Link>
         ))}
-        <button
-          type="submit"
-          className="w-full h-9 px-6 mb-3 flex items-center hover:bg-white group transition-all"
-          onClick={async () => {
-            await signOut();
-            localStorage.clear();
-            dispatch(logout());
-            router.replace("/signin");
-          }}
+        <div
+          className="w-full mb-3 ml-0 hover:bg-white group transition-all"
+          onClick={() => setOpen(true)}
         >
-          <Image
-            priority
-            unoptimized
-            src={icon8}
-            alt="logout"
-            width={14}
-            height={14}
-            className="group-hover:color-primary object-contain transition-all"
-          />
-          <span className="text-dark3 text-[11px] font-normal leading-[16.5px] group-hover:text-primary group-hover:decoration-transparent ml-4">
-            Déconnexion
-          </span>
-        </button>
+          <div className="w-full h-9 px-6  bg-transparent group hover:bg-white hover:decoration-transparent hover:cursor-pointer flex justify-start items-center gap-3">
+            <Image
+              priority
+              unoptimized
+              src={icon8}
+              alt="logout"
+              width={14}
+              height={14}
+              className="group-hover:color-primary object-contain transition-all"
+            />
+            <span className="text-dark3 text-[11px] font-normal group-hover:text-primary leading-[16.5px]">
+              Déconnexion
+            </span>
+          </div>
+        </div>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogOverlay>
+            <DialogContent
+              aria-describedby="dialog-description"
+              className="w-[383px]"
+            >
+              <ConfirmAlert
+                heading="Déconnecter?"
+                content="Terminez cette carte pour la supprimer et la rendre inactive. Cette opération est non-reversible. les fonds à l’interieur sont automatiquelenlt reversés dans la Wallet USD"
+                btnText="Se déconnecter"
+                clickFn={() => setOpen(false)}
+              />
+            </DialogContent>
+          </DialogOverlay>
+        </Dialog>
       </div>
     </nav>
   );

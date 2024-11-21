@@ -1,12 +1,13 @@
+"use client";
+
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Image from "next/image"
+import Image from "next/image";
 import FilterForm from "./FilterForm";
 
 const Filter = () => {
@@ -23,14 +24,12 @@ const Filter = () => {
       </SheetTrigger>
       <SheetContent className="overflow-auto" side="right">
         <SheetHeader>
-          <SheetTitle>
-            Filtrer
-          </SheetTitle>
+          <SheetTitle>Filtrer</SheetTitle>
         </SheetHeader>
         <FilterForm />
       </SheetContent>
     </Sheet>
-  )
-}
+  );
+};
 
-export default Filter
+export default Filter;

@@ -12,9 +12,8 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import { ProfileSchema } from "@/_validation";
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import ProfileHeader from "./ProfileHeader";
 
 const UserDropdown: React.FC = () => {

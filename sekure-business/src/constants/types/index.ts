@@ -1,5 +1,4 @@
-import { StaticImageData } from "next/image";
-import { ReactNode } from "react";
+import { RoleData } from "@/utils/types/types";
 
 export interface INavLinks {
   path: string;
@@ -14,16 +13,16 @@ export interface Data {
 export interface ICardDetails {
   data1: {
     title: string;
-    value: string;
-  },
+    value: string | number;
+  };
   data2: {
     title: string;
-    value: string;
-  },
+    value: string | number;
+  };
   data3: {
     title: string;
-    value: string;
-  },
+    value: string | number;
+  };
 }
 
 export interface ITableColumn {
@@ -34,7 +33,7 @@ export interface ITableColumn {
 export interface IRoleSectionData {
   role: string;
   tagline: string;
-  data: string[];
+  data: RoleData[];
 }
 
 export interface NotificationItemProps {
@@ -43,5 +42,5 @@ export interface NotificationItemProps {
     title: string;
     description: string;
     date: string;
-  }
+  };
 }
