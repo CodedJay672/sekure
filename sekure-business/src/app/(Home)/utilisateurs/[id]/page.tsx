@@ -108,7 +108,7 @@ const UtilisateursDetails: React.FC = () => {
             Liste des transactions
           </h2>
           <div className="w-full flex-between mt-2 gap-2">
-            <SearchBar placeholder="Enter search term..." setData={setQuery} />
+            {/* <SearchBar placeholder="Enter search term..." setData={setQuery} /> */}
             <div className="max-w-[108px] h-8 rounded-[5px] bg-notif">
               <span className="text-xs leading-[34.5px] tracking-[-0.5px] text-center font-normal text-placeholder-text px-2">
                 Date de debut
