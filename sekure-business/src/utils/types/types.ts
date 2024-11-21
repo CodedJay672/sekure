@@ -144,6 +144,24 @@ export interface ApiResponse {
   user: User;
 }
 
+export interface Stakeholder {
+  full_name_user: string;
+  poste_user: string;
+  date_birth_user: string;
+  pourcentage_action_user: string;
+  email_user: string;
+  phone_user: string;
+  nationality_user: string;
+  localisation_user: string;
+  street_user: string;
+  city_user: string;
+  etat_user: string;
+  zip_user: string;
+  document1_user: string;
+  document2_user: string;
+  receive_mail: boolean;
+}
+
 //transaction types
 export interface TransactionSummary {
   total_transaction: number | string;
