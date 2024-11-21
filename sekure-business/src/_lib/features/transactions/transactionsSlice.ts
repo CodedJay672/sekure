@@ -11,7 +11,7 @@ const transactionsSlice = createSlice({
   reducers: {
     updateTransactionsData: (
       state,
-      action: PayloadAction<TransactionSummary>
+      action: PayloadAction<TransactionSummary | undefined>
     ) => {
       //update the connexion data with the user data
       const transactions = action.payload;
