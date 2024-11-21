@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import { createStakeholder, createUser } from "@/_lib/features/Auth/authSlice";
 
 const Actionnaires: React.FC = () => {
   const pathname = usePathname();
@@ -29,11 +29,16 @@ const Actionnaires: React.FC = () => {
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
+    const stakeholders = localStorage.getItem("stakeholderData");
 
     if (userData) {
       try {
         const parsedUserData = JSON.parse(userData);
+        const parsedStakeholders = JSON.parse(stakeholders!);
         dispatch(createUser(parsedUserData));
+        if (parsedStakeholders) {
+          dispatch(createStakeholder(parsedStakeholders));
+        }
       } catch (error) {}
     }
   }, []);
@@ -66,7 +71,7 @@ const Actionnaires: React.FC = () => {
         className="flex items-center py-[18px] px-[15px] border rounded-[18px] cursor-pointer"
         onClick={() => router.push(`${pathname}/vous`)}
       >
-        <div className="w-[48px] h-[48px] rounded-full bg-[#F5F5F5] mr-5" />
+        <div className="w-[48px] h-[48px] rounded-full bg-primary mr-5" />
         <div className="flex-1 flex items-center">
           <div className="flex-1">
             <h2 className="font-semibold text-[13px] leading-[17px]">Vous</h2>
@@ -85,7 +90,7 @@ const Actionnaires: React.FC = () => {
             key={index}
             className="flex items-center py-[18px] px-[15px] border rounded-[18px] mt-[15px] cursor-pointer"
           >
-            <div className="w-[48px] h-[48px] rounded-full bg-[#F5F5F5] mr-5" />
+            <div className="w-[48px] h-[48px] rounded-full bg-primary mr-5" />
             <div className="flex-1 flex items-center">
               <div className="flex-1">
                 <h2 className="font-semibold text-[13px] leading-[17px]">
