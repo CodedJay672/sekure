@@ -5,25 +5,14 @@ import Card from "@/components/Cards/Cards";
 import { Button } from "@/components/ui/button";
 import Active from "@/components/ui/shared/Active";
 import CardNumber from "@/components/ui/shared/CardNumber";
-import SearchBar from "@/components/ui/shared/SearchBar";
-import TableComponent from "@/components/ui/shared/TableComponent";
 import VisaCard from "@/components/ui/shared/VisaCard";
-import { data, bigTable } from "@/constants";
 import Image from "next/image";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { Data } from "@/constants/types";
+import CartesTable from "@/components/Table/Cartes/CartesTable";
 
 const CardDetails: React.FC = () => {
-  const [tableData, setTableData] = React.useState<Data[]>(data);
-  const [query, setQuery] = React.useState<string>("");
-
-  const filteredData = useMemo(() => {
-    return tableData.filter((item) => {
-      return item.date.toString().toLowerCase().includes(query.toLowerCase());
-    });
-  }, [query, tableData]);
-
   return (
     <section className="wrapper max-w-full">
       <div className="max-w-[354px] flex flex-col gap-3 rounded-[10px]">
@@ -116,7 +105,6 @@ const CardDetails: React.FC = () => {
             Liste des transactions
           </h2>
           <div className="w-full flex-between mt-2 gap-2">
-            <SearchBar placeholder="Enter search term..." setData={setQuery} />
             <div className="max-w-[108px] h-8 rounded-[5px] bg-notif">
               <span className="text-xs leading-[34.5px] tracking-[-0.5px] text-center font-normal text-placeholder-text px-2">
                 Date de debut
@@ -134,11 +122,7 @@ const CardDetails: React.FC = () => {
               </span>
             </div>
           </div>
-          <TableComponent
-            variant="big"
-            columns={bigTable}
-            data={filteredData}
-          />
+          <CartesTable />
         </div>
       </div>
     </section>
