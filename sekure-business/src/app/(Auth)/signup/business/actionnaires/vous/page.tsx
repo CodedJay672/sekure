@@ -23,11 +23,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
+import { CgSpinner } from "react-icons/cg";
 
 const VousForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth.user);
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -54,6 +56,7 @@ const VousForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
+    setisLoading(true);
     const updatedUserData = Object.assign({}, state, values);
 
     try {
@@ -61,7 +64,7 @@ const VousForm: React.FC = () => {
       dispatch(createUser(values));
 
       //go back to the actionaires page when the user  submits
-      router.back();
+      router.push("/signup/business/actionnaires");
     } catch (error) {
       console.log("error updating storage" + error);
     }
@@ -211,10 +214,22 @@ const VousForm: React.FC = () => {
           )}
         />
         <div className="w-full flex justify-between gap-2 mt-4">
-          <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-            Valider et continuer
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="primary-btn w-[224.24px] h-[50px]"
+          >
+            {isLoading ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Valider et continuer"
+            )}
           </Button>
-          <Button type="button" className="w-[224.24px] h-[50px] bg-[#F2F2F2]">
+          <Button
+            type="button"
+            className="w-[224.24px] h-[50px] bg-[#F2F2F2]"
+            onClick={() => router.back()}
+          >
             Annuler
           </Button>
         </div>

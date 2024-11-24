@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { useEffect } from "react";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { User } from "@/utils/types/types";
+import { CgSpinner } from "react-icons/cg";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
@@ -119,7 +120,11 @@ const PwdRecOTPFForm = () => {
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
             disabled={isPending}
           >
-            Me connecter
+            {isPending ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Me connecter"
+            )}
           </Button>
           <Link
             href="/signin"

@@ -19,11 +19,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
+import { CgSpinner } from "react-icons/cg";
 
 const AdresseForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth.user);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -50,6 +52,7 @@ const AdresseForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
+    setIsLoading(true);
     const updatedUserData = Object.assign({}, state, values);
     try {
       localStorage.setItem("userData", JSON.stringify(updatedUserData));
@@ -203,8 +206,16 @@ const AdresseForm = () => {
           >
             Retour
           </Button>
-          <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-            Continuer
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="primary-btn w-[224.24px] h-[50px]"
+          >
+            {isLoading ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Continuer"
+            )}
           </Button>
         </div>
       </form>

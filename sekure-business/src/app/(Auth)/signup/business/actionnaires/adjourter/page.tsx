@@ -23,11 +23,13 @@ import FileUploader from "@/components/ui/shared/FileUploader";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createStakeholder, createUser } from "@/_lib/features/Auth/authSlice";
 import { Stakeholder } from "@/utils/types/types";
+import { CgSpinner } from "react-icons/cg";
 
 const AdjourterForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth?.user);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -62,6 +64,7 @@ const AdjourterForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof AdresseInfoSchema>) {
+    setIsLoading(true);
     const newData = {
       ...values,
       document1_user: values?.document1_user
@@ -385,10 +388,22 @@ const AdjourterForm: React.FC = () => {
           )}
         />
         <div className="w-full flex justify-between gap-2">
-          <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-            Valider et continuer
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="primary-btn w-[224.24px] h-[50px]"
+          >
+            {isLoading ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Valider et continuer"
+            )}
           </Button>
-          <Button type="button" className="w-[224.24px] h-[50px] bg-[#F2F2F2]">
+          <Button
+            type="button"
+            className="w-[224.24px] h-[50px] bg-[#F2F2F2]"
+            onClick={() => router.back()}
+          >
             Annuler
           </Button>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,11 +22,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
+import { setLoading } from "@/_lib/features/Loading/LoadingSlice";
+import { CgSpinner } from "react-icons/cg";
 
 const SignupForm = () => {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   //clear the userData from the localStorage
   useEffect(() => {
@@ -46,6 +49,7 @@ const SignupForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof signupSchema>) {
+    setIsLoading(true);
     dispatch(createUser(values));
 
     //persist in the localStorage
@@ -186,9 +190,14 @@ const SignupForm = () => {
         <div className="py-3 flex items-center gap-2">
           <Button
             type="submit"
+            disabled={isLoading}
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
           >
-            Créer mon compte
+            {isLoading ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Créer mon compte"
+            )}
           </Button>
           <Link
             href="/signin"

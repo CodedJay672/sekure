@@ -45,7 +45,7 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
         </div>
         <div className="mt-3 w-full">
           <div className="w-full mb-2">
-            <p className="font-normal text-[10px] text-notif leading-[15px] text-[#A9A9A9]">
+            <p className="font-normal text-[10px] text-notif leading-[15px] text-gray-600">
               {content}
             </p>
           </div>

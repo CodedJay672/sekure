@@ -20,11 +20,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import DocumentUploader from "@/components/ui/shared/UploadDocument";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { CgSpinner } from "react-icons/cg";
 
 const LegalForm: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth?.user);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -44,6 +46,7 @@ const LegalForm: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof LegalSchema>) {
+    setIsLoading(true);
     const newData = {
       ...values,
       certificat_constitution_company: values?.certificat_constitution_company
@@ -167,8 +170,16 @@ const LegalForm: React.FC = () => {
           >
             Retour
           </Button>
-          <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-            Continuer
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="primary-btn w-[224.24px] h-[50px]"
+          >
+            {isLoading ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Continuer"
+            )}
           </Button>
         </div>
       </form>

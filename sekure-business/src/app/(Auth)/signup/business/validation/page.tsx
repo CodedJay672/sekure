@@ -10,6 +10,8 @@ import { createUser } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { SplineIcon } from "lucide-react";
+import { CgSpinner } from "react-icons/cg";
 
 const Validation: React.FC = () => {
   const router = useRouter();
@@ -17,6 +19,7 @@ const Validation: React.FC = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth?.user);
   const stakeholders = useAppSelector((state) => state.auth?.stakeholders);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -50,6 +53,7 @@ const Validation: React.FC = () => {
   });
 
   const handleSubmit = () => {
+    setIsLoading(true);
     signUp();
   };
 
@@ -191,10 +195,15 @@ const Validation: React.FC = () => {
           Retour
         </Button>
         <Button
+          disabled={isLoading}
           className="primary-btn w-[224.24px] h-[50px]"
           onClick={() => handleSubmit()}
         >
-          Continuer
+          {isLoading ? (
+            <CgSpinner size={20} className="animate-spin" />
+          ) : (
+            "Continuer"
+          )}
         </Button>
       </div>
     </div>

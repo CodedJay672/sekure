@@ -19,8 +19,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createStakeholder, createUser } from "@/_lib/features/Auth/authSlice";
+import { CgSpinner } from "react-icons/cg";
 
 const Actionnaires: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -55,6 +57,7 @@ const Actionnaires: React.FC = () => {
   });
 
   function onSubmit(values: z.infer<typeof ActionSchema>) {
+    setIsLoading(true);
     router.push(`/signup/business/legal`);
   }
 
@@ -156,8 +159,16 @@ const Actionnaires: React.FC = () => {
             >
               Retour
             </Button>
-            <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-              Continuer
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="primary-btn w-[224.24px] h-[50px]"
+            >
+              {isLoading ? (
+                <CgSpinner size={20} className="animate-spin" />
+              ) : (
+                "Continuer"
+              )}
             </Button>
           </div>
         </form>

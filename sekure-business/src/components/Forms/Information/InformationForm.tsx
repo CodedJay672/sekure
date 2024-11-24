@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
+import { CgSpinner } from "react-icons/cg";
 
 const InformationForm = () => {
   const router = useRouter();
@@ -55,6 +56,8 @@ const InformationForm = () => {
       website_link_company: "",
     },
   });
+
+  const { isSubmitting } = form.formState;
 
   function onSubmit(values: z.infer<typeof InformationSchema>) {
     //add the new data to the userData
@@ -285,8 +288,16 @@ const InformationForm = () => {
 
         <br />
         <div className="w-full flex place-content-end mt-10">
-          <Button type="submit" className="primary-btn w-[224.24px] h-[50px]">
-            Continuer
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="primary-btn w-[224.24px] h-[50px]"
+          >
+            {isSubmitting ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Continuer"
+            )}
           </Button>
         </div>
       </form>

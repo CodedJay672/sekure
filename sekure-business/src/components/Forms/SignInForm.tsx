@@ -25,6 +25,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 //import the redux store deps
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { useAppDispatch } from "@/_lib/redux/hooks";
+import { CgSpinner } from "react-icons/cg";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -40,11 +41,7 @@ const SignInForm = () => {
     },
   });
 
-  const {
-    mutate: getAuthorizedUser,
-    data,
-    isPending,
-  } = useMutation({
+  const { mutate: getAuthorizedUser, isPending } = useMutation({
     mutationFn: async (values: { email: string; password: string }) => {
       return await authenticateUser(values);
     },
@@ -130,7 +127,11 @@ const SignInForm = () => {
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
             disabled={isPending}
           >
-            Suivant
+            {isPending ? (
+              <CgSpinner size={20} className="animate-spin" />
+            ) : (
+              "Suivant"
+            )}
           </Button>
           <Link
             href="/signup"

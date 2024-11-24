@@ -6,6 +6,7 @@ import transactionsSlice from "../features/transactions/transactionsSlice";
 import cardsSlice from "../features/cards/cardSlice";
 import usersSlice from "../features/users/usersSlice";
 import editUserInformationSlice from "../features/Edit/editUserInformationSlice";
+import LoadingSlice from "../features/Loading/LoadingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     cards: cardsSlice,
     users: usersSlice,
     edit: editUserInformationSlice,
+    loading: LoadingSlice,
   },
 });
 
