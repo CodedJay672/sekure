@@ -16,8 +16,15 @@ import {
 import { businessNameSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { useAppSelector } from "@/_lib/redux/hooks";
+import { Button } from "../ui/button";
 
 const BusinessForm = () => {
+  const company = useAppSelector(
+    (state) => state.connexion?.user?.user_company?.[0]
+  );
+  const edit = useAppSelector((state) => state.edit.editUserInfo);
+
   const form = useForm<z.infer<typeof businessNameSchema>>({
     resolver: zodResolver(businessNameSchema),
   });
@@ -45,6 +52,8 @@ const BusinessForm = () => {
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
+                  defaultValue={company?.name || ""}
+                  disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
                   {...field}
                 />
@@ -65,6 +74,8 @@ const BusinessForm = () => {
               <FormControl>
                 <Input
                   placeholder="Steve"
+                  defaultValue={company?.registry_number || ""}
+                  disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
                 />
@@ -85,6 +96,8 @@ const BusinessForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
+                  defaultValue={company?.address || ""}
+                  disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
                 />
@@ -105,6 +118,8 @@ const BusinessForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
+                  defaultValue={company?.email || ""}
+                  disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
                 />
@@ -123,6 +138,8 @@ const BusinessForm = () => {
               <FormControl>
                 <Textarea
                   placeholder="This is my description."
+                  defaultValue={company?.description_company || ""}
+                  disabled={!edit}
                   {...field}
                   className="input resize-none  w-[792px] pr-20 bg-notif"
                 />
@@ -131,6 +148,13 @@ const BusinessForm = () => {
             </FormItem>
           )}
         />
+        {edit && (
+          <div className="w-full flex-end">
+            <Button type="submit" className="btn-primary w-44 text-gray-200">
+              Save Changes
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

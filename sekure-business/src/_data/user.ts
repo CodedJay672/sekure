@@ -56,3 +56,43 @@ export const getAllUsers = cache(async () => {
     throw new Error("failed to fetch users");
   }
 });
+
+export interface IUpdateUser {
+  first_name: string;
+  last_name: string;
+  email: string;
+  active: boolean;
+  phone: string;
+  image: string;
+}
+
+export const updateUser = async (
+  id_user: number,
+  updated_by: number,
+  data: IUpdateUser
+) => {
+  try {
+    const session = await verifySession("session");
+
+    const response = await fetch(
+      `${process.env.BACKEND_API_URL}/users/${id_user}?updated_by=${updated_by}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${session?.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("failed update the user information");
+    }
+
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    throw new Error("failed to update the user information");
+  }
+};

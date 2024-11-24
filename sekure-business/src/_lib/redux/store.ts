@@ -5,6 +5,7 @@ import authSlice from "../features/Auth/authSlice";
 import transactionsSlice from "../features/transactions/transactionsSlice";
 import cardsSlice from "../features/cards/cardSlice";
 import usersSlice from "../features/users/usersSlice";
+import editUserInformationSlice from "../features/Edit/editUserInformationSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     transactions: transactionsSlice,
     cards: cardsSlice,
     users: usersSlice,
+    edit: editUserInformationSlice,
   },
 });
 

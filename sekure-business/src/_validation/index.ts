@@ -29,13 +29,16 @@ export const cardCreateSchema = z.object({
 });
 
 export const userSchema = z.object({
-  firstName: z.string().min(2, {
+  first_name: z.string().min(2, {
     message: "Le prénom doit contenir au moins 2 caractères",
   }),
-  lastName: z.string().min(2, {
+  last_name: z.string().min(2, {
     message: "Le nom doit contenir au moins 2 caractères",
   }),
   email: z.string().email(),
+  active: z.boolean().default(false).optional(),
+  phone: z.string().length(14),
+  image: z.custom<File[]>(),
 });
 
 export const businessNameSchema = z.object({
