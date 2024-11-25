@@ -27,7 +27,6 @@ const Actionnaires: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth.user);
-  const stakeholders = useAppSelector((state) => state.auth.stakeholders);
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
@@ -80,28 +79,6 @@ const Actionnaires: React.FC = () => {
           <RxCaretRight size={30} />
         </div>
       </div>
-
-      {stakeholders &&
-        stakeholders.length > 0 &&
-        stakeholders.map((stakeholder, index) => (
-          <div
-            key={index}
-            className="flex items-center py-[18px] px-[15px] border rounded-[18px] mt-[15px] cursor-pointer"
-          >
-            <div className="w-[48px] h-[48px] rounded-full bg-primary mr-5" />
-            <div className="flex-1 flex items-center">
-              <div className="flex-1">
-                <h2 className="font-semibold text-[13px] leading-[17px]">
-                  {stakeholder.full_name_user}
-                </h2>
-                <span className="text-[12px] leading-[24px] font-normal text-[#242424]">
-                  Donnez plus d’informations sur vous
-                </span>
-              </div>
-              <RxCaretRight size={30} />
-            </div>
-          </div>
-        ))}
 
       <div
         className="flex items-center py-[18px] px-[15px] border rounded-[18px] mt-[15px] mb-[101px] cursor-pointer"
