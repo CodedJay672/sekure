@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createStakeholder, createUser } from "@/_lib/features/Auth/authSlice";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
 
 const Actionnaires: React.FC = () => {
@@ -31,16 +31,11 @@ const Actionnaires: React.FC = () => {
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
-    const stakeholders = localStorage.getItem("stakeholderData");
 
     if (userData) {
       try {
         const parsedUserData = JSON.parse(userData);
-        const parsedStakeholders = JSON.parse(stakeholders!);
         dispatch(createUser(parsedUserData));
-        if (parsedStakeholders) {
-          dispatch(createStakeholder(parsedStakeholders));
-        }
       } catch (error) {}
     }
   }, []);

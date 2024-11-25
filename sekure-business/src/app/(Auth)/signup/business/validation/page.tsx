@@ -10,7 +10,6 @@ import { createUser } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { SplineIcon } from "lucide-react";
 import { CgSpinner } from "react-icons/cg";
 
 const Validation: React.FC = () => {
@@ -18,7 +17,6 @@ const Validation: React.FC = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth?.user);
-  const stakeholders = useAppSelector((state) => state.auth?.stakeholders);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -39,7 +37,7 @@ const Validation: React.FC = () => {
     mutationFn: async () => {
       return await createUserAccount(state);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         description: data?.message,
       });
@@ -174,19 +172,6 @@ const Validation: React.FC = () => {
         poste={state?.poste_user}
         parte={state?.pourcentage_action_user}
       />
-
-      {stakeholders &&
-        stakeholders.map((stakeholder, index) => (
-          <UserCard
-            key={index}
-            name={stakeholder.full_name_user}
-            email={stakeholder.email_user}
-            poste={stakeholder.poste_user}
-            parte={stakeholder.pourcentage_action_user}
-          />
-        ))}
-
-      <br />
       <div className="w-full flex justify-between gap-2">
         <Button
           type="button"

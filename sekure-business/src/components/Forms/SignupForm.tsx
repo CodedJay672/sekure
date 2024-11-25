@@ -22,7 +22,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
-import { setLoading } from "@/_lib/features/Loading/LoadingSlice";
 import { CgSpinner } from "react-icons/cg";
 
 const SignupForm = () => {

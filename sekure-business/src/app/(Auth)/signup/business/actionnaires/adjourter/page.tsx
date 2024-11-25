@@ -21,8 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import FileUploader from "@/components/ui/shared/FileUploader";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createStakeholder, createUser } from "@/_lib/features/Auth/authSlice";
-import { Stakeholder } from "@/utils/types/types";
+import { createUser } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
 
 const AdjourterForm: React.FC = () => {
@@ -76,8 +75,11 @@ const AdjourterForm: React.FC = () => {
     };
 
     try {
-      localStorage.setItem("stakeholderData", JSON.stringify(newData));
-      dispatch(createStakeholder(newData as Stakeholder));
+      dispatch(createUser(newData));
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ ...state, ...newData })
+      );
       router.back();
     } catch (error) {
       console.log("failed to update storage" + error);
