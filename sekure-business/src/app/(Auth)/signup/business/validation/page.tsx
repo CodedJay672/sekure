@@ -38,6 +38,14 @@ const Validation: React.FC = () => {
       return await createUserAccount(state);
     },
     onSuccess: (data) => {
+      if (!data?.user) {
+        setIsLoading(false);
+        toast({
+          description:
+            "Une erreur s'est produite lors de la création de votre compte",
+        });
+        return;
+      }
       toast({
         description: data?.message,
       });
