@@ -30,7 +30,7 @@ export const steps = [
   },
 ];
 
-const Page = () => {
+const Business = () => {
   return (
     <section className="w-full">
       <div className="w-full">
@@ -46,4 +46,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Business;
