@@ -101,7 +101,7 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="date"
                     placeholder="Votre adresse mail"
                     className="input pr-20"
                     {...field}
