@@ -105,6 +105,9 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     placeholder="Votre adresse mail"
                     className="input pr-20"
                     {...field}
+                    value={
+                      field.value ? field.value.toISOString().split("T")[0] : ""
+                    }
                   />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
