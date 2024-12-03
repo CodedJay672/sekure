@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {} from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,58 +16,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { ActionnairesSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
+import { ActionnairesSchema } from "@/_validation/SignUp";
 
-const VousForm: React.FC = () => {
-  const router = useRouter();
+interface VousFormProps {
+  onPageChange: (page: string) => void;
+}
+
+const VousForm: React.FC<VousFormProps> = ({ onPageChange }) => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.user);
+  const state = useAppSelector((state) => state.auth.newUserData);
   const [isLoading, setisLoading] = useState(false);
-
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-
-    if (userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        dispatch(createUser(parsedUserData));
-      } catch (error) {
-        console.log("error updating storage" + error);
-      }
-    }
-  }, []);
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
     defaultValues: {
-      poste_user: "",
-      email_user: "",
-      phone_user: "",
-      pourcentage_action_user: "",
-      director: "non",
+      ...state,
     },
   });
 
   function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
     setisLoading(true);
-    const updatedUserData = Object.assign({}, state, values);
-
-    try {
-      localStorage.setItem("userData", JSON.stringify(updatedUserData));
-      dispatch(createUser(values));
-
-      //go back to the actionaires page when the user  submits
-      router.push("/signup/business/actionnaires");
-    } catch (error) {
-      console.log("error updating storage" + error);
-    }
+    dispatch(createUser(values));
+    onPageChange("home");
   }
 
   return (
@@ -228,7 +204,7 @@ const VousForm: React.FC = () => {
           <Button
             type="button"
             className="w-[224.24px] h-[50px] bg-[#F2F2F2]"
-            onClick={() => router.back()}
+            onClick={() => onPageChange("home")}
           >
             Annuler
           </Button>

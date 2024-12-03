@@ -2,7 +2,8 @@
 
 import { OTPSchema, signinSchema } from "@/_validation";
 import { createSession, deleteSession } from "./session";
-import { ApiResponse, NewUser } from "@/utils/types/types";
+import { APIErrors, ApiResponse } from "@/utils/types/types";
+import { NewUser } from "@/_validation/SignUp";
 
 export const authenticateUser = async ({
   email,
@@ -40,7 +41,9 @@ export const authenticateUser = async ({
   }
 };
 
-export const createUserAccount = async (data: NewUser) => {
+export const createUserAccount = async (
+  data: NewUser
+): Promise<ApiResponse | APIErrors> => {
   try {
     const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       method: "POST",
@@ -50,12 +53,12 @@ export const createUserAccount = async (data: NewUser) => {
       body: JSON.stringify({ ...data, id_role: 2 }),
     });
 
-    // if (!res.ok) {
-    //   throw new Error(res.statusText);
-    // }
+    if (res.status === 422) {
+      const userData = (await res.json()) as APIErrors;
+      return userData;
+    }
 
     const userData = (await res.json()) as ApiResponse;
-
     return userData;
   } catch (error) {
     throw new Error(`${error}`);

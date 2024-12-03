@@ -165,7 +165,9 @@
 }
 
 :root {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: Lufga, sans-serif;
+  max-width: 1550px;
+  min-height: 100dvh;
 }
 
 @layer base {
@@ -189,7 +191,7 @@
   }
 
   body {
-    @apply max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
+    @apply min-h-dvh max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
   }
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,55 +13,34 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { AdresseSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import {
+  createUser,
+  loadData,
+  nextStep,
+  previousStep,
+} from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
+import { AdresseSchema } from "@/_validation/SignUp";
 
 const AdresseForm = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-    if (userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        dispatch(createUser(parsedUserData));
-      } catch (error) {
-        console.log("error parsing user data" + error);
-      }
-    }
-  }, []);
+  const state = useAppSelector((state) => state.auth.newUserData);
 
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
     defaultValues: {
-      localisation_company: "",
-      state_company: "",
-      zip_company: "",
-      city_company: "",
-      street_company: "",
-      address_company: "",
+      ...state,
     },
   });
 
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
     setIsLoading(true);
-    const updatedUserData = Object.assign({}, state, values);
-    try {
-      localStorage.setItem("userData", JSON.stringify(updatedUserData));
-      dispatch(createUser(values));
-
-      //step 3
-      router.push(`/signup/business/actionnaires`);
-    } catch (error) {
-      console.log("error updating storage" + error);
-    }
+    dispatch(createUser(values));
+    dispatch(nextStep());
   }
 
   return (
@@ -82,7 +60,7 @@ const AdresseForm = () => {
                     <Input
                       type="text"
                       placeholder="Cameroun"
-                      className="input pr-20 w-[213px]"
+                      className="input pr-20 w-full"
                       {...field}
                     />
                   </FormControl>
@@ -104,7 +82,7 @@ const AdresseForm = () => {
                       type="text"
                       placeholder="Cameroun"
                       {...field}
-                      className="input pr-20 w-[213px]"
+                      className="input pr-20 w-full"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -125,7 +103,7 @@ const AdresseForm = () => {
                       type="text"
                       placeholder="Cameroun"
                       {...field}
-                      className="input pr-20 w-[213px]"
+                      className="input pr-20 w-full"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -146,7 +124,7 @@ const AdresseForm = () => {
                       type="text"
                       placeholder="Cameroun"
                       {...field}
-                      className="input pr-20 w-[213px]"
+                      className="input pr-20 w-full"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -203,6 +181,7 @@ const AdresseForm = () => {
           <Button
             type="button"
             className="border-2 border-primary w-[224.24px] h-[50px] bg-transparent text-primary font-bold"
+            onClick={() => dispatch(previousStep())}
           >
             Retour
           </Button>

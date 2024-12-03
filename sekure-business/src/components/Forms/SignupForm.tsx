@@ -14,46 +14,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signupSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { createUser, resetLocalStorage } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
+import { signupSchema } from "@/_validation/SignUp";
 
 const SignupForm = () => {
-  const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const state = useAppSelector((state) => state.auth.newUserData);
 
-  //clear the userData from the localStorage
   useEffect(() => {
-    localStorage.removeItem("userData");
+    dispatch(resetLocalStorage());
   }, []);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      full_name_user: "",
-      name_company: "",
-      receive_mail: false,
-      country_company: "",
-      email_user: "",
-      password_user: "",
+      ...state,
     },
   });
 
   function onSubmit(values: z.infer<typeof signupSchema>) {
     setIsLoading(true);
     dispatch(createUser(values));
-
-    //persist in the localStorage
-    localStorage.setItem("userData", JSON.stringify(values));
-    router.push(`${pathname}/business/informations`);
+    router.push("/signup/business");
   }
 
   return (

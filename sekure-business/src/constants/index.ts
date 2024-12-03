@@ -1,3 +1,4 @@
+import { localstorageData } from "@/_validation/SignUp";
 import { ICardDetails, INavLinks, ITableColumn } from "./types";
 
 export const navLinks: INavLinks[] = [
@@ -162,3 +163,42 @@ export const info = [
     date: "12/12/2021",
   },
 ];
+
+export const defaultData: localstorageData = {
+  full_name_user: "",
+  poste_user: "",
+  date_birth_user: undefined,
+  pourcentage_action_user: undefined,
+  email_user: "",
+  nationality_user: "",
+  street_user: "",
+  localisation_user: "",
+  city_user: "",
+  etat_user: "",
+  zip_user: undefined,
+  document1_user: undefined,
+  document2_user: undefined,
+  password_user: "",
+  phone_user: "",
+  image_user: "",
+  name_company: "",
+  email_company: "",
+  phone_company: "",
+  address_company: "",
+  sector_activity_company: "",
+  description_company: "",
+  created_company: undefined,
+  registry_number_company: undefined,
+  matricule_number_company: undefined,
+  website_link_company: "",
+  country_company: "",
+  zip_company: undefined,
+  state_company: "",
+  city_company: "",
+  street_company: "",
+  localisation_company: "",
+  Pourcentage_actions_company: undefined,
+  certificat_constitution_company: undefined,
+  proof_address_company: undefined,
+  acte_constitutif_company: undefined,
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,62 +14,33 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { LegalSchema } from "@/_validation";
 import { Checkbox } from "@/components/ui/checkbox";
 import DocumentUploader from "@/components/ui/shared/UploadDocument";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import {
+  createUser,
+  nextStep,
+  previousStep,
+} from "@/_lib/features/Auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
+import { LegalSchema } from "@/_validation/SignUp";
 
 const LegalForm: React.FC = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth?.user);
+  const state = useAppSelector((state) => state.auth.newUserData);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-
-    if (userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        dispatch(createUser(parsedUserData));
-      } catch (error) {
-        console.log("error getting userData" + error);
-      }
-    }
-  }, []);
 
   const form = useForm<z.infer<typeof LegalSchema>>({
     resolver: zodResolver(LegalSchema),
+    defaultValues: {
+      ...state,
+    },
   });
 
   function onSubmit(values: z.infer<typeof LegalSchema>) {
     setIsLoading(true);
-    const newData = {
-      ...values,
-      certificat_constitution_company: values?.certificat_constitution_company
-        ? URL.createObjectURL(values?.certificat_constitution_company[0])
-        : null,
-      proof_address_companys: values?.proof_address_companys
-        ? URL.createObjectURL(values?.proof_address_companys[0])
-        : null,
-      acte_constitutif_company: values?.acte_constitutif_company
-        ? URL.createObjectURL(values?.acte_constitutif_company[0])
-        : null,
-    };
-
-    const updatedUserData = Object.assign({}, state, newData);
-    try {
-      localStorage.setItem("userData", JSON.stringify(updatedUserData));
-      dispatch(createUser(newData));
-
-      // move to the validation page
-      router.push(`/signup/business/validation`);
-    } catch (error) {
-      console.log("error updating storage" + error);
-    }
+    dispatch(createUser(values));
+    dispatch(nextStep());
   }
 
   return (
@@ -167,6 +138,7 @@ const LegalForm: React.FC = () => {
           <Button
             type="button"
             className="border-2 border-primary text-primary w-[224.24px] h-[50px] font-semibold bg-transparent"
+            onClick={() => dispatch(previousStep())}
           >
             Retour
           </Button>

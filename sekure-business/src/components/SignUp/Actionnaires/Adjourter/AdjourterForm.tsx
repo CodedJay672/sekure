@@ -16,74 +16,34 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { AdresseInfoSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import FileUploader from "@/components/ui/shared/FileUploader";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { createUser } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
+import { StakeholdersInfoSchema } from "@/_validation/SignUp";
 
-const AdjourterForm: React.FC = () => {
-  const router = useRouter();
+interface AdjourterFormProps {
+  onPageChange: (page: string) => void;
+}
+
+const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth?.user);
+  const state = useAppSelector((state) => state.auth.newUserData);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-
-    if (userData) {
-      try {
-        const parsedData = JSON.parse(userData);
-        dispatch(createUser(parsedData));
-      } catch (error) {
-        console.log("fetch storage error" + error);
-      }
-    }
-  }, []);
-
-  const form = useForm<z.infer<typeof AdresseInfoSchema>>({
-    resolver: zodResolver(AdresseInfoSchema),
+  const form = useForm<z.infer<typeof StakeholdersInfoSchema>>({
+    resolver: zodResolver(StakeholdersInfoSchema),
     defaultValues: {
-      full_name_user: "",
-      poste_user: "",
-      date_birth_user: "",
-      pourcentage_action_user: "",
-      email_user: "",
-      phone_user: "",
-      nationality_user: "",
-      localisation_user: "",
-      street_user: "",
-      city_user: "",
-      etat_user: "",
-      zip_user: "",
-      receive_mail: false,
+      ...state,
     },
   });
 
-  function onSubmit(values: z.infer<typeof AdresseInfoSchema>) {
+  function onSubmit(values: z.infer<typeof StakeholdersInfoSchema>) {
     setIsLoading(true);
-    const newData = {
-      ...values,
-      document1_user: values?.document1_user
-        ? URL.createObjectURL(values?.document1_user[0])
-        : null,
-      document2_user: values?.document2_user
-        ? URL.createObjectURL(values?.document2_user[0])
-        : null,
-    };
-
-    try {
-      dispatch(createUser(newData));
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({ ...state, ...newData })
-      );
-      router.back();
-    } catch (error) {
-      console.log("failed to update storage" + error);
-    }
+    dispatch(createUser(values));
+    onPageChange("home");
   }
 
   return (
@@ -141,7 +101,7 @@ const AdjourterForm: React.FC = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="date"
+                    type="text"
                     placeholder="Votre adresse mail"
                     className="input pr-20"
                     {...field}
@@ -404,7 +364,7 @@ const AdjourterForm: React.FC = () => {
           <Button
             type="button"
             className="w-[224.24px] h-[50px] bg-[#F2F2F2]"
-            onClick={() => router.back()}
+            onClick={() => onPageChange("home")}
           >
             Annuler
           </Button>

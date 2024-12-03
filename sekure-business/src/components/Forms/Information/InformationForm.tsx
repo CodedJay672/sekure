@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,67 +13,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { InformationSchema } from "@/_validation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import { createUser, nextStep } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
+import { InformationSchema } from "@/_validation/SignUp";
 
 const InformationForm = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
-  const [userInfo, setUserInfo] = useState<string | null>(null);
-  const state = useAppSelector((state) => state.auth?.user);
-
-  useEffect(() => {
-    const storageData = localStorage.getItem("userData");
-
-    if (storageData) {
-      try {
-        const parsedData = JSON.parse(storageData);
-        setUserInfo(parsedData);
-        dispatch(createUser(parsedData));
-      } catch (error) {
-        console.log("error parsing data" + error);
-      }
-    }
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
+  const state = useAppSelector((state) => state.auth.newUserData);
 
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
     defaultValues: {
-      name_company: "",
-      email_company: "",
-      sector_activity_company: "",
-      description_company: "",
-      created_company: "",
-      registry_number_company: "",
-      matricule_number_company: "",
-      phone_company: "",
-      website_link_company: "",
+      ...state,
     },
   });
 
-  const { isSubmitting } = form.formState;
-
   function onSubmit(values: z.infer<typeof InformationSchema>) {
-    //add the new data to the userData
-    const newDatas = Object.assign({}, state, values);
-
-    try {
-      //persist in the localStorage
-      localStorage.setItem("userData", JSON.stringify(newDatas));
-
-      //update the userData
-      dispatch(createUser(values));
-
-      //step 2
-      router.push(`/signup/business/adresse`);
-    } catch (error) {
-      console.log("error updating localstorage" + error);
-    }
+    setIsLoading(true);
+    dispatch(createUser(values));
+    dispatch(nextStep());
   }
 
   return (
@@ -184,10 +146,14 @@ const InformationForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="date"
                     placeholder="Votre mot de passe"
                     className="input pr-20"
                     {...field}
+                    value={
+                      field.value
+                        ? new Date(field.value).toISOString().split("T")[0]
+                        : ""
+                    }
                   />
                 </FormControl>
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -290,10 +256,10 @@ const InformationForm = () => {
         <div className="w-full flex place-content-end mt-10">
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className="primary-btn w-[224.24px] h-[50px]"
           >
-            {isSubmitting ? (
+            {isLoading ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Continuer"

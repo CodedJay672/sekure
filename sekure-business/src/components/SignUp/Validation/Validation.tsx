@@ -6,50 +6,48 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import {
+  createUser,
+  previousStep,
+  resetLocalStorage,
+} from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
+import { InformationSchema, NewUser } from "@/_validation/SignUp";
+import { APIErrors, ApiResponse } from "@/utils/types/types";
 
 const Validation: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth?.user);
+  const state = useAppSelector((state) => state.auth.newUserData);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const userData = localStorage.getItem("userData");
-
-    if (userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        dispatch(createUser(parsedUserData));
-      } catch (error) {
-        console.log("error getting user data" + error);
-      }
-    }
-  }, []);
 
   const { mutate: signUp, data } = useMutation({
     mutationKey: ["createUser", state],
     mutationFn: async () => {
-      return await createUserAccount(state);
+      return await createUserAccount(state as NewUser);
     },
     onSuccess: (data) => {
-      if (!data?.user) {
-        setIsLoading(false);
+      if ((data as ApiResponse).success) {
         toast({
-          description:
-            "Une erreur s'est produite lors de la création de votre compte",
+          description: "Compte créé avec succès",
         });
-        return;
+        return router.push("/signin");
+      } else {
+        const errors = data as APIErrors;
+        if (errors["error : "]) {
+          const error = errors["error : "];
+          for (const key in error) {
+            toast({
+              description: error[key][0],
+            });
+          }
+        }
+        setIsLoading(false);
       }
-      toast({
-        description: data?.message,
-      });
-      router.push("/signin");
     },
     onError: (error) => {
       toast({
@@ -184,6 +182,7 @@ const Validation: React.FC = () => {
         <Button
           type="button"
           className="w-[224.24px] h-[50px] bg-transparent border-2 border-primary font-semibold text-primary"
+          onClick={() => dispatch(previousStep())}
         >
           Retour
         </Button>
