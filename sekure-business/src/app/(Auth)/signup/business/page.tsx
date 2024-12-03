@@ -2,7 +2,7 @@ import StepForm from "@/components/SignUp/StepForm";
 import Steps from "@/components/SignUp/Steps";
 import React from "react";
 
-export const steps = [
+const steps = [
   {
     number: 1,
     title: "Informations",
