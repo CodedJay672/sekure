@@ -44,10 +44,7 @@ const Actionnaires: React.FC<ActionnairesProps> = ({ onPageChange }) => {
         </span>
       </div>
 
-      <div
-        className="flex items-center py-[18px] px-[15px] border rounded-[18px] cursor-pointer"
-        onClick={() => onPageChange("vous")}
-      >
+      <div className="flex items-center py-[18px] px-[15px] border rounded-[18px] cursor-pointer">
         <div className="w-[48px] h-[48px] rounded-full bg-primary mr-5" />
         <div className="flex-1 flex items-center">
           <div className="flex-1">
