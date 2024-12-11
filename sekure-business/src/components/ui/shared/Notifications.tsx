@@ -6,27 +6,30 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import NotificationItem from "./NotificationItem";
-import { info } from "@/constants";
 import Image from "next/image";
 
 const Notifications: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <div className='w-[40.58px] h-[40.58px] relative rounded-full flex justify-center items-center'>
+        <div className="w-[40.58px] h-[40.58px] relative rounded-full flex justify-center items-center">
           <Image
-            src='/assets/icons-pack-2/notifications.svg'
-            alt='notification'
+            src="/assets/icons-pack-2/notifications.svg"
+            alt="notification"
             width={40.58}
             height={40.58}
             className="object-cover"
           />
-          <div className='flex-center max-w-[17.48px] max-h-[17.48px] px-[5px] bg-dark3 absolute bottom-0 right-0 rounded-full animate-pulse ease-in-out duration-1000'>
-            <p className='text-[9px] font-bold leading-6 text-white'>3</p>
+          <div className="flex-center max-w-[17.48px] max-h-[17.48px] px-[5px] bg-dark3 absolute bottom-0 right-0 rounded-full animate-pulse ease-in-out duration-1000">
+            <p className="text-[9px] font-bold leading-6 text-white">3</p>
           </div>
         </div>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[383px] h-[795px]" aria-describedby="notifications">
+      <SheetContent
+        side="right"
+        className="w-[383px] h-[795px]"
+        aria-describedby="notifications"
+      >
         <SheetHeader>
           <SheetTitle className="text-base leading-5">Notifications</SheetTitle>
         </SheetHeader>
@@ -40,14 +43,14 @@ const Notifications: React.FC = () => {
           </div>
 
           <div className="w-full flex flex-col gap-6">
-            {info.map((data, idx) => (
+            {/* {info.map((data, idx) => (
               <NotificationItem info={data} key={idx} />
-            ))}
+            ))} */}
           </div>
         </div>
       </SheetContent>
     </Sheet>
-  )
-}
+  );
+};
 
-export default Notifications
+export default Notifications;

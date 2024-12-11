@@ -226,7 +226,7 @@ const SignupForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-[10px] leading-[15px] font-normal">
-                Adresse email l'entreprise
+                Adresse email l&apos;entreprise
               </FormLabel>
               <FormControl>
                 <Input
