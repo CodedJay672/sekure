@@ -1,6 +1,5 @@
 "use client";
 
-import { AdminData } from "@/constants";
 import RoleSection from "../ui/shared/RoleSection";
 import {
   Sheet,
