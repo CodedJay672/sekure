@@ -89,7 +89,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state?.sector_activity_company?.toUpperCase()}
+              {state?.sector_activity?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -97,7 +97,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state?.sector_activity_company?.toUpperCase()}
+              {state?.sector_activity?.toUpperCase()}
             </p>
           </div>
           <div>
@@ -110,7 +110,7 @@ const Validation: React.FC = () => {
           </div>
           <div className="col-span-3 pl-1">
             <p className="text-[12px] leading-[18px] font-normal">
-              {state?.phone_company}
+              {state?.phone}
             </p>
           </div>
         </div>
@@ -167,7 +167,7 @@ const Validation: React.FC = () => {
         name={state?.full_name_user}
         email={state?.email_user}
         poste={state?.poste}
-        parte={state?.pourcentage_action}
+        parte={state?.Pourcentage_action}
       />
       <div className="w-full flex justify-between gap-2">
         <Button
