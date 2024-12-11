@@ -1,5 +1,4 @@
-import { localstorageData } from "@/_validation/SignUp";
-import { ICardDetails, INavLinks, ITableColumn } from "./types";
+import { INavLinks } from "./types";
 
 export const navLinks: INavLinks[] = [
   {
@@ -47,9 +46,7 @@ export const bottomNav: INavLinks[] = [
   },
 ];
 
-
 export interface IUserColumn {
   accessor: string;
   header: string;
 }
-

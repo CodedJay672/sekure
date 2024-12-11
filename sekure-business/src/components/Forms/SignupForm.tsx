@@ -54,10 +54,7 @@ const SignupForm = () => {
     mutationFn: async (userValues: signUpDataType) => {
       return await createUserCompany(userValues);
     },
-  });
-
-  useEffect(() => {
-    if (isSuccess) {
+    onSuccess: (data) => {
       if ("user" in data) {
         queryClient.invalidateQueries({ queryKey: ["signup"] });
         dispatch(updateUserObj(data));
@@ -72,14 +69,13 @@ const SignupForm = () => {
       toast({
         description: "Something went wrong",
       });
-    }
-
-    if (error) {
+    },
+    onError: (error) => {
       toast({
         description: error.message,
       });
-    }
-  }, [isSuccess, error]);
+    },
+  });
 
   function onSubmit(values: z.infer<typeof signupSchema>) {
     createUserCompanyMutation(values);
