@@ -1,6 +1,5 @@
 "use client";
 
-import { bigTable } from "@/constants";
 import { Button } from "../ui/button";
 // import TableComponent from "../ui/shared/TableComponent";
 import { usePathname, useRouter } from "next/navigation";
