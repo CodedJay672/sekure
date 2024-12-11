@@ -1,27 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { RxCaretRight } from "react-icons/rx";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import {
-  createUser,
-  nextStep,
-  previousStep,
-} from "@/_lib/features/Auth/authSlice";
+import { nextStep, previousStep } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
 
 interface ActionnairesProps {
@@ -39,14 +28,10 @@ const Actionnaires: React.FC<ActionnairesProps> = ({ onPageChange }) => {
 
   const form = useForm<z.infer<typeof ActionSchema>>({
     resolver: zodResolver(ActionSchema),
-    defaultValues: {
-      receive_mail: false,
-    },
   });
 
   function onSubmit(values: z.infer<typeof ActionSchema>) {
     setIsLoading(true);
-    dispatch(createUser(values));
     dispatch(nextStep());
   }
 
@@ -99,27 +84,6 @@ const Actionnaires: React.FC<ActionnairesProps> = ({ onPageChange }) => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <FormField
-            control={form.control}
-            name="receive_mail"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="mt-1 text-white font-bold"
-                  />
-                </FormControl>
-                <div className="leading-none">
-                  <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
-                    Je confirme que mon entreprise est dument enregistrée et
-                    possède les autorisations et licences légales pour opérer
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
           <br />
           <div className="w-full flex justify-between">
             <Button
