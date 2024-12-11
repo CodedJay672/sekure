@@ -12,35 +12,113 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import DocumentUploader from "@/components/ui/shared/UploadDocument";
 import {
   createUser,
   nextStep,
   previousStep,
+  updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { LegalSchema } from "@/_validation/SignUp";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { signupLegal } from "@/_data/user";
+import { IError } from "@/utils/types/SignupTypes";
+import { transformedErrorObject } from "@/utils";
+import FileUploader from "@/components/ui/shared/FileUploader";
 
 const LegalForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.newUserData);
-  const [isLoading, setIsLoading] = useState(false);
+  const state = useAppSelector((state) => state.auth);
+  const { userObj } = state;
+  const [errorResponse, setErrorResponse] = useState({});
 
-  const form = useForm<z.infer<typeof LegalSchema>>({
-    resolver: zodResolver(LegalSchema),
-    defaultValues: {
-      ...state,
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { mutate: signupLegalMutation, isPending } = useMutation({
+    mutationKey: ["signUpLegalMutation"],
+    mutationFn: async ({
+      infoDetails,
+      user_id,
+      company_id,
+    }: {
+      infoDetails: FormData;
+      user_id: number;
+      company_id: number;
+    }) => {
+      return await signupLegal(infoDetails, user_id, company_id);
+    },
+    onSuccess: (data) => {
+      if ("user" in data) {
+        queryClient.invalidateQueries({ queryKey: ["signUpLegalMutation"] });
+        toast({
+          description: data.message,
+        });
+        dispatch(updateUserObj(data));
+        return dispatch(nextStep());
+      }
+      const errorObj = data as IError;
+      setErrorResponse(transformedErrorObject(errorObj));
+      toast({
+        description: "Something went wrong.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error?.message,
+      });
     },
   });
 
+  const form = useForm<z.infer<typeof LegalSchema>>({
+    resolver: zodResolver(LegalSchema),
+    defaultValues: {},
+  });
+
   function onSubmit(values: z.infer<typeof LegalSchema>) {
-    setIsLoading(true);
-    dispatch(createUser(values));
-    dispatch(nextStep());
+    const formData = new FormData();
+
+    if (
+      values.acte_constitutif &&
+      values.certifat_constitution &&
+      values.proof_address
+    ) {
+      formData.append("acte_constitutif", values.acte_constitutif[0]);
+      formData.append("certifat_constitution", values.certifat_constitution[0]);
+      formData.append("proof_address", values.proof_address[0]);
+    }
+
+    //create new values with the file url string
+    const newValues = {
+      ...values,
+      acte_constitutif: values.acte_constitutif
+        ? URL.createObjectURL(values.acte_constitutif[0])
+        : "",
+      certifat_constitution: values.certifat_constitution
+        ? URL.createObjectURL(values.certifat_constitution[0])
+        : "",
+      proof_address: values.proof_address
+        ? URL.createObjectURL(values.proof_address[0])
+        : "",
+    };
+
+    if (userObj.user.id && userObj.company.id) {
+      signupLegalMutation({
+        infoDetails: formData,
+        user_id: userObj.user.id,
+        company_id: userObj.company.id,
+      });
+
+      return dispatch(createUser(newValues));
+    }
+
+    toast({
+      description: "Could not find a valid ID",
+    });
   }
 
   return (
@@ -52,7 +130,7 @@ const LegalForm: React.FC = () => {
         <div className="w-full px-[15px] pt-2 pb-[18px] rounded-[19px] border">
           <FormField
             control={form.control}
-            name="certificat_constitution_company"
+            name="certifat_constitution"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">
@@ -64,15 +142,22 @@ const LegalForm: React.FC = () => {
                   </FormLabel>
                 </div>
                 <FormControl>
-                  <DocumentUploader fieldOnChange={field.onChange} />
+                  <FileUploader fieldOnChange={field.onChange} />
                 </FormControl>
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="proof_address_companys"
+            name="proof_address"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">
@@ -85,15 +170,22 @@ const LegalForm: React.FC = () => {
                   </FormLabel>
                 </div>
                 <FormControl>
-                  <DocumentUploader fieldOnChange={field.onChange} />
+                  <FileUploader fieldOnChange={field.onChange} />
                 </FormControl>
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="acte_constitutif_company"
+            name="acte_constitutif"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <div className="flex flex-col gap-[1px]">
@@ -105,35 +197,19 @@ const LegalForm: React.FC = () => {
                   </FormLabel>
                 </div>
                 <FormControl>
-                  <DocumentUploader fieldOnChange={field.onChange} />
+                  <FileUploader fieldOnChange={field.onChange} />
                 </FormControl>
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
         </div>
-
-        <br />
-        <FormField
-          control={form.control}
-          name="receive_mail"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="mt-1 text-white font-bold"
-                />
-              </FormControl>
-              <div className="leading-none">
-                <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
-                  Je certifie la conformité des informations remplies dans ce
-                  formulaire
-                </FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
         <div className="w-full flex justify-between gap-2">
           <Button
             type="button"
@@ -144,10 +220,10 @@ const LegalForm: React.FC = () => {
           </Button>
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="primary-btn w-[224.24px] h-[50px]"
           >
-            {isLoading ? (
+            {isPending ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Continuer"

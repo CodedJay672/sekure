@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,26 +16,83 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser, nextStep } from "@/_lib/features/Auth/authSlice";
+import { useToast } from "@/hooks/use-toast";
+import {
+  createUser,
+  nextStep,
+  updateUserObj,
+} from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { InformationSchema } from "@/_validation/SignUp";
+import { informationDataType, InformationSchema } from "@/_validation/SignUp";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { signupInformation } from "@/_data/user";
+import { IError } from "@/utils/types/SignupTypes";
+import { transformedErrorObject } from "@/utils";
+import { useState } from "react";
 
 const InformationForm = () => {
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const state = useAppSelector((state) => state.auth.newUserData);
+  const state = useAppSelector((state) => state.auth);
+  const { userObj, newUserData } = state;
+  const [errorResponse, setErrorResponse] = useState({});
+
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { mutate: signUpInformationMutation, isPending } = useMutation({
+    mutationKey: ["signUpInformationMutation"],
+    mutationFn: async ({
+      infoDetails,
+      user_id,
+      company_id,
+    }: {
+      infoDetails: informationDataType;
+      user_id: number;
+      company_id: number;
+    }) => {
+      return await signupInformation(infoDetails, user_id, company_id);
+    },
+    onSuccess: (data) => {
+      if ("user" in data) {
+        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
+        toast({
+          description: data.message,
+        });
+        dispatch(updateUserObj(data));
+        return dispatch(nextStep());
+      }
+      const errorObj = data as IError;
+      setErrorResponse(transformedErrorObject(errorObj));
+      toast({
+        description: "Something went wrong.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error?.message,
+      });
+    },
+  });
 
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
     defaultValues: {
-      ...state,
+      ...newUserData,
     },
   });
 
   function onSubmit(values: z.infer<typeof InformationSchema>) {
-    setIsLoading(true);
-    dispatch(createUser(values));
-    dispatch(nextStep());
+    if (userObj.user.id && userObj.company.id) {
+      signUpInformationMutation({
+        infoDetails: values,
+        user_id: userObj.user.id,
+        company_id: userObj.company.id,
+      });
+      return dispatch(createUser(values));
+    }
+
+    toast({
+      description: "Could not find a valid ID",
+    });
   }
 
   return (
@@ -48,49 +104,7 @@ const InformationForm = () => {
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
-            name="name_company"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Nom De l’entreprise
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email_company"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Email de l’entreprise
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="sector_activity_company"
+            name="sector_activity"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -104,7 +118,13 @@ const InformationForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -114,7 +134,7 @@ const InformationForm = () => {
             name="description_company"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
+                <FormLabel className="text-xs font-light group">
                   Description de l’entreprise
                 </FormLabel>
                 <FormControl>
@@ -125,7 +145,13 @@ const InformationForm = () => {
                     className="input pr-20 h-[126px]"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -146,24 +172,26 @@ const InformationForm = () => {
                 </FormLabel>
                 <FormControl>
                   <Input
+                    type="text"
                     placeholder="Votre mot de passe"
                     className="input pr-20"
                     {...field}
-                    value={
-                      field.value
-                        ? new Date(field.value).toISOString().split("T")[0]
-                        : ""
-                    }
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="registry_number_company"
+            name="registry_number"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -177,14 +205,20 @@ const InformationForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="matricule_number_company"
+            name="matricule_number"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -198,7 +232,13 @@ const InformationForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -211,7 +251,7 @@ const InformationForm = () => {
         <div className="border border-[#E5E5E5] rounded-[15px] px-3 py-4 space-y-1">
           <FormField
             control={form.control}
-            name="phone_company"
+            name="phone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -225,14 +265,20 @@ const InformationForm = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="website_link_company"
+            name="website_link"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -246,7 +292,13 @@ const InformationForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -256,10 +308,10 @@ const InformationForm = () => {
         <div className="w-full flex place-content-end mt-10">
           <Button
             type="submit"
-            disabled={isLoading}
             className="primary-btn w-[224.24px] h-[50px]"
+            disabled={isPending}
           >
-            {isLoading ? (
+            {isPending ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Continuer"

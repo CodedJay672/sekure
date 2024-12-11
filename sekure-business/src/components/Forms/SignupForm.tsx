@@ -16,23 +16,25 @@ import {
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser, resetLocalStorage } from "@/_lib/features/Auth/authSlice";
+import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
-import { signupSchema } from "@/_validation/SignUp";
+import { signUpDataType, signupSchema } from "@/_validation/SignUp";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createUserCompany } from "@/_data/user";
+import { createUser, updateUserObj } from "@/_lib/features/Auth/authSlice";
+import { transformedErrorObject } from "@/utils";
+import { IError } from "@/utils/types/SignupTypes";
 
 const SignupForm = () => {
+  const [errorResponse, setErrorResponse] = useState({});
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth.newUserData);
-
-  useEffect(() => {
-    dispatch(resetLocalStorage());
-  }, []);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -41,10 +43,47 @@ const SignupForm = () => {
     },
   });
 
+  const {
+    mutate: createUserCompanyMutation,
+    data,
+    isSuccess,
+    isPending,
+    error,
+  } = useMutation({
+    mutationKey: ["signup"],
+    mutationFn: async (userValues: signUpDataType) => {
+      return await createUserCompany(userValues);
+    },
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      if ("user" in data) {
+        queryClient.invalidateQueries({ queryKey: ["signup"] });
+        dispatch(updateUserObj(data));
+        toast({
+          description: data.message,
+        });
+        return router.push("/signup/business");
+      }
+
+      const error = data as IError;
+      setErrorResponse(transformedErrorObject(error));
+      toast({
+        description: "Something went wrong",
+      });
+    }
+
+    if (error) {
+      toast({
+        description: error.message,
+      });
+    }
+  }, [isSuccess, error]);
+
   function onSubmit(values: z.infer<typeof signupSchema>) {
-    setIsLoading(true);
+    createUserCompanyMutation(values);
     dispatch(createUser(values));
-    router.push("/signup/business");
   }
 
   return (
@@ -66,71 +105,13 @@ const SignupForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="name_company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[12px] leading-6">
-                Nom de l’entreprise
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Entrez le nom de votre entreprise"
-                  {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] text-black leading-3 font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
-                />
-              </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="receive_mail"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="mt-1 text-white font-bold"
-                />
-              </FormControl>
-              <div className="leading-none">
-                <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
-                  Je confirme que mon entreprise est dument enregistrée et
-                  possède les autorisations et licences légales pour opérer
-                </FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="country_company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[10px] leading-[15px] font-normal">
-                Pays
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Entrez le nom de votre entreprise"
-                  {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
-                />
-              </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />
@@ -151,7 +132,121 @@ const SignupForm = () => {
                   className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="id_role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
+                Id role
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Votre id_role"
+                  {...field}
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                />
+              </FormControl>
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="name_company"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[12px] leading-6">
+                Nom de l’entreprise
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Entrez le nom de votre entreprise"
+                  {...field}
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] text-black leading-3 font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                />
+              </FormControl>
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="country_company"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
+                Pays
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Entrez le nom de votre entreprise"
+                  {...field}
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                />
+              </FormControl>
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email_company"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[10px] leading-[15px] font-normal">
+                Adresse email l'entreprise
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="Votre adresse mail"
+                  {...field}
+                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
+                />
+              </FormControl>
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />
@@ -172,7 +267,13 @@ const SignupForm = () => {
                   className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {field.name in errorResponse ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorResponse[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />
@@ -180,10 +281,10 @@ const SignupForm = () => {
         <div className="py-3 flex items-center gap-2">
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
           >
-            {isLoading ? (
+            {isPending ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Créer mon compte"

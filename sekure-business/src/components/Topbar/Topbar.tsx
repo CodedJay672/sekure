@@ -14,16 +14,7 @@ import { getUser } from "@/_data/user";
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.connexion?.user);
-
-  useEffect(() => {
-    if (state === null) {
-      const user = localStorage.getItem("user");
-      if (user) {
-        dispatch(updateConnexionData(JSON.parse(user)));
-      }
-    }
-  }, [state, dispatch]);
+  const state = useAppSelector((state) => state.connexion.user);
 
   //initialize the redux store with user data in the local storage
   const { data, isSuccess } = useQuery({

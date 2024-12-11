@@ -21,7 +21,6 @@ import { signIn } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { useEffect } from "react";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { User } from "@/utils/types/types";
 import { CgSpinner } from "react-icons/cg";
@@ -31,19 +30,6 @@ const PwdRecOTPFForm = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.connexion?.user);
-
-  useEffect(() => {
-    const userInfo = localStorage.getItem("user");
-
-    if (userInfo) {
-      try {
-        const parsedUserInfo = JSON.parse(userInfo);
-        dispatch(updateConnexionData(parsedUserInfo));
-      } catch (error) {
-        console.log("error getting user info" + error);
-      }
-    }
-  }, []);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
@@ -56,6 +42,9 @@ const PwdRecOTPFForm = () => {
       return signIn({ id, ...values });
     },
     onSuccess: (data) => {
+      const email_verified_at = Date.now().toLocaleString();
+      const updatedUserInfo = { ...state, email_verified_at } as User;
+      dispatch(updateConnexionData(updatedUserInfo));
       toast({
         description: "Vous êtes connecté",
       });
@@ -64,15 +53,7 @@ const PwdRecOTPFForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
-    const email_verified_at = Date.now().toLocaleString();
-    const updatedUserInfo = { ...state, email_verified_at } as User;
-    try {
-      userSignIn(values);
-      dispatch(updateConnexionData(updatedUserInfo));
-      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
-    } catch (error) {
-      console.log("failed to update user info" + error);
-    }
+    userSignIn(values);
   }
 
   return (

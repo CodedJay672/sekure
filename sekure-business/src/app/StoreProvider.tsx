@@ -4,8 +4,9 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 // import { store, AppStore } from "../_lib/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { makeStore, AppDispatch, RootState } from "@/_lib/redux/store";
+import { makeStore, persistor } from "@/_lib/redux/store";
 import { persistStore } from "redux-persist";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 export default function StoreProvider({
   children,
@@ -29,7 +30,14 @@ export default function StoreProvider({
 
   return (
     <Provider store={storeRef.current}>
-      <PersistGate loading={null} persistor={persistorRef.current!}>
+      <PersistGate
+        loading={
+          <div className="w-full h-dvh place-content-center">
+            <LoadingSpinner />
+          </div>
+        }
+        persistor={persistor}
+      >
         {children}
       </PersistGate>
     </Provider>

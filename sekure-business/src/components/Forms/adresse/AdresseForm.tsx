@@ -18,29 +18,81 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   createUser,
-  loadData,
   nextStep,
   previousStep,
+  updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { AdresseSchema } from "@/_validation/SignUp";
+import { adressDataType, AdresseSchema } from "@/_validation/SignUp";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { signupAdresse } from "@/_data/user";
+import { IError } from "@/utils/types/SignupTypes";
+import { transformedErrorObject } from "@/utils";
 
 const AdresseForm = () => {
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const state = useAppSelector((state) => state.auth.newUserData);
+  const state = useAppSelector((state) => state.auth);
+  const { userObj, newUserData } = state;
+  const [errorResponse, setErrorResponse] = useState({});
+
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { mutate: signUpInformationMutation, isPending } = useMutation({
+    mutationKey: ["signUpAdresseMutation"],
+    mutationFn: async ({
+      infoDetails,
+      user_id,
+      company_id,
+    }: {
+      infoDetails: adressDataType;
+      user_id: number;
+      company_id: number;
+    }) => {
+      return await signupAdresse(infoDetails, user_id, company_id);
+    },
+    onSuccess: (data) => {
+      if ("user" in data) {
+        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
+        toast({
+          description: data.message,
+        });
+        dispatch(updateUserObj(data));
+        dispatch(nextStep());
+      }
+      const errorObj = data as IError;
+      setErrorResponse(transformedErrorObject(errorObj));
+      toast({
+        description: "Something went wrong.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error?.message,
+      });
+    },
+  });
 
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
     defaultValues: {
-      ...state,
+      ...newUserData,
     },
   });
 
   function onSubmit(values: z.infer<typeof AdresseSchema>) {
-    setIsLoading(true);
-    dispatch(createUser(values));
-    dispatch(nextStep());
+    if (userObj.user.id && userObj.company.id) {
+      signUpInformationMutation({
+        infoDetails: values,
+        user_id: userObj.user.id,
+        company_id: userObj.company.id,
+      });
+      return dispatch(createUser(values));
+    }
+
+    toast({
+      description: "Could not find a valid ID",
+    });
   }
 
   return (
@@ -50,7 +102,7 @@ const AdresseForm = () => {
           <div className="flex flex-wrap justify-between">
             <FormField
               control={form.control}
-              name="localisation_company"
+              name="localisation"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -64,35 +116,20 @@ const AdresseForm = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  {field.name in errorResponse ? (
+                    <small className="text-xs text-red-600 align-right">
+                      {errorResponse[field.name] as string}
+                    </small>
+                  ) : (
+                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  )}{" "}
                 </FormItem>
               )}
             />
 
             <FormField
               control={form.control}
-              name="state_company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-light">
-                    Region / State
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cameroun"
-                      {...field}
-                      className="input pr-20 w-full"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="zip_company"
+              name="zip"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -106,14 +143,20 @@ const AdresseForm = () => {
                       className="input pr-20 w-full"
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  {field.name in errorResponse ? (
+                    <small className="text-xs text-red-600 align-right">
+                      {errorResponse[field.name] as string}
+                    </small>
+                  ) : (
+                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  )}{" "}
                 </FormItem>
               )}
             />
 
             <FormField
               control={form.control}
-              name="city_company"
+              name="city"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-light">
@@ -127,7 +170,13 @@ const AdresseForm = () => {
                       className="input pr-20 w-full"
                     />
                   </FormControl>
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  {field.name in errorResponse ? (
+                    <small className="text-xs text-red-600 align-right">
+                      {errorResponse[field.name] as string}
+                    </small>
+                  ) : (
+                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                  )}{" "}
                 </FormItem>
               )}
             />
@@ -135,7 +184,7 @@ const AdresseForm = () => {
 
           <FormField
             control={form.control}
-            name="street_company"
+            name="street"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -149,14 +198,20 @@ const AdresseForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
 
           <FormField
             control={form.control}
-            name="address_company"
+            name="appartement"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-light">
@@ -170,7 +225,13 @@ const AdresseForm = () => {
                     className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -187,10 +248,10 @@ const AdresseForm = () => {
           </Button>
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="primary-btn w-[224.24px] h-[50px]"
           >
-            {isLoading ? (
+            {isPending ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Continuer"

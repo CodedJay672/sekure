@@ -1,6 +1,15 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
+import {
+  actionairesDataType,
+  adressDataType,
+  informationDataType,
+  legalDataType,
+  signUpDataType,
+} from "@/_validation/SignUp";
+import { generateRandomCode, getFileExtension } from "@/utils";
+import { IError, signUpResponse } from "@/utils/types/SignupTypes";
 import { AllUsers, User } from "@/utils/types/types";
 import { cache } from "react";
 
@@ -94,5 +103,175 @@ export const updateUser = async (
     return user;
   } catch (error) {
     throw new Error("failed to update the user information");
+  }
+};
+
+export const createUserCompany = async (
+  data: signUpDataType
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/create_user_company`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok) {
+      const response = await res.json();
+      return response as IError;
+    }
+
+    const userData = (await res.json()) as Partial<signUpResponse>;
+    return userData;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const signupInformation = async (
+  data: informationDataType,
+  user_id: number,
+  company_id: number
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/signup_information?user=${user_id}&company=${company_id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      return errorData as IError;
+    }
+
+    const userData = await res.json();
+    return userData as Partial<signUpResponse>;
+  } catch (error: any) {
+    console.error("Error during signupInformation:", error);
+    throw new Error(`Failed to sign up information: ${error.message}`);
+  }
+};
+
+export const signupAdresse = async (
+  data: adressDataType,
+  user_id: number,
+  company_id: number
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/signup_adresse?user=${user_id}&company=${company_id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok) {
+      const response = await res.json();
+      return response as IError;
+    }
+
+    const userData = await res.json();
+    return userData as Partial<signUpResponse>;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const signupActionnaire = async (
+  data: FormData,
+  user_id: number,
+  company_id: number
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/signup_actionnaire?user=${user_id}&company=${company_id}`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    if (!res.ok) {
+      const errorObj = await res.json();
+      return errorObj as IError;
+    }
+
+    const userData = await res.json();
+    return userData as Partial<signUpResponse>;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const signupLegal = async (
+  data: FormData,
+  user_id: number,
+  company_id: number
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/signup_legal?user=${user_id}&company=${company_id}`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    console.log("res", res);
+    if (!res.ok) {
+      const errorObj = await res.json();
+      return errorObj as IError;
+    }
+
+    const userData = await res.json();
+    return userData as Partial<signUpResponse>;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const signupValide = async (
+  data: legalDataType,
+  user_id: number,
+  company_id: number
+): Promise<IError | Partial<signUpResponse>> => {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/signup_valide?user=${user_id}&company=${company_id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("something went wrong");
+    }
+
+    const userData = await res.json();
+    return userData as Partial<signUpResponse> | IError;
+  } catch (error) {
+    throw new Error(`${error}`);
   }
 };

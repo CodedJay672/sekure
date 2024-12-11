@@ -40,29 +40,30 @@ export interface Role {
 }
 
 export interface User {
-  id?: number;
-  full_name?: string;
-  poste?: string;
-  date_birth?: string;
-  pourcentage_action?: number;
-  email?: string;
-  nationality?: string;
-  street?: string;
-  localisation?: string;
-  city?: string;
-  etat?: string;
-  zip?: string;
-  document1?: string | null;
-  document2?: string | null;
-  phone?: string;
-  active?: number;
-  updated_by?: number | null;
-  image?: string | null;
-  email_verified_at?: string | null;
-  created_at?: string;
-  updated_at?: string;
-  roles?: Role[];
-  user_company?: UserCompany[];
+  id: number;
+  full_name: string;
+  poste: string;
+  date_birth: string;
+  pourcentage_action: number;
+  email: string;
+  nationality: string;
+  street: string;
+  localisation: string;
+  city: string;
+  etat: string;
+  zip: string;
+  document1: string;
+  document2: string;
+  phone: string;
+  active: number;
+  updated_by: number;
+  image: string;
+  email_verified_at: string;
+  step: string;
+  created_at: string;
+  updated_at: string;
+  roles: Role[];
+  user_company: UserCompany[];
 }
 
 interface Pagination {
@@ -93,32 +94,13 @@ export interface AllUsers {
 export interface ApiResponse {
   success: boolean;
   message: string;
-  company: UserCompany;
-  user: User;
+  user: Partial<User>;
 }
 
 export interface APIErrors {
   "error : ": {
     [key: string]: Array<string>;
   };
-}
-
-export interface Stakeholder {
-  full_name_user: string;
-  poste_user: string;
-  date_birth_user: string;
-  pourcentage_action_user: string;
-  email_user: string;
-  phone_user: string;
-  nationality_user: string;
-  localisation_user: string;
-  street_user: string;
-  city_user: string;
-  etat_user: string;
-  zip_user: string;
-  document1_user: string;
-  document2_user: string;
-  receive_mail: boolean;
 }
 
 //transaction types

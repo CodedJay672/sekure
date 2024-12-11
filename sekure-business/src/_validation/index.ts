@@ -1,4 +1,4 @@
-import { date, z } from "zod";
+import { z } from "zod";
 
 export const rechargeWalletSchema = z.object({
   amount: z.number().positive().min(50000, {
@@ -101,21 +101,6 @@ export const filterSchema = z.object({
     depart: z.string(),
     fin: z.string(),
   }),
-});
-
-export const signinSchema = z.object({
-  email: z
-    .string({
-      invalid_type_error: "L'email doit être une chaîne de caractères",
-    })
-    .email("L'email doit être valide"),
-  password: z
-    .string({
-      invalid_type_error: "Le mot de passe doit être une chaîne de caractères",
-    })
-    .min(8, {
-      message: "Le mot de passe doit contenir au moins 8 caractères",
-    }),
 });
 
 export const ProfileSchema = z.object({

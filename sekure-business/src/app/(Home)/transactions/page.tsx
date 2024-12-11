@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  getAllTransactions,
-  getTransactionStatistics,
-} from "@/_data/transactionStatistics";
+import { getTransactionStatistics } from "@/_data/transactionStatistics";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
 import StatsCard from "@/components/StatsCard/StatsCard";
 import TransactionsTable from "@/components/Table/TransactionsTable/TransactionsTable";
-import { cardDetails } from "@/constants";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -18,6 +14,8 @@ const Transactions: React.FC = () => {
   const id = useAppSelector(
     (state) => state.connexion?.user?.user_company?.[0]?.id
   );
+
+  queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
 
   const { data } = useQuery({
     queryKey: ["transactionsStat", id],

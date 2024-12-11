@@ -1,21 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import UserCard from "@/components/Cards/UserCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import {
-  createUser,
-  previousStep,
-  resetLocalStorage,
-} from "@/_lib/features/Auth/authSlice";
+import { previousStep } from "@/_lib/features/Auth/authSlice";
 import { createUserAccount } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
-import { InformationSchema, NewUser } from "@/_validation/SignUp";
+import { NewUser } from "@/_validation/SignUp";
 import { APIErrors, ApiResponse } from "@/utils/types/types";
 
 const Validation: React.FC = () => {
@@ -109,11 +105,6 @@ const Validation: React.FC = () => {
               Adresse légale
             </p>
           </div>
-          <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">
-              {state?.city_company?.toUpperCase()}
-            </p>
-          </div>
           <div>
             <p className="text-[12px] leading-[18px] font-normal">Numéros</p>
           </div>
@@ -175,8 +166,8 @@ const Validation: React.FC = () => {
       <UserCard
         name={state?.full_name_user}
         email={state?.email_user}
-        poste={state?.poste_user}
-        parte={state?.pourcentage_action_user}
+        poste={state?.poste}
+        parte={state?.pourcentage_action}
       />
       <div className="w-full flex justify-between gap-2">
         <Button

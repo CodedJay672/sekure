@@ -1,23 +1,25 @@
 "use server";
 
-import { OTPSchema, signinSchema } from "@/_validation";
+import { OTPSchema } from "@/_validation";
+import {
+  signInDataType,
+  signInErrorType,
+  signinSchema,
+} from "@/_validation/SignIn";
 import { createSession, deleteSession } from "./session";
 import { APIErrors, ApiResponse } from "@/utils/types/types";
 import { NewUser } from "@/_validation/SignUp";
 
-export const authenticateUser = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
-  // 1. validate fields before authentication
+export const authenticateUser = async (
+  values: signInDataType
+): Promise<signInErrorType | ApiResponse> => {
+  //get the email and password from the form
+  const { email, password } = values;
   const parsedDetails = signinSchema.safeParse({ email, password });
 
   if (!parsedDetails.success) {
     return {
-      errors: parsedDetails.error.flatten().fieldErrors,
+      error: parsedDetails.error.flatten().fieldErrors,
     };
   }
 
@@ -31,13 +33,14 @@ export const authenticateUser = async ({
     });
 
     if (!response.ok) {
-      throw new Error("Error while fetching session data");
+      const dataError = await response.json();
+      return dataError as signInErrorType;
     }
 
     const data = await response.json();
-    return data;
+    return data as ApiResponse;
   } catch (error) {
-    console.log("error", error);
+    throw new Error(`${error}`);
   }
 };
 

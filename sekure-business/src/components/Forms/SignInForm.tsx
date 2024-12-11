@@ -13,7 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signinSchema } from "../../_validation";
+import {
+  signInDataType,
+  signInErrorType,
+  signinSchema,
+} from "@/_validation/SignIn";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -23,47 +27,72 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //import the redux store deps
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import {
+  updateConnexionData,
+  nextStep,
+} from "@/_lib/features/users/connexionSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
+import { useState } from "react";
 
 const SignInForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const state = useAppSelector((state) => state.connexion.user);
   const dispatch = useAppDispatch();
+  const [errorObj, setErrorObj] = useState<signInErrorType | null>(null);
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      ...state,
     },
   });
 
+  queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
+
   const { mutate: getAuthorizedUser, isPending } = useMutation({
-    mutationFn: async (values: { email: string; password: string }) => {
+    mutationKey: ["getAuthorizedUser"],
+    mutationFn: async (values: signInDataType) => {
       return await authenticateUser(values);
     },
     onSuccess: (data) => {
-      if (data && "user" in data) {
-        //update the redux store
-        dispatch(updateConnexionData(data.user));
-
-        //persist in local storage
-        // localStorage.setItem("user", JSON.stringify(data.user));
-
+      if ("user" in data) {
         toast({
           description: data.message,
         });
 
-        //redirect to the get otp page
-        router.replace("/signin/get-otp");
-      } else {
-        toast({
-          description: "Erreur de connexion",
-        });
+        //update the redux store with the user data
+        dispatch(updateConnexionData(data.user));
+
+        switch (data.user.step) {
+          case "information":
+            dispatch(nextStep(1));
+            router.push("/signup/business");
+            break;
+          case "adresse":
+            dispatch(nextStep(2));
+            break;
+          case "actionnaire":
+            dispatch(nextStep(3));
+            break;
+          case "legal":
+            dispatch(nextStep(4));
+            break;
+          case "valide":
+            dispatch(nextStep(5));
+            break;
+          default:
+            router.push("/get-otp");
+        }
       }
+
+      const objError = data as signInErrorType;
+      setErrorObj(objError);
+      toast({
+        description: data.message,
+      });
     },
     onError: (error) => {
       toast({
@@ -95,7 +124,13 @@ const SignInForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {errorObj && field.name in errorObj ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorObj[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />
@@ -116,7 +151,13 @@ const SignInForm = () => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {errorObj && field.name in errorObj ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorObj[field.name] as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />

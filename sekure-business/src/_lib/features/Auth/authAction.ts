@@ -2,9 +2,10 @@
 
 import { localstorageData } from "@/_validation/SignUp";
 import { createAction } from "@reduxjs/toolkit";
+import { AddUserData } from "./authSlice";
 
 export const readFromLocalStorage = createAction("user/readFromLocalStorage");
-export const writeToLocalStorage = createAction<localstorageData>(
+export const writeToLocalStorage = createAction<AddUserData>(
   "user/writeToLocalStorage"
 );
 

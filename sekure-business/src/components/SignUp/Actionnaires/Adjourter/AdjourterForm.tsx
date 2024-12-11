@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,14 +14,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import FileUploader from "@/components/ui/shared/FileUploader";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createUser } from "@/_lib/features/Auth/authSlice";
+import {
+  createUser,
+  nextStep,
+  updateUserObj,
+} from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { StakeholdersInfoSchema } from "@/_validation/SignUp";
+import { actionairesDataType, ActionnairesSchema } from "@/_validation/SignUp";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { signupActionnaire } from "@/_data/user";
+import { IError } from "@/utils/types/SignupTypes";
+import { transformedErrorObject } from "@/utils";
 
 interface AdjourterFormProps {
   onPageChange: (page: string) => void;
@@ -30,20 +36,102 @@ interface AdjourterFormProps {
 
 const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.newUserData);
-  const [isLoading, setIsLoading] = useState(false);
+  const state = useAppSelector((state) => state.auth);
+  const { userObj, newUserData } = state;
+  const [errorResponse, setErrorResponse] = useState({});
 
-  const form = useForm<z.infer<typeof StakeholdersInfoSchema>>({
-    resolver: zodResolver(StakeholdersInfoSchema),
-    defaultValues: {
-      ...state,
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { mutate: signupActionnaireMutation, isPending } = useMutation({
+    mutationKey: ["signUpAdjourterMutation"],
+    mutationFn: async ({
+      infoDetails,
+      user_id,
+      company_id,
+    }: {
+      infoDetails: FormData;
+      user_id: number;
+      company_id: number;
+    }) => {
+      return await signupActionnaire(infoDetails, user_id, company_id);
+    },
+    onSuccess: (data) => {
+      if ("user" in data) {
+        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
+        toast({
+          description: data.message,
+        });
+        dispatch(updateUserObj(data));
+        return dispatch(nextStep());
+      }
+
+      const errorObj = data as IError;
+      setErrorResponse(transformedErrorObject(errorObj));
+      toast({
+        description: "Something went wrong.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error?.message,
+      });
     },
   });
 
-  function onSubmit(values: z.infer<typeof StakeholdersInfoSchema>) {
-    setIsLoading(true);
-    dispatch(createUser(values));
-    onPageChange("home");
+  const form = useForm<z.infer<typeof ActionnairesSchema>>({
+    resolver: zodResolver(ActionnairesSchema),
+    defaultValues: {
+      poste: newUserData.poste,
+      date_birth: newUserData.date_birth,
+      Pourcentage_action: newUserData.Pourcentage_action,
+      nationality: newUserData.nationality,
+      localisation: newUserData.localisation,
+      appartement: newUserData.appartement,
+      city: newUserData.city,
+      etat: newUserData.etat,
+      zip: newUserData.zip,
+      document1_user: undefined,
+      document2_user: undefined,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof ActionnairesSchema>) {
+    const formData = new FormData();
+
+    for (const key in values) {
+      if (key === "document1_user" || key === "document2_user") {
+        formData.append(key, (values[key as keyof typeof values] as File[])[0]);
+      } else {
+        formData.append(
+          key,
+          values[key as keyof typeof values] as string | Blob
+        );
+      }
+    }
+    //create new values with the file url string
+    const newValues = {
+      ...values,
+      document1_user: values.document1_user
+        ? URL.createObjectURL(values.document1_user[0])
+        : "",
+      document2_user: values.document2_user
+        ? URL.createObjectURL(values.document2_user[0])
+        : "",
+    };
+
+    if (userObj.user.id && userObj.company.id) {
+      signupActionnaireMutation({
+        infoDetails: formData,
+        user_id: userObj.user.id,
+        company_id: userObj.company.id,
+      });
+
+      return dispatch(createUser(newValues));
+    }
+
+    toast({
+      description: "Could not find a valid ID",
+    });
   }
 
   return (
@@ -53,29 +141,10 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
           <span className="text-[13px] leading-[17px] font-semibold">
             Details
           </span>
+
           <FormField
             control={form.control}
-            name="full_name_user"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Nom Complet
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="poste_user"
+            name="poste"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Poste</FormLabel>
@@ -87,13 +156,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="date_birth_user"
+            name="date_birth"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -101,22 +176,26 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="date"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
+                    type="text"
                     {...field}
-                    value={
-                      field.value ? field.value.toISOString().split("T")[0] : ""
-                    }
+                    value={field.value ? field.value.toString() : ""}
+                    placeholder="enter date of birth"
+                    className="input pr-20"
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="pourcentage_action_user"
+            name="Pourcentage_action"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -130,55 +209,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="email_user"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone_user"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Numéro de Téléphone
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              </FormItem>
-            )}
-          />
-          <br />
-          <span className="text-[13px] leading-[17px] font-semibold">
-            Adresse Personnelle
-          </span>
-          <FormField
-            control={form.control}
-            name="nationality_user"
+            name="nationality"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -192,13 +235,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="localisation_user"
+            name="localisation"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -212,13 +261,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="street_user"
+            name="appartement"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">
@@ -232,13 +287,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="city_user"
+            name="city"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Cité</FormLabel>
@@ -250,13 +311,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="etat_user"
+            name="etat"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Etat</FormLabel>
@@ -268,13 +335,19 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="zip_user"
+            name="zip"
             render={({ field }) => (
               <FormItem className="mt-3">
                 <FormLabel className="text-xs font-light">Zip Code</FormLabel>
@@ -286,7 +359,13 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -307,7 +386,13 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                 <FormControl>
                   <FileUploader fieldOnChange={field.onChange} />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
@@ -324,41 +409,24 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
                 <FormControl>
                   <FileUploader fieldOnChange={field.onChange} />
                 </FormControl>
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                {field.name in errorResponse ? (
+                  <small className="text-xs text-red-600 align-right">
+                    {errorResponse[field.name] as string}
+                  </small>
+                ) : (
+                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+                )}{" "}
               </FormItem>
             )}
           />
         </div>
-
-        <br />
-        <FormField
-          control={form.control}
-          name="receive_mail"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className="mt-1 text-white font-bold"
-                />
-              </FormControl>
-              <div className="leading-none">
-                <FormLabel className="text-[10px] leading-[15px] font-normal text-[#808080]">
-                  Je certifie la conformité des informations remplies dans ce
-                  formulaire
-                </FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
         <div className="w-full flex justify-between gap-2">
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="primary-btn w-[224.24px] h-[50px]"
           >
-            {isLoading ? (
+            {isPending ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Valider et continuer"
