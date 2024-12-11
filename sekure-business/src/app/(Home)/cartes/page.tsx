@@ -3,7 +3,6 @@
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
 import StatsCard from "@/components/StatsCard/StatsCard";
-import { bigTable, cardDetails } from "@/constants";
 import { RiAddCircleFill } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
