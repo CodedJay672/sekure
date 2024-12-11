@@ -1,6 +1,3 @@
-import { bigTable } from "@/constants";
-import TableComponent from "../ui/shared/TableComponent";
-
 const JournalTab: React.FC = () => {
   return (
     <>
