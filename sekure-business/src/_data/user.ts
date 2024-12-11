@@ -248,7 +248,6 @@ export const signupLegal = async (
 };
 
 export const signupValide = async (
-  data: legalDataType,
   user_id: number,
   company_id: number
 ): Promise<IError | Partial<signUpResponse>> => {
@@ -261,7 +260,7 @@ export const signupValide = async (
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify(data),
+        body: JSON.stringify(""),
       }
     );
 

@@ -1,39 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import UserCard from "@/components/Cards/UserCard";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import { previousStep } from "@/_lib/features/Auth/authSlice";
-import { createUserAccount } from "@/_lib/actions";
+import { previousStep, updateUserObj } from "@/_lib/features/Auth/authSlice";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
-import { NewUser } from "@/_validation/SignUp";
-import { APIErrors, ApiResponse } from "@/utils/types/types";
+import { signupValide, updateUser } from "@/_data/user";
+import { IError, signUpResponse } from "@/utils/types/SignupTypes";
 
 const Validation: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.newUserData);
-  const [isLoading, setIsLoading] = useState(false);
+  const state = useAppSelector((state) => state.auth.userObj);
+  const { user, company } = state;
 
-  const { mutate: signUp, data } = useMutation({
-    mutationKey: ["createUser", state],
+  const { mutate: signUp, isPending } = useMutation({
+    mutationKey: ["signUp"],
     mutationFn: async () => {
-      return await createUserAccount(state as NewUser);
+      if (user.id && company.id) {
+        return await signupValide(user.id, company.id);
+      } else {
+        throw new Error("User not found.");
+      }
     },
     onSuccess: (data) => {
-      if ((data as ApiResponse).success) {
+      if ((data as signUpResponse).status) {
         toast({
-          description: "Compte créé avec succès",
+          description: data?.message,
         });
-        return router.push("/signin");
+        dispatch(updateUserObj(data));
+
+        if ("user" in data) {
+          if (data.user?.step === "completed") {
+            return router.push("get-otp");
+          }
+          return router.push("/signup/business");
+        }
       } else {
-        const errors = data as APIErrors;
+        const errors = data as IError;
         if (errors["error : "]) {
           const error = errors["error : "];
           for (const key in error) {
@@ -42,7 +52,6 @@ const Validation: React.FC = () => {
             });
           }
         }
-        setIsLoading(false);
       }
     },
     onError: (error) => {
@@ -53,7 +62,6 @@ const Validation: React.FC = () => {
   });
 
   const handleSubmit = () => {
-    setIsLoading(true);
     signUp();
   };
 
@@ -65,52 +73,53 @@ const Validation: React.FC = () => {
       <div className="w-full px-[15px] py-[18px] rounded-[19px] border flex flex-col gap-[25px]">
         <div className="w-[400px]">
           <h2 className="text-[12px] leading-[17px] font-semibold mb-3">
-            {state?.name_company}
+            {state?.company?.name}
           </h2>
           <p className="text-[12px] leading-[18px]">
-            {state?.name_company} est une fintech qui permet de faire des
+            {state?.company?.name} est une fintech qui permet de faire des
             paiements de facture et en sans vous deplacer
           </p>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 place-content-stretch">
-          <div>
-            <p className="text-[12px] leading-[18px] font-normal">Nom Légal</p>
-          </div>
-          <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">
-              {state?.name_company?.toUpperCase()}
+        <div className="flex flex-col gap-4 place-content-stretch">
+          <div className="flex items-center gap-3">
+            <p className="text-[12px] leading-[18px] font-normal w-1/3">
+              Nom Légal
+            </p>
+            <p className="text-[12px] leading-[18px] font-normal flex-1">
+              {state?.company?.name?.toUpperCase()}
             </p>
           </div>
-          <div>
-            <p className="text-[12px] leading-[18px] font-normal">
+          <div className="flex items-center gap-3">
+            <p className="text-[12px] leading-[18px] font-normal w-1/3">
               Type d’entreprise
             </p>
-          </div>
-          <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">
-              {state?.sector_activity?.toUpperCase()}
+            <p className="text-[12px] leading-[18px] font-normal flex-1">
+              {state?.company?.sector_activity?.toUpperCase()}
             </p>
           </div>
-          <div>
-            <p className="text-[12px] leading-[18px] font-normal">Secteur</p>
-          </div>
-          <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">
-              {state?.sector_activity?.toUpperCase()}
+          <div className="flex items-center gap-3">
+            <p className="text-[12px] leading-[18px] font-normal w-1/3">
+              Secteur
+            </p>
+            <p className="text-[12px] leading-[18px] font-normal flex-1">
+              {state?.company?.sector_activity?.toUpperCase()}
             </p>
           </div>
-          <div>
-            <p className="text-[12px] leading-[18px] font-normal">
+          <div className="flex items-center gap-3">
+            <p className="text-[12px] leading-[18px] font-normal w-1/3">
               Adresse légale
             </p>
+            <p className="flex items-center gap-3 flex-1">
+              {state?.company?.address}
+            </p>
           </div>
-          <div>
-            <p className="text-[12px] leading-[18px] font-normal">Numéros</p>
-          </div>
-          <div className="col-span-3 pl-1">
-            <p className="text-[12px] leading-[18px] font-normal">
-              {state?.phone}
+          <div className="flex items-center gap-3">
+            <p className="text-[12px] leading-[18px] font-normal w-1/3">
+              Numéros
+            </p>
+            <p className="text-[12px] leading-[18px] font-normal flex-1">
+              {state?.company?.phone}
             </p>
           </div>
         </div>
@@ -164,10 +173,10 @@ const Validation: React.FC = () => {
       </div>
 
       <UserCard
-        name={state?.full_name_user}
-        email={state?.email_user}
-        poste={state?.poste}
-        parte={state?.Pourcentage_action}
+        name={state?.user?.full_name}
+        email={state?.user?.email}
+        poste={state?.user?.poste}
+        parte={state?.user?.pourcentage_action}
       />
       <div className="w-full flex justify-between gap-2">
         <Button
@@ -178,11 +187,11 @@ const Validation: React.FC = () => {
           Retour
         </Button>
         <Button
-          disabled={isLoading}
+          disabled={isPending}
           className="primary-btn w-[224.24px] h-[50px]"
           onClick={() => handleSubmit()}
         >
-          {isLoading ? (
+          {isPending ? (
             <CgSpinner size={20} className="animate-spin" />
           ) : (
             "Continuer"
