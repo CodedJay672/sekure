@@ -1,5 +1,6 @@
 import { stepsProps } from "@/components/SignUp/Steps";
 import { IError } from "./types/SignupTypes";
+import { signInErrorType } from "@/_validation/SignIn";
 
 export const changeStatus = (steps: stepsProps, idx: number) => {
   return steps.steps.map((step) => {
@@ -15,6 +16,17 @@ export const changeStatus = (steps: stepsProps, idx: number) => {
 export const transformedErrorObject = (originalErrorObject: IError) => {
   return Object.fromEntries(
     Object.entries(originalErrorObject["error : "]).map(([key, value]) => [
+      key,
+      value.join(" "),
+    ])
+  );
+};
+
+export const transformedSignInErrorObject = (
+  originalErrorObject: signInErrorType
+) => {
+  return Object.fromEntries(
+    Object.entries(originalErrorObject.errors).map(([key, value]) => [
       key,
       value.join(" "),
     ])

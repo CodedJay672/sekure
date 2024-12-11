@@ -8,7 +8,7 @@ import {
 } from "@/_validation/SignIn";
 import { createSession, deleteSession } from "./session";
 import { APIErrors, ApiResponse } from "@/utils/types/types";
-import { NewUser } from "@/_validation/SignUp";
+import { NewUser, signupSchema } from "@/_validation/SignUp";
 
 export const authenticateUser = async (
   values: signInDataType
@@ -19,7 +19,7 @@ export const authenticateUser = async (
 
   if (!parsedDetails.success) {
     return {
-      error: parsedDetails.error.flatten().fieldErrors,
+      errors: parsedDetails.error.flatten().fieldErrors,
     };
   }
 
@@ -48,6 +48,11 @@ export const createUserAccount = async (
   data: NewUser
 ): Promise<ApiResponse | APIErrors> => {
   try {
+    const validateData = signupSchema.safeParse(data);
+    if (!validateData.success) {
+      throw new Error("failed to validate data");
+    }
+
     const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       method: "POST",
       headers: {

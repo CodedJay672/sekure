@@ -5,8 +5,10 @@ import {
   actionairesDataType,
   adressDataType,
   informationDataType,
+  InformationSchema,
   legalDataType,
   signUpDataType,
+  signupSchema,
 } from "@/_validation/SignUp";
 import { generateRandomCode, getFileExtension } from "@/utils";
 import { IError, signUpResponse } from "@/utils/types/SignupTypes";
@@ -110,6 +112,13 @@ export const createUserCompany = async (
   data: signUpDataType
 ): Promise<IError | Partial<signUpResponse>> => {
   try {
+    const validateData = signupSchema.safeParse(data);
+    if (!validateData.success) {
+      return {
+        "error : ": validateData.error.flatten().fieldErrors,
+      };
+    }
+
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/create_user_company`,
       {
@@ -139,6 +148,12 @@ export const signupInformation = async (
   company_id: number
 ): Promise<IError | Partial<signUpResponse>> => {
   try {
+    const validateData = InformationSchema.safeParse(data);
+    if (!validateData.success) {
+      return {
+        "error : ": validateData.error.flatten().fieldErrors,
+      }
+    }
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_information?user=${user_id}&company=${company_id}`,
       {

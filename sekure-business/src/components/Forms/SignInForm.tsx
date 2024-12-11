@@ -34,6 +34,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
+import { transformedErrorObject, transformedSignInErrorObject } from "@/utils";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const SignInForm = () => {
   const queryClient = useQueryClient();
   const state = useAppSelector((state) => state.connexion.user);
   const dispatch = useAppDispatch();
-  const [errorObj, setErrorObj] = useState<signInErrorType | null>(null);
+  const [errorObj, setErrorObj] = useState({});
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -49,8 +50,6 @@ const SignInForm = () => {
       ...state,
     },
   });
-
-  queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
 
   const { mutate: getAuthorizedUser, isPending } = useMutation({
     mutationKey: ["getAuthorizedUser"],
@@ -73,25 +72,32 @@ const SignInForm = () => {
             break;
           case "adresse":
             dispatch(nextStep(2));
+            router.push("/signup/business");
             break;
           case "actionnaire":
             dispatch(nextStep(3));
+            router.push("/signup/business");
             break;
           case "legal":
             dispatch(nextStep(4));
+            router.push("/signup/business");
             break;
           case "valide":
             dispatch(nextStep(5));
+            router.push("/signup/business");
             break;
           default:
             router.push("/get-otp");
         }
+
+        queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
       }
 
       const objError = data as signInErrorType;
-      setErrorObj(objError);
+      setErrorObj(transformedSignInErrorObject(objError));
+
       toast({
-        description: data.message,
+        description: objError.message || "Une erreur s'est produite",
       });
     },
     onError: (error) => {
@@ -126,7 +132,7 @@ const SignInForm = () => {
               </FormControl>
               {errorObj && field.name in errorObj ? (
                 <small className="text-xs text-red-600 align-right">
-                  {errorObj[field.name] as string}
+                  {errorObj.email as string}
                 </small>
               ) : (
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />
@@ -153,7 +159,7 @@ const SignInForm = () => {
               </FormControl>
               {errorObj && field.name in errorObj ? (
                 <small className="text-xs text-red-600 align-right">
-                  {errorObj[field.name] as string}
+                  {errorObj.password as string}
                 </small>
               ) : (
                 <FormMessage className="text-xs font-normal leading-6 text-red-700" />

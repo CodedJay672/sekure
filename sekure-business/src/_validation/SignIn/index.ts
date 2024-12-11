@@ -19,7 +19,7 @@ export type signInDataType = z.infer<typeof signinSchema>;
 export interface signInErrorType {
   success?: boolean;
   message?: string;
-  error: {
+  errors: {
     [key: string]: string[];
   };
 }
