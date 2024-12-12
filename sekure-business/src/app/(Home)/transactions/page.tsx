@@ -12,7 +12,7 @@ import React from "react";
 const Transactions: React.FC = () => {
   const queryClient = useQueryClient();
   const id = useAppSelector(
-    (state) => state.connexion?.user?.user_company?.[0]?.id
+    (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
   );
 
   queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
