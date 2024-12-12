@@ -36,7 +36,7 @@ interface CreateCardFormProps {
 
 const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
   const { toast } = useToast();
-  const state = useAppSelector((state) => state.connexion?.user);
+  const state = useAppSelector((state) => state.connexion?.user?.[0]);
   const dispatch = useAppDispatch();
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
