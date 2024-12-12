@@ -18,7 +18,7 @@ const Cartes: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const id = useAppSelector(
-    (state) => state.connexion.user?.user_company?.[0]?.id
+    (state) => state.connexion.user?.[0]?.user_company?.[0]?.id
   );
   const state = useAppSelector((state) => state.cards.cardStat.evolution_card);
 
