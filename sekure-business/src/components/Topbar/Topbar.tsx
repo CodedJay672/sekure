@@ -8,29 +8,31 @@ import Switch from "../ui/shared/switch/Switch";
 import CustomBreadcrumb from "../ui/Breadcrumbs/Breadcrumbs";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@/_data/user";
 
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const state = useAppSelector((state) => state.connexion.user);
 
   //initialize the redux store with user data in the local storage
   const { data, isSuccess } = useQuery({
-    queryKey: ["getUser", state?.id],
+    queryKey: ["getUser", state[0].id],
     queryFn: async () => {
-      if (state?.id) {
-        return await getUser(state?.id);
+      if (state[0].id) {
+        return await getUser(state[0].id);
       }
     },
-    enabled: !!state?.id, // Only run the query if state.id is truthy
+    enabled: !!state[0].id, // Only run the query if state.id is truthy
   });
 
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(updateConnexionData(data.user[0]));
     }
+    queryClient.invalidateQueries({ queryKey: ["getUser"] });
   }, [isSuccess, data, dispatch]);
 
   const handleToggle = () => {

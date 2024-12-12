@@ -11,7 +11,7 @@ export const getRoles = async () => {
     // fetch list of roles
     const response = await fetch(`${process.env.BACKEND_API_URL}/roles`, {
       headers: {
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session?.value?.token}`,
       },
     });
 

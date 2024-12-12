@@ -21,34 +21,40 @@ import { signIn } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { User } from "@/utils/types/types";
 import { CgSpinner } from "react-icons/cg";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.connexion?.user);
+  const state = useAppSelector((state) => state.connexion.user?.[0]);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
   });
 
   const { mutate: userSignIn, isPending } = useMutation({
-    mutationKey: ["signin"],
+    mutationKey: ["signin", state?.id],
     mutationFn: async (values: { otp: string }) => {
       const id = state?.id as number;
       return signIn({ id, ...values });
     },
     onSuccess: (data) => {
-      const email_verified_at = Date.now().toLocaleString();
-      const updatedUserInfo = { ...state, email_verified_at } as User;
-      dispatch(updateConnexionData(updatedUserInfo));
+      // dispatch(clearPersistor());
+      if (data.success) {
+        toast({
+          description: data.message,
+        });
+        router.push("/");
+      } else {
+        toast({
+          description: data.error as string,
+        });
+      }
+    },
+    onError: (error) => {
       toast({
-        description: "Vous êtes connecté",
+        description: error.message,
       });
-      router.replace("/");
     },
   });
 

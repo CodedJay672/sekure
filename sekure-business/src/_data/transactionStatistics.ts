@@ -13,7 +13,7 @@ export const getTransactionStatistics = cache(async (id: number) => {
       `${process.env.BACKEND_API_URL}/transaction/statistiques?company=${id}`,
       {
         headers: {
-          Authorization: `Bearer ${session.token}`,
+          Authorization: `Bearer ${session.value?.token}`,
         },
       }
     );
@@ -27,7 +27,7 @@ export const getTransactionStatistics = cache(async (id: number) => {
 
     return data;
   } catch (error) {
-    console.log("cannot fetch transaction statistics", error);
+    throw new Error(`${error}`);
   }
 });
 
@@ -40,7 +40,7 @@ export const getAllTransactions = async () => {
       `${process.env.BACKEND_API_URL}/transactions`,
       {
         headers: {
-          Authorization: `Bearer ${session.token}`,
+          Authorization: `Bearer ${session.value?.token}`,
         },
       }
     );

@@ -12,7 +12,6 @@ export type AddUserData = {
     user: Partial<User>;
     company: Partial<Company>;
   };
-  dataLoaded: boolean;
 };
 
 export const initialState: AddUserData = {
@@ -76,7 +75,6 @@ export const initialState: AddUserData = {
       updated_at: undefined,
     },
   },
-  dataLoaded: false,
 };
 
 const authSlice = createSlice({
@@ -92,19 +90,20 @@ const authSlice = createSlice({
 
     updateUserObj: (state, action: PayloadAction<Partial<signUpResponse>>) => {
       state.userObj = {
-        user: action.payload.user || {},
-        company: action.payload.company || {},
+        user: { ...state.userObj.user, ...action.payload.user },
+        company: { ...state.userObj.company, ...action.payload.company },
       };
     },
 
-    clearPersistor: () => {
-      persistor.purge();
+    clearPersistor: (state) => {
+      //reset the auth data
+      persistor.flush();
+      state = initialState;
     },
 
-    //loadData action
-    loadData: (state) => {
-      //set the dataLoaded to true
-      state.dataLoaded = true;
+    jumpStep: (state, action: PayloadAction<number>) => {
+      //increment the current step
+      state.currentStep.number += action.payload;
     },
 
     //add the next step action
@@ -124,9 +123,9 @@ const authSlice = createSlice({
 //export the action to update the connexion data when users sign in
 export const {
   createUser,
+  jumpStep,
   nextStep,
   previousStep,
-  loadData,
   updateUserObj,
   clearPersistor,
 } = authSlice.actions;

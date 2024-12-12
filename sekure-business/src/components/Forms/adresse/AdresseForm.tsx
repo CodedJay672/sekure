@@ -58,8 +58,9 @@ const AdresseForm = () => {
           description: data.message,
         });
         dispatch(updateUserObj(data));
-        dispatch(nextStep());
+        return dispatch(nextStep());
       }
+
       const errorObj = data as IError;
       setErrorResponse(transformedErrorObject(errorObj));
       toast({

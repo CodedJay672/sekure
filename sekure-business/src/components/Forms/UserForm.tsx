@@ -34,9 +34,9 @@ const UserForm = () => {
     isPending,
     data,
   } = useMutation({
-    mutationKey: ["updateUserInfo", state?.id, 4],
+    mutationKey: ["updateUserInfo", state?.[0]?.id, 4],
     mutationFn: async (updatedInfo: IUpdateUser) => {
-      return await updateUser(state?.id as number, 4, updatedInfo);
+      return await updateUser(state?.[0]?.id as number, 4, updatedInfo);
     },
   });
 
@@ -73,7 +73,7 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
-                  defaultValue={state?.full_name}
+                  defaultValue={state?.[0]?.full_name}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -93,7 +93,7 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="Steve"
-                  defaultValue={state?.street}
+                  defaultValue={state?.[0]?.street}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -113,7 +113,7 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={state?.email}
+                  defaultValue={state?.[0]?.email}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -154,7 +154,7 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={state?.email}
+                  defaultValue={state?.[0]?.email}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"

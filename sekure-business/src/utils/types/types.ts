@@ -256,3 +256,11 @@ interface Pivot {
   id_role: number;
   id_user: number;
 }
+
+// interface for the otp verification
+export interface OTPVerify {
+  success?: boolean;
+  message?: string;
+  error?: string | { otp?: string[] };
+  token?: string;
+}

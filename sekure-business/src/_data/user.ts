@@ -2,15 +2,12 @@
 
 import { verifySession } from "@/_lib/session";
 import {
-  actionairesDataType,
   adressDataType,
   informationDataType,
   InformationSchema,
-  legalDataType,
   signUpDataType,
   signupSchema,
 } from "@/_validation/SignUp";
-import { generateRandomCode, getFileExtension } from "@/utils";
 import { IError, signUpResponse } from "@/utils/types/SignupTypes";
 import { AllUsers, User } from "@/utils/types/types";
 import { cache } from "react";
@@ -29,9 +26,11 @@ export const getUser = cache(async (id: number) => {
     //fetch user data from the backend
     const response = await fetch(`${process.env.BACKEND_API_URL}/users/${id}`, {
       headers: {
-        Athorization: `Bearer ${session?.token}`,
+        Athorization: `Bearer ${session?.value?.token}`,
       },
     });
+
+    console.log("token", session.value?.token);
 
     if (!response.ok) {
       throw new Error("failed to fetch user");
@@ -42,7 +41,7 @@ export const getUser = cache(async (id: number) => {
 
     return user;
   } catch (error) {
-    console.log("error fetching user", error);
+    throw new Error(`${error}`);
   }
 });
 
@@ -52,7 +51,7 @@ export const getAllUsers = cache(async () => {
 
     const response = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       headers: {
-        Authorization: `Bearer ${session?.token}`,
+        Authorization: `Bearer ${session?.value?.token}`,
       },
     });
 
@@ -90,7 +89,7 @@ export const updateUser = async (
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${session?.token}`,
+          Authorization: `Bearer ${session?.value?.token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ data }),
@@ -152,7 +151,7 @@ export const signupInformation = async (
     if (!validateData.success) {
       return {
         "error : ": validateData.error.flatten().fieldErrors,
-      }
+      };
     }
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_information?user=${user_id}&company=${company_id}`,

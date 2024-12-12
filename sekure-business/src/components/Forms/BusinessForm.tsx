@@ -21,7 +21,7 @@ import { Button } from "../ui/button";
 
 const BusinessForm = () => {
   const company = useAppSelector(
-    (state) => state.connexion?.user?.user_company?.[0]
+    (state) => state.connexion?.user?.[0]?.user_company?.[0]
   );
   const edit = useAppSelector((state) => state.edit.editUserInfo);
 

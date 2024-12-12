@@ -10,7 +10,7 @@ export const getCards = async () => {
 
     // fetch list of cards
     const response = await fetch(`${process.env.BACKEND_API_URL}/cards`, {
-      headers: { Authorization: `Bearer ${session?.token}` },
+      headers: { Authorization: `Bearer ${session?.value?.token}` },
     });
 
     if (!response.ok) {
@@ -32,7 +32,7 @@ export const getCardStats = async (id: number) => {
     // fetch card stats
     const response = await fetch(
       `${process.env.BACKEND_API_URL}/card/statistiques?company=${id}`,
-      { headers: { Authorization: `Bearer ${session?.token}` } }
+      { headers: { Authorization: `Bearer ${session?.value?.token}` } }
     );
 
     if (!response.ok) {
@@ -65,7 +65,7 @@ export const createCard = async ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.token}`,
+          Authorization: `Bearer ${session?.value?.token}`,
         },
         body: JSON.stringify({ customer_id, brand: version }),
       }

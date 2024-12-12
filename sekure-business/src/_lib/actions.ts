@@ -7,7 +7,7 @@ import {
   signinSchema,
 } from "@/_validation/SignIn";
 import { createSession, deleteSession } from "./session";
-import { APIErrors, ApiResponse } from "@/utils/types/types";
+import { APIErrors, ApiResponse, OTPVerify } from "@/utils/types/types";
 import { NewUser, signupSchema } from "@/_validation/SignUp";
 
 export const authenticateUser = async (
@@ -73,14 +73,20 @@ export const createUserAccount = async (
   }
 };
 
-export const signIn = async ({ id, otp }: { id: number; otp: string }) => {
+export const signIn = async ({
+  id,
+  otp,
+}: {
+  id: number;
+  otp: string;
+}): Promise<OTPVerify> => {
   try {
     //validate the otp
     const parsedOTP = OTPSchema.safeParse({ otp });
 
     if (!parsedOTP.success) {
       return {
-        errrors: parsedOTP.error.flatten().fieldErrors,
+        error: parsedOTP.error.flatten().fieldErrors,
       };
     }
 
@@ -92,14 +98,10 @@ export const signIn = async ({ id, otp }: { id: number; otp: string }) => {
       body: JSON.stringify({ user_id: id, otp }),
     });
 
-    // if (!response.ok) {
-    //   throw new Error(`${response}`);
-    // }
-
     const data = await response.json();
-
     //authenticate the user to get the user token
-    await createSession(data?.token);
+    await createSession(data?.token as string);
+    return data as OTPVerify;
   } catch (error) {
     throw new Error(`${error}`);
   }

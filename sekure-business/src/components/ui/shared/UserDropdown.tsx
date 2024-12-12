@@ -1,32 +1,10 @@
 "use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/_lib/redux/hooks";
-import { ProfileSchema } from "@/_validation";
-import ProfileHeader from "./ProfileHeader";
 
 const UserDropdown: React.FC = () => {
   const router = useRouter();
-  const user = useAppSelector((state) => state.connexion?.user);
-
-  const form = useForm<z.infer<typeof ProfileSchema>>({
-    resolver: zodResolver(ProfileSchema),
-  });
-
-  async function onSubmit(values: z.infer<typeof ProfileSchema>) {
-    console.log(values);
-  }
+  const user = useAppSelector((state) => state.connexion?.user[0]);
 
   return (
     <div className="flex relative cursor-pointer">
@@ -41,25 +19,15 @@ const UserDropdown: React.FC = () => {
           {user?.user_company?.[0]?.name}
         </p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">
-          Id: DT{user?.id}
+          Id: DT{user?.user_company?.[0]?.registry_number}
         </span>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <ProfileHeader fieldOnChange={field.onChange} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+      <div className="w-11 h-11 flex flex-center flex-col rounded-full bg-primary">
+        <p className="text-base text-center leading-[15px] mt-[2px] font-bold text-white">
+          DT
+        </p>
+      </div>
     </div>
   );
 };

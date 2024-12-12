@@ -27,14 +27,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //import the redux store deps
-import {
-  updateConnexionData,
-  nextStep,
-} from "@/_lib/features/users/connexionSlice";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
-import { transformedErrorObject, transformedSignInErrorObject } from "@/utils";
+import { transformedSignInErrorObject } from "@/utils";
+import { jumpStep, nextStep } from "@/_lib/features/Auth/authSlice";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -47,7 +45,7 @@ const SignInForm = () => {
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      ...state,
+      ...state[0],
     },
   });
 
@@ -63,31 +61,32 @@ const SignInForm = () => {
         });
 
         //update the redux store with the user data
+        console.log(data);
         dispatch(updateConnexionData(data.user));
 
         switch (data.user.step) {
           case "information":
-            dispatch(nextStep(1));
+            dispatch(nextStep());
             router.push("/signup/business");
             break;
           case "adresse":
-            dispatch(nextStep(2));
+            dispatch(jumpStep(2));
             router.push("/signup/business");
             break;
           case "actionnaire":
-            dispatch(nextStep(3));
+            dispatch(jumpStep(3));
             router.push("/signup/business");
             break;
           case "legal":
-            dispatch(nextStep(4));
+            dispatch(jumpStep(4));
             router.push("/signup/business");
             break;
           case "valide":
-            dispatch(nextStep(5));
+            dispatch(jumpStep(5));
             router.push("/signup/business");
             break;
           default:
-            router.push("/get-otp");
+            router.push("/signin/get-otp");
         }
 
         queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
@@ -99,6 +98,7 @@ const SignInForm = () => {
       toast({
         description: objError.message || "Une erreur s'est produite",
       });
+      return;
     },
     onError: (error) => {
       toast({
