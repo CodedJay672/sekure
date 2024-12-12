@@ -8,7 +8,7 @@ import { updateTransactionsData } from "@/_lib/features/transactions/transaction
 import { TransactionSummary } from "@/utils/types/types";
 
 const PageCards = () => {
-  const state = useAppSelector((state) => state.connexion.user);
+  const state = useAppSelector((state) => state.connexion.user?.[0]);
   const dispatch = useAppDispatch();
   const id = state?.user_company?.[0]?.id;
 
