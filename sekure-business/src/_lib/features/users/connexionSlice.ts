@@ -1,5 +1,6 @@
 import { persistor } from "@/_lib/redux/store";
-import { User } from "@/utils/types/types";
+import { Company } from "@/utils/types/SignupTypes";
+import { Role, User } from "@/utils/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //interface for the connexion data
@@ -55,6 +56,19 @@ const connexionSlice = createSlice({
       state.user[0].image = action.payload;
     },
 
+    updateUserRole: (state, action: PayloadAction<Role>) => {
+      //update the user role
+      state.user[0] = { ...state.user?.[0]?.roles?.[0], ...action.payload };
+    },
+
+    updateUserCompany: (state, action: PayloadAction<Company>) => {
+      //update the user role
+      state.user[0] = {
+        ...state.user?.[0]?.user_company?.[0],
+        ...action.payload,
+      };
+    },
+
     //add the logout action
     logout: (state) => {
       //reset the connexion data
@@ -65,7 +79,7 @@ const connexionSlice = createSlice({
 });
 
 //export the action to update the connexion data when users sign in
-export const { updateConnexionData, updateProfilePicture, logout } =
+export const { updateConnexionData, updateProfilePicture, updateUserRole, updateUserCompany, logout } =
   connexionSlice.actions;
 
 //export the reducer

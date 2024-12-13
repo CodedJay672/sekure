@@ -15,17 +15,19 @@ import {
 
 import { userSchema } from "../../_validation";
 import { Input } from "../ui/input";
-import { useAppSelector } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { Button } from "../ui/button";
 import FileUploader from "../ui/shared/FileUploader";
 import { Checkbox } from "../ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IUpdateUser, updateUser } from "@/_data/user";
+import { updateUser } from "@/_data/user";
 import { PiSpinnerLight } from "react-icons/pi";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 
 const UserForm = () => {
   const state = useAppSelector((state) => state.connexion?.user);
   const edit = useAppSelector((state) => state.edit.editUserInfo);
+  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
 
   const {
@@ -35,8 +37,12 @@ const UserForm = () => {
     data,
   } = useMutation({
     mutationKey: ["updateUserInfo", state?.[0]?.id, 4],
-    mutationFn: async (updatedInfo: IUpdateUser) => {
+    mutationFn: async (updatedInfo: FormData) => {
       return await updateUser(state?.[0]?.id as number, 4, updatedInfo);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["updateUserInfo"] });
+      dispatch(updateConnexionData(data.user));
     },
   });
 
@@ -53,17 +59,15 @@ const UserForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof userSchema>) {
-    const updatedInfo = {
-      ...values,
-      image: values.image?.[0]?.name || "",
-      active: values.active ?? false,
-    };
+    //create a new formData object
+    const formData = new FormData();
 
-    updateUserInfo(updatedInfo);
-  }
+    //append the values to the formData object
+    for (const key in values) {
+      formData.append(key, values[key as keyof typeof values] as any);
+    }
 
-  if (isSuccess) {
-    queryClient.invalidateQueries({ queryKey: ["users"] });
+    updateUserInfo(formData);
   }
 
   return (

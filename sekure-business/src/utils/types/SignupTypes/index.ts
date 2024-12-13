@@ -47,7 +47,7 @@ export interface Company {
   address: string;
   prix_card: string;
   active: number;
-  updated_by?: number;
+  updated_by: number;
   sector_activity: string;
   description_company: string;
   created_company: string;
@@ -61,10 +61,10 @@ export interface Company {
   street?: string;
   localisation: string;
   appartement: string;
-  pourcentage_action?: number;
+  pourcentage_action: number;
   certificat_constitution: string;
   proof_address: string;
   acte_constitutif: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }

@@ -24,7 +24,10 @@ import { setCompany } from "@/_lib/features/company/CompanySlice";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "../ui/checkbox";
 import { CgSpinner } from "react-icons/cg";
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import {
+  updateConnexionData,
+  updateUserCompany,
+} from "@/_lib/features/users/connexionSlice";
 import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
 import { useRouter } from "next/navigation";
 
@@ -52,7 +55,7 @@ const BusinessForm = () => {
     onSuccess: (data) => {
       if (data.success) {
         dispatch(setCompany(data.company));
-        dispatch(updateConnexionData(data.company[0]));
+        dispatch(updateUserCompany(data.company[0]));
         queryClient.invalidateQueries({ queryKey: ["company", company?.id] });
       }
       toast({

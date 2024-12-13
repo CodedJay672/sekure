@@ -77,7 +77,7 @@ export interface IUpdateUser {
 export const updateUser = async (
   id_user: number,
   updated_by: number,
-  data: IUpdateUser
+  data: FormData
 ) => {
   try {
     const session = await verifySession("session");
@@ -95,7 +95,8 @@ export const updateUser = async (
     );
 
     if (!response.ok) {
-      throw new Error("failed update the user information");
+      const error = await response.json();
+      return error;
     }
 
     const user = await response.json();

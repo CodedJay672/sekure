@@ -20,7 +20,7 @@ export interface UserCompany {
   city: string;
   street: string;
   localisation: string;
-  pourcentage_action: number | null;
+  pourcentage_action: number;
   certificat_constitution: string | null;
   proof_address: string | null;
   acte_constitutif: string | null;
@@ -35,7 +35,7 @@ export interface Role {
   updated_at: string;
   name: string;
   active: number;
-  updated_by: number | null;
+  updated_by: number | undefined;
   pivot: { id_user: number; id_role: number };
 }
 
