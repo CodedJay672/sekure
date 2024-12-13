@@ -19,18 +19,18 @@ const Topbar: React.FC = () => {
 
   //initialize the redux store with user data in the local storage
   const { data, isSuccess } = useQuery({
-    queryKey: ["getUser", state[0].id],
+    queryKey: ["getUser", state?.[0]?.id],
     queryFn: async () => {
       if (state[0].id) {
-        return await getUser(state[0].id);
+        return await getUser(state?.[0]?.id);
       }
     },
-    enabled: !!state[0].id, // Only run the query if state.id is truthy
+    enabled: !!state?.[0].id, // Only run the query if state.id is truthy
   });
 
   useEffect(() => {
     if (isSuccess && data) {
-      dispatch(updateConnexionData(data.user[0]));
+      dispatch(updateConnexionData(data.user?.[0]));
     }
     queryClient.invalidateQueries({ queryKey: ["getUser"] });
   }, [isSuccess, data, dispatch]);

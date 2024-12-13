@@ -20,13 +20,13 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { signIn } from "@/_lib/actions";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const state = useAppSelector((state) => state.connexion.user?.[0]);
+  const state = useAppSelector((state) => state.connexion.user[0]);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
@@ -45,10 +45,6 @@ const PwdRecOTPFForm = () => {
           description: data.message,
         });
         router.push("/");
-      } else {
-        toast({
-          description: data.error as string,
-        });
       }
     },
     onError: (error) => {

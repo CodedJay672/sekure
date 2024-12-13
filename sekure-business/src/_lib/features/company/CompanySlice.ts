@@ -40,7 +40,7 @@ const initialState: InitialSliceState = {
   },
 };
 
-const companySlice = createSlice({
+const CompanySlice = createSlice({
   name: "company",
   initialState,
   reducers: {
@@ -53,6 +53,6 @@ const companySlice = createSlice({
   },
 });
 
-export const { setCompany } = companySlice.actions;
+export const { setCompany } = CompanySlice.actions;
 
-export default companySlice.reducer;
+export default CompanySlice.reducer;

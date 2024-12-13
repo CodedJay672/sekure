@@ -9,6 +9,8 @@ import cardsSlice from "../features/cards/cardSlice";
 import usersSlice from "../features/users/usersSlice";
 import editUserInformationSlice from "../features/Edit/editUserInformationSlice";
 import LoadingSlice from "../features/Loading/LoadingSlice";
+import CustomerSlice from "../features/customers/customersSlice";
+import CompanySlice from "../features/company/CompanySlice";
 
 // export const store = configureStore({
 //   reducer: {
@@ -30,6 +32,8 @@ const rootReducer = combineReducers({
   users: usersSlice,
   edit: editUserInformationSlice,
   loading: LoadingSlice,
+  customer: CustomerSlice,
+  company: CompanySlice,
 });
 
 const persistConfig = {

@@ -8,7 +8,7 @@ const initialState = {
   customers: [],
 };
 
-const customersSlice = createSlice({
+const CustomersSlice = createSlice({
   name: "customers",
   initialState,
   reducers: {
@@ -22,3 +22,7 @@ const customersSlice = createSlice({
     },
   },
 });
+
+export const { addCustomer, removeCustomer } = CustomersSlice.actions;
+
+export default CustomersSlice.reducer;

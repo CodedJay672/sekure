@@ -59,12 +59,9 @@ const SignInForm = () => {
         toast({
           description: data.message,
         });
+        dispatch(updateConnexionData(data.user[0]));
 
-        //update the redux store with the user data
-        console.log(data);
-        dispatch(updateConnexionData(data.user));
-
-        switch (data.user.step) {
+        switch (data.user?.[0]?.step) {
           case "information":
             dispatch(nextStep());
             router.push("/signup/business");

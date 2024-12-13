@@ -52,7 +52,7 @@ const BusinessForm = () => {
     onSuccess: (data) => {
       if (data.success) {
         dispatch(setCompany(data.company));
-        dispatch(updateConnexionData(data.company));
+        dispatch(updateConnexionData(data.company[0]));
         queryClient.invalidateQueries({ queryKey: ["company", company?.id] });
       }
       toast({
@@ -79,7 +79,10 @@ const BusinessForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof businessNameSchema>) {
-    editCompany({ ...values, active: values.active ?? false });
+    editCompany({
+      ...values,
+      active: (values.active as unknown as boolean) ?? false,
+    });
     if (data?.success) {
       router.replace("/profil");
       dispatch(setEditUserInfo(false));
