@@ -141,33 +141,6 @@ const SignupForm = () => {
 
         <FormField
           control={form.control}
-          name="id_role"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-[10px] leading-[15px] font-normal">
-                Id role
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Votre id_role"
-                  {...field}
-                  className="form-input h-[50px] bg-[#F3F3F3] text-[12px] leading-3 text-black font-medium invalid:ring-red-500 focus:ring-primary placeholder:text-[#B3B3B3] placeholder:text-[12px] placeholder:leading-3 placeholder:font-medium"
-                />
-              </FormControl>
-              {field.name in errorResponse ? (
-                <small className="text-xs text-red-600 align-right">
-                  {errorResponse[field.name] as string}
-                </small>
-              ) : (
-                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-              )}{" "}
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="name_company"
           render={({ field }) => (
             <FormItem>

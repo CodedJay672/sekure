@@ -30,8 +30,6 @@ export const getUser = cache(async (id: number) => {
       },
     });
 
-    console.log("token", session.value?.token);
-
     if (!response.ok) {
       throw new Error("failed to fetch user");
     }

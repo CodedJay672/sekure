@@ -42,6 +42,14 @@ const UserForm = () => {
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
+    defaultValues: {
+      first_name: state?.[0]?.full_name?.split(" ")[0],
+      last_name: state?.[0]?.full_name?.split(" ").pop(),
+      email: state?.[0]?.email,
+      active: state?.[0]?.active as unknown as boolean,
+      phone: state?.[0]?.phone,
+      image: undefined,
+    },
   });
 
   function onSubmit(values: z.infer<typeof userSchema>) {
@@ -73,7 +81,6 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="Kamgaing Kamdem"
-                  defaultValue={state?.[0]?.full_name}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -93,7 +100,6 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="Steve"
-                  defaultValue={state?.[0]?.street}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -113,7 +119,6 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={state?.[0]?.email}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
@@ -134,6 +139,7 @@ const UserForm = () => {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    disabled={!edit}
                     className="text-white font-bold"
                   />
                 </FormControl>
@@ -154,7 +160,6 @@ const UserForm = () => {
               <FormControl>
                 <Input
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={state?.[0]?.email}
                   {...field}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"

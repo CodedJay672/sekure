@@ -12,7 +12,10 @@ import { Bar } from "react-chartjs-2";
 ChartJs.register(CategoryScale, LinearScale, Tooltip, BarElement);
 
 interface State {
-  state: any[] | undefined;
+  state: {
+    date: string;
+    total: number;
+  }[];
 }
 
 const BarChart: React.FC<State> = ({ state }) => {

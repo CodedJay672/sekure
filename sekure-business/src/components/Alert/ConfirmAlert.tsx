@@ -6,6 +6,7 @@ import { useAppDispatch } from "@/_lib/redux/hooks";
 import { logout } from "@/_lib/features/users/connexionSlice";
 import { useRouter } from "next/navigation";
 import { RiCloseLine } from "react-icons/ri";
+import { clearPersistor } from "@/_lib/features/Auth/authSlice";
 
 interface IConfirmAlert {
   heading: string;
@@ -31,6 +32,7 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
     await signOut();
     localStorage.clear();
     dispatch(logout());
+    dispatch(clearPersistor());
     router.replace("/signin");
     clickFn();
   };

@@ -16,23 +16,74 @@ import {
 import { businessNameSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useAppSelector } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { Button } from "../ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ICompanyUpdate, updateCompany } from "@/_data/company";
+import { setCompany } from "@/_lib/features/company/CompanySlice";
+import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "../ui/checkbox";
+import { CgSpinner } from "react-icons/cg";
+import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
+import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
+import { useRouter } from "next/navigation";
 
 const BusinessForm = () => {
-  const company = useAppSelector(
-    (state) => state.connexion?.user?.[0]?.user_company?.[0]
-  );
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.connexion?.user?.[0]);
   const edit = useAppSelector((state) => state.edit.editUserInfo);
+  const company = user?.user_company?.[0];
+
+  const {
+    mutate: editCompany,
+    data,
+    isPending,
+  } = useMutation({
+    mutationKey: ["editCompany", company?.id],
+    mutationFn: async (data: ICompanyUpdate) => {
+      if (company?.id && user.id) {
+        return await updateCompany(company?.id, user.id, data);
+      }
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        dispatch(setCompany(data.company));
+        dispatch(updateConnexionData(data.company));
+        queryClient.invalidateQueries({ queryKey: ["company", company?.id] });
+      }
+      toast({
+        description: data.message,
+      });
+    },
+    onError: (error) => {
+      toast({
+        description: error.message,
+      });
+    },
+  });
 
   const form = useForm<z.infer<typeof businessNameSchema>>({
     resolver: zodResolver(businessNameSchema),
+    defaultValues: {
+      ...company,
+      email: company?.email ?? undefined,
+      name: company?.name ?? undefined,
+      address: company?.address ?? undefined,
+      phone: company?.phone ?? undefined,
+      active: (company?.active as unknown as boolean) ?? false,
+    },
   });
 
   function onSubmit(values: z.infer<typeof businessNameSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    editCompany({ ...values, active: values.active ?? false });
+    if (data?.success) {
+      router.replace("/profil");
+      dispatch(setEditUserInfo(false));
+    }
   }
 
   return (
@@ -51,8 +102,8 @@ const BusinessForm = () => {
               </FormLabel>
               <FormControl>
                 <Input
+                  type="text"
                   placeholder="Kamgaing Kamdem"
-                  defaultValue={company?.name || ""}
                   disabled={!edit}
                   className="input pr-20 bg-notif w-[382px]"
                   {...field}
@@ -65,16 +116,16 @@ const BusinessForm = () => {
 
         <FormField
           control={form.control}
-          name="number"
+          name="phone"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-light">
-                Business Registration Number
+                Business Phone Number
               </FormLabel>
               <FormControl>
                 <Input
+                  type="text"
                   placeholder="Steve"
-                  defaultValue={company?.registry_number || ""}
                   disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
@@ -95,8 +146,8 @@ const BusinessForm = () => {
               </FormLabel>
               <FormControl>
                 <Input
+                  type="text"
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={company?.address || ""}
                   disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
@@ -117,8 +168,8 @@ const BusinessForm = () => {
               </FormLabel>
               <FormControl>
                 <Input
+                  type="email"
                   placeholder="kaamsteve@gmail.com"
-                  defaultValue={company?.email || ""}
                   disabled={!edit}
                   {...field}
                   className="input pr-20 bg-notif w-[382px]"
@@ -131,27 +182,40 @@ const BusinessForm = () => {
 
         <FormField
           control={form.control}
-          name="description"
+          name="active"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-light">Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="This is my description."
-                  defaultValue={company?.description_company || ""}
-                  disabled={!edit}
-                  {...field}
-                  className="input resize-none  w-[792px] pr-20 bg-notif"
-                />
-              </FormControl>
+              <FormLabel className="text-xs font-light">Status</FormLabel>
+
+              <div className="flex items-center gap-3">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={!edit}
+                    className="text-white font-bold"
+                  />
+                </FormControl>
+                <span className="text-[10px] leading-[15px] font-normal text-[#808080]">
+                  Active/Inactive
+                </span>
+              </div>
               <FormMessage className="text-xs font-normal leading-6 text-red-700" />
             </FormItem>
           )}
         />
         {edit && (
           <div className="w-full flex-end">
-            <Button type="submit" className="btn-primary w-44 text-gray-200">
-              Save Changes
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="btn-primary w-44 text-gray-50"
+            >
+              {isPending ? (
+                <CgSpinner className="animate-spin h-5 w-5" />
+              ) : (
+                "Save Changes"
+              )}
             </Button>
           </div>
         )}

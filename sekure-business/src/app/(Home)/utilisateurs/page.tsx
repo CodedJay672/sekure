@@ -1,6 +1,7 @@
-import Card from "@/components/Cards/Cards";
+"use client";
+
 import UserTable from "@/components/Table/UserTable/UserTable";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Utilisateurs: React.FC = () => {
   return (

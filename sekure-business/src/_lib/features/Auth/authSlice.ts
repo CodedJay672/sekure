@@ -97,7 +97,7 @@ const authSlice = createSlice({
 
     clearPersistor: (state) => {
       //reset the auth data
-      persistor.flush();
+      persistor.purge();
       state = initialState;
     },
 

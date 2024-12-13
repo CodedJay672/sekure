@@ -4,14 +4,21 @@ import { BsFillTriangleFill } from "react-icons/bs";
 import CustomDropdown from "../ui/shared/CustomDropdown";
 import BarChart from "../ui/shared/BarChart";
 import { useState } from "react";
+import { useAppSelector } from "@/_lib/redux/hooks";
 
 interface AdminChartProps {
   variant?: "detailed" | "simple";
-  state?: any;
+  state: {
+    date: string;
+    total: number;
+  }[];
 }
 
 const AdminChart: React.FC<AdminChartProps> = ({ variant, state }) => {
   const [period, setPeriod] = useState("per Jour");
+  const total = useAppSelector(
+    (state) => state.transactions?.total_transaction
+  );
 
   return (
     <div className="flex-1 bg-white px-[27px] py-[14px] rounded-[10px]">
@@ -36,7 +43,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant, state }) => {
               <h2 className="text-xs font-light">Cette {period}</h2>
               <div className="flex-between gap-4">
                 <p className="text-[16px] font-bold leading-[16px]">
-                  XAF 4 256 850
+                  XAF {total}
                 </p>
                 <div className="flex-center gap-1">
                   <BsFillTriangleFill size={8} className="fill-primary" />

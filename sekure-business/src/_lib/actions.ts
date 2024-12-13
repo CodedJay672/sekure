@@ -108,6 +108,5 @@ export const signIn = async ({
 };
 
 export const signOut = async () => {
-  await deleteSession("user");
   await deleteSession("session");
 };

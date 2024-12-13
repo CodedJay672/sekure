@@ -46,7 +46,7 @@ const connexionSlice = createSlice({
   reducers: {
     updateConnexionData: (state, action: PayloadAction<Partial<User>>) => {
       //update the connexion data with the user data
-      state.user = { ...state.user, ...action.payload };
+      state.user[0] = { ...state.user, ...action.payload };
       state.isLoggedIn = true;
     },
 

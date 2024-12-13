@@ -2,21 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { EditIcon } from "lucide-react";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
 
 const TopbarHeader = () => {
-  const [isEditing, setIsEditing] = useState<boolean>();
   const dispatch = useAppDispatch();
+  const editing = useAppSelector((state) => state.edit.editUserInfo);
 
   useEffect(() => {
     dispatch(setEditUserInfo(false));
-    setIsEditing(false);
   }, []);
 
   const handleClick = () => {
-    setIsEditing(true);
-    dispatch(setEditUserInfo(isEditing || false));
+    dispatch(setEditUserInfo(!editing || false));
   };
 
   return (

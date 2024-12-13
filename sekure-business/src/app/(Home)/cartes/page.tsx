@@ -7,11 +7,12 @@ import { RiAddCircleFill } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { useQuery } from "@tanstack/react-query";
-import { getCards, getCardStats } from "@/_data/card";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCardStats } from "@/_data/card";
 import { getCardStat } from "@/_lib/features/cards/cardSlice";
 import { CardStats } from "@/utils/types/types";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
+import { useEffect } from "react";
 
 const Cartes: React.FC = () => {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ const Cartes: React.FC = () => {
     (state) => state.connexion.user?.[0]?.user_company?.[0]?.id
   );
   const state = useAppSelector((state) => state.cards.cardStat.evolution_card);
+  const queryClient = useQueryClient();
 
   const { data, isSuccess } = useQuery({
     queryKey: ["cards stats", id],
@@ -32,14 +34,12 @@ const Cartes: React.FC = () => {
 
   const { numbe_card_type_visa, number_card_type_master } = data || {};
 
-  if (isSuccess) {
-    dispatch(getCardStat(data as CardStats));
-    try {
-      localStorage.setItem("cardStat", JSON.stringify(data));
-    } catch (error) {
-      console.log("cannot update storage" + error);
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(getCardStat(data as CardStats));
+      queryClient.invalidateQueries({ queryKey: ["cards stats", id] });
     }
-  }
+  }, [dispatch, data]);
 
   return (
     <section className="wrapper">

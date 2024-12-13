@@ -37,7 +37,7 @@ export const userSchema = z.object({
   }),
   email: z.string().email(),
   active: z.boolean().default(false).optional(),
-  phone: z.string().length(14),
+  phone: z.string(),
   image: z.custom<File[]>(),
 });
 
@@ -45,12 +45,10 @@ export const businessNameSchema = z.object({
   name: z.string().min(2, {
     message: "Le prénom doit contenir au moins 2 caractères",
   }),
-  number: z.number(),
+  phone: z.string(),
   address: z.string(),
   email: z.string().email(),
-  description: z.string().min(10, {
-    message: "La description doit contenir au moins 10 caractères",
-  }),
+  active: z.boolean().default(false).optional(),
 });
 
 export const searchSchema = z.object({
@@ -106,3 +104,5 @@ export const filterSchema = z.object({
 export const ProfileSchema = z.object({
   image: z.custom<File[]>(),
 });
+
+export type BusinessNameDataType = z.infer<typeof businessNameSchema>;

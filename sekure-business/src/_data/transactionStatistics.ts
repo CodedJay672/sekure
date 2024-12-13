@@ -1,7 +1,7 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
-import { AllTransactions, TransactionSummary } from "@/utils/types/types";
+import { AllTransactions, Transactions } from "@/utils/types/types";
 import { cache } from "react";
 
 export const getTransactionStatistics = cache(async (id: number) => {
@@ -23,9 +23,9 @@ export const getTransactionStatistics = cache(async (id: number) => {
     }
 
     //parse the response to json format
-    const data = (await response.json()) as TransactionSummary;
+    const data = await response.json();
 
-    return data;
+    return data as Transactions;
   } catch (error) {
     throw new Error(`${error}`);
   }

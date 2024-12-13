@@ -6,7 +6,6 @@ export const signupSchema = z.object({
   password_user: z.string().min(8, {
     message: "Le mot de passe doit contenir au moins 8 caractères",
   }),
-  id_role: z.coerce.number(),
   name_company: z.string(),
   country_company: z.string(),
   email_company: z.string().email(),

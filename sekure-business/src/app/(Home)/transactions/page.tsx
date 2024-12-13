@@ -1,28 +1,39 @@
 "use client";
 
 import { getTransactionStatistics } from "@/_data/transactionStatistics";
-import { useAppSelector } from "@/_lib/redux/hooks";
+import { updateTransactionsData } from "@/_lib/features/transactions/transactionsSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
 import StatsCard from "@/components/StatsCard/StatsCard";
 import TransactionsTable from "@/components/Table/TransactionsTable/TransactionsTable";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Transactions: React.FC = () => {
   const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
   const id = useAppSelector(
     (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
   );
 
   queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
 
-  const { data } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["transactionsStat", id],
     queryFn: async () => {
       return await getTransactionStatistics(id as number);
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (data?.transactionSummary) {
+        dispatch(updateTransactionsData(data.transactionSummary));
+      }
+    }
+    queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
+  }, [data, isSuccess, dispatch]);
 
   return (
     <section className="wrapper">
@@ -31,48 +42,51 @@ const Transactions: React.FC = () => {
           <Card
             data1={{
               title: "Volume Total",
-              value: data?.total_transaction || 0,
+              value: data?.transactionSummary?.total_transaction || 0,
             }}
             data2={{
               title: "activees",
-              value: data?.transaction_pending || 0,
+              value: data?.transactionSummary?.transaction_pending || 0,
             }}
             data3={{
               title: "suspendues",
-              value: data?.transaction_success || 0,
+              value: data?.transactionSummary?.transaction_success || 0,
             }}
           />
           <Card
             data1={{
               title: "Transactions Auj",
-              value: data?.total_collection || 0,
+              value: data?.transactionSummary?.total_collection || 0,
             }}
             data2={{
               title: "activees",
-              value: data?.collection_failed || 0,
+              value: data?.transactionSummary?.collection_failed || 0,
             }}
             data3={{
               title: "suspendues",
-              value: data?.collection_successs || 0,
+              value: data?.transactionSummary?.collection_successs || 0,
             }}
           />
           <Card
             data1={{
               title: "Numbre Total",
-              value: data?.total_payments || 0,
+              value: data?.transactionSummary?.total_payments || 0,
             }}
             data2={{
               title: "Actifs",
-              value: data?.actifs_payments || 0,
+              value: data?.transactionSummary?.actifs_payments || 0,
             }}
             data3={{
               title: "Inactifs",
-              value: data?.inactifs_payments || 0,
+              value: data?.transactionSummary?.inactifs_payments || 0,
             }}
           />
         </section>
         <section className="w-full">
-          <AdminChart variant="simple" />
+          <AdminChart
+            variant="simple"
+            state={data?.transactionSummary?.evolution_transactions || []}
+          />
         </section>
         <TransactionsTable />
       </div>

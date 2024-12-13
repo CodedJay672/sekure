@@ -117,12 +117,15 @@ export interface TransactionSummary {
   wallet_xaf: number | string;
   wallet_usa: number | string;
   wallet_civ: number | string;
-  evolution_transactions: any[];
+  evolution_transactions: {
+    date: string;
+    total: number;
+  }[];
 }
 
 // Interface for the main object with success field as BooleanLike
 export interface Transactions {
-  success: true | false;
+  success: boolean;
   transactionSummary: TransactionSummary | null;
 }
 
