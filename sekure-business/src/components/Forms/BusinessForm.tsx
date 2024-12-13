@@ -15,7 +15,6 @@ import {
 
 import { businessNameSchema } from "../../_validation";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { Button } from "../ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,10 +23,7 @@ import { setCompany } from "@/_lib/features/company/CompanySlice";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "../ui/checkbox";
 import { CgSpinner } from "react-icons/cg";
-import {
-  updateConnexionData,
-  updateUserCompany,
-} from "@/_lib/features/users/connexionSlice";
+import { updateUserCompany } from "@/_lib/features/users/connexionSlice";
 import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
 import { useRouter } from "next/navigation";
 
@@ -87,8 +83,8 @@ const BusinessForm = () => {
       active: (values.active as unknown as boolean) ?? false,
     });
     if (data?.success) {
-      router.replace("/profil");
       dispatch(setEditUserInfo(false));
+      router.replace("/profil");
     }
   }
 

@@ -51,7 +51,7 @@ export const initialState: AddUserData = {
       email: "",
       phone: "",
       address: "",
-      prix_card: "",
+      prix_card: undefined,
       active: undefined,
       updated_by: undefined,
       sector_activity: "",
@@ -73,6 +73,7 @@ export const initialState: AddUserData = {
       acte_constitutif: "",
       created_at: undefined,
       updated_at: undefined,
+      pivot: { id_user: 0, id_company: 0 },
     },
   },
 };

@@ -1,14 +1,14 @@
 //interface for user
 export interface UserCompany {
   id: number;
-  name: string | null;
-  email: string | null;
-  phone: string | null;
-  address: string | null;
-  prix_card: number | null;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  prix_card: number;
   active: number;
-  updated_by: number | null;
-  sector_activity: string | null;
+  updated_by: number;
+  sector_activity: string;
   description_company: string;
   created_company: string;
   registry_number: string;
@@ -21,9 +21,9 @@ export interface UserCompany {
   street: string;
   localisation: string;
   pourcentage_action: number;
-  certificat_constitution: string | null;
-  proof_address: string | null;
-  acte_constitutif: string | null;
+  certificat_constitution: string;
+  proof_address: string;
+  acte_constitutif: string;
   created_at: string;
   updated_at: string;
   pivot: { id_user: number; id_company: number };

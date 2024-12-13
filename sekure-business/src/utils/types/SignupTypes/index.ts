@@ -45,7 +45,7 @@ export interface Company {
   email: string;
   phone: string;
   address: string;
-  prix_card: string;
+  prix_card: number;
   active: number;
   updated_by: number;
   sector_activity: string;
@@ -54,11 +54,11 @@ export interface Company {
   registry_number: string;
   matricule_number: string;
   website_link: string;
-  country?: string;
-  zip?: string;
-  state?: string;
-  city?: string;
-  street?: string;
+  country: string;
+  zip: string;
+  state: string;
+  city: string;
+  street: string;
   localisation: string;
   appartement: string;
   pourcentage_action: number;
@@ -67,4 +67,5 @@ export interface Company {
   acte_constitutif: string;
   created_at: string;
   updated_at: string;
+  pivot: { id_user: number; id_company: number };
 }

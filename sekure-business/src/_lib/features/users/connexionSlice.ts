@@ -58,15 +58,12 @@ const connexionSlice = createSlice({
 
     updateUserRole: (state, action: PayloadAction<Role>) => {
       //update the user role
-      state.user[0] = { ...state.user?.[0]?.roles?.[0], ...action.payload };
+      state.user[0] = { ...state.user?.[0], roles: [action.payload] };
     },
 
     updateUserCompany: (state, action: PayloadAction<Company>) => {
       //update the user role
-      state.user[0] = {
-        ...state.user?.[0]?.user_company?.[0],
-        ...action.payload,
-      };
+      state.user[0] = { ...state.user?.[0], user_company: [action.payload] };
     },
 
     //add the logout action
@@ -79,8 +76,13 @@ const connexionSlice = createSlice({
 });
 
 //export the action to update the connexion data when users sign in
-export const { updateConnexionData, updateProfilePicture, updateUserRole, updateUserCompany, logout } =
-  connexionSlice.actions;
+export const {
+  updateConnexionData,
+  updateProfilePicture,
+  updateUserRole,
+  updateUserCompany,
+  logout,
+} = connexionSlice.actions;
 
 //export the reducer
 export default connexionSlice.reducer;
