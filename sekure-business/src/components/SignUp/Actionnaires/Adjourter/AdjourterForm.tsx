@@ -100,7 +100,12 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
 
     for (const key in values) {
       if (key === "document1_user" || key === "document2_user") {
-        formData.append(key, (values[key as keyof typeof values] as File[])[0]);
+        if (values[key as keyof typeof values] !== undefined) {
+          formData.append(
+            key,
+            (values[key as keyof typeof values] as File[])[0]
+          );
+        }
       } else {
         formData.append(
           key,

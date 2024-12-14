@@ -26,6 +26,7 @@ import { CgSpinner } from "react-icons/cg";
 import { updateUserCompany } from "@/_lib/features/users/connexionSlice";
 import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const BusinessForm = () => {
   const queryClient = useQueryClient();
@@ -84,7 +85,7 @@ const BusinessForm = () => {
     });
     if (data?.success) {
       dispatch(setEditUserInfo(false));
-      router.replace("/profil");
+      revalidatePath("/profil");
     }
   }
 

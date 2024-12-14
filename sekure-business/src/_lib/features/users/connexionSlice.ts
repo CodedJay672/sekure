@@ -2,6 +2,7 @@ import { persistor } from "@/_lib/redux/store";
 import { Company } from "@/utils/types/SignupTypes";
 import { Role, User } from "@/utils/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { produce } from "immer";
 
 //interface for the connexion data
 export interface AuthUser {
@@ -61,10 +62,10 @@ const connexionSlice = createSlice({
       state.user[0] = { ...state.user?.[0], roles: [action.payload] };
     },
 
-    updateUserCompany: (state, action: PayloadAction<Company>) => {
-      //update the user role
-      state.user[0] = { ...state.user?.[0], user_company: [action.payload] };
-    },
+    updateUserCompany: produce((draft, action: PayloadAction<Company>) => {
+      //update the user company
+      draft.user[0].user_company = [action.payload];
+    }),
 
     //add the logout action
     logout: (state) => {

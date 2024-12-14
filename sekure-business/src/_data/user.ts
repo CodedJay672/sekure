@@ -109,35 +109,31 @@ export const updateUser = async (
 export const createUserCompany = async (
   data: signUpDataType
 ): Promise<IError | Partial<signUpResponse>> => {
+  // declare the response variable
+  let res: Response;
+
+  // try block to validate the data and make the fetch request
   try {
-    const validateData = signupSchema.safeParse(data);
-    if (!validateData.success) {
-      return {
-        "error : ": validateData.error.flatten().fieldErrors,
-      };
-    }
-
-    const res = await fetch(
-      `${process.env.BACKEND_API_URL}/create_user_company`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    if (!res.ok) {
-      const response = await res.json();
-      return response as IError;
-    }
-
-    const userData = (await res.json()) as Partial<signUpResponse>;
-    return userData;
+    res = await fetch(`${process.env.BACKEND_API_URL}/create_user_company`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
   } catch (error) {
     throw new Error(`${error}`);
   }
+
+  if (!res.ok) {
+    const response = await res.json();
+    console.log("response", response);
+    return response as IError;
+  }
+
+  const userData = (await res.json()) as Partial<signUpResponse>;
+  console.log("userData", userData);
+  return userData;
 };
 
 export const signupInformation = async (
@@ -145,14 +141,10 @@ export const signupInformation = async (
   user_id: number,
   company_id: number
 ): Promise<IError | Partial<signUpResponse>> => {
+  let res: Response;
+
   try {
-    const validateData = InformationSchema.safeParse(data);
-    if (!validateData.success) {
-      return {
-        "error : ": validateData.error.flatten().fieldErrors,
-      };
-    }
-    const res = await fetch(
+    res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_information?user=${user_id}&company=${company_id}`,
       {
         method: "POST",
@@ -163,18 +155,17 @@ export const signupInformation = async (
         body: JSON.stringify(data),
       }
     );
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      return errorData as IError;
-    }
-
-    const userData = await res.json();
-    return userData as Partial<signUpResponse>;
   } catch (error: any) {
-    console.error("Error during signupInformation:", error);
     throw new Error(`Failed to sign up information: ${error.message}`);
   }
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    return errorData as IError;
+  }
+
+  const userData = await res.json();
+  return userData as Partial<signUpResponse>;
 };
 
 export const signupAdresse = async (
@@ -212,25 +203,26 @@ export const signupActionnaire = async (
   user_id: number,
   company_id: number
 ): Promise<IError | Partial<signUpResponse>> => {
+  let res: Response;
   try {
-    const res = await fetch(
+    res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_actionnaire?user=${user_id}&company=${company_id}`,
       {
         method: "POST",
         body: data,
       }
     );
-
-    if (!res.ok) {
-      const errorObj = await res.json();
-      return errorObj as IError;
-    }
-
-    const userData = await res.json();
-    return userData as Partial<signUpResponse>;
   } catch (error) {
     throw new Error(`${error}`);
   }
+
+  if (!res.ok) {
+    const errorObj = await res.json();
+    return errorObj as IError;
+  }
+
+  const userData = await res.json();
+  return userData as Partial<signUpResponse>;
 };
 
 export const signupLegal = async (
@@ -238,26 +230,26 @@ export const signupLegal = async (
   user_id: number,
   company_id: number
 ): Promise<IError | Partial<signUpResponse>> => {
+  let res: Response;
   try {
-    const res = await fetch(
+    res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_legal?user=${user_id}&company=${company_id}`,
       {
         method: "POST",
         body: data,
       }
     );
-
-    console.log("res", res);
-    if (!res.ok) {
-      const errorObj = await res.json();
-      return errorObj as IError;
-    }
-
-    const userData = await res.json();
-    return userData as Partial<signUpResponse>;
   } catch (error) {
-    throw new Error(`${error}`);
+    throw new Error("NetworkError: Check your internet connection");
   }
+
+  if (!res.ok) {
+    const errorObj = await res.json();
+    return errorObj as IError;
+  }
+
+  const userData = await res.json();
+  return userData as Partial<signUpResponse>;
 };
 
 export const signupValide = async (

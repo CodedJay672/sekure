@@ -15,8 +15,10 @@ export const authenticateUser = async (
 ): Promise<signInErrorType | ApiResponse> => {
   //get the email and password from the form
   const { email, password } = values;
-  const parsedDetails = signinSchema.safeParse({ email, password });
+  let response: Response;
 
+  //validate the email and password
+  const parsedDetails = signinSchema.safeParse({ email, password });
   if (!parsedDetails.success) {
     return {
       errors: parsedDetails.error.flatten().fieldErrors,
@@ -24,24 +26,24 @@ export const authenticateUser = async (
   }
 
   try {
-    const response = await fetch(`${process.env.BACKEND_API_URL}/connexion`, {
+    response = await fetch(`${process.env.BACKEND_API_URL}/connexion`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
-
-    if (!response.ok) {
-      const dataError = await response.json();
-      return dataError as signInErrorType;
-    }
-
-    const data = await response.json();
-    return data as ApiResponse;
   } catch (error) {
-    throw new Error(`${error}`);
+    throw new Error("NetworkError: Check your internet connection");
   }
+
+  if (!response.ok) {
+    const dataError = await response.json();
+    return dataError as signInErrorType;
+  }
+
+  const data = await response.json();
+  return data as ApiResponse;
 };
 
 export const createUserAccount = async (

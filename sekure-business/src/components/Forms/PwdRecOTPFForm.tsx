@@ -44,8 +44,12 @@ const PwdRecOTPFForm = () => {
         toast({
           description: data.message,
         });
-        router.push("/");
+        return router.push("/");
       }
+
+      toast({
+        description: data.error as string,
+      });
     },
     onError: (error) => {
       toast({
