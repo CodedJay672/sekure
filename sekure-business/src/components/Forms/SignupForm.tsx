@@ -46,9 +46,7 @@ const SignupForm = () => {
   const {
     mutate: createUserCompanyMutation,
     data,
-    isSuccess,
     isPending,
-    error,
   } = useMutation({
     mutationKey: ["signup"],
     mutationFn: async (userValues: signUpDataType) => {

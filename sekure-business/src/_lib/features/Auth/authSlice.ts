@@ -104,7 +104,7 @@ const authSlice = createSlice({
 
     jumpStep: (state, action: PayloadAction<number>) => {
       //increment the current step
-      state.currentStep.number += action.payload;
+      state.currentStep.number = action.payload;
     },
 
     //add the next step action
