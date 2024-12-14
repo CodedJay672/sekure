@@ -1,6 +1,7 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
+import { signInErrorType } from "@/_validation/SignIn";
 import {
   adressDataType,
   informationDataType,
@@ -108,7 +109,7 @@ export const updateUser = async (
 
 export const createUserCompany = async (
   data: signUpDataType
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<signInErrorType | Partial<signUpResponse>> => {
   // declare the response variable
   let res: Response;
 
@@ -118,21 +119,20 @@ export const createUserCompany = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify(data),
     });
   } catch (error) {
-    throw new Error(`${error}`);
+    throw new Error("NetworkError: Check your internet connection");
   }
 
   if (!res.ok) {
     const response = await res.json();
-    console.log("response", response);
-    return response as IError;
+    return response as signInErrorType;
   }
 
   const userData = (await res.json()) as Partial<signUpResponse>;
-  console.log("userData", userData);
   return userData;
 };
 

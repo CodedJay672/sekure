@@ -25,8 +25,8 @@ import { signUpDataType, signupSchema } from "@/_validation/SignUp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUserCompany } from "@/_data/user";
 import { createUser, updateUserObj } from "@/_lib/features/Auth/authSlice";
-import { transformedErrorObject } from "@/utils";
-import { IError } from "@/utils/types/SignupTypes";
+import { transformedSignInErrorObject } from "@/utils";
+import { signInErrorType } from "@/_validation/SignIn";
 
 const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
@@ -64,8 +64,8 @@ const SignupForm = () => {
         return router.push("/signup/business");
       }
 
-      const error = data as IError;
-      setErrorResponse(transformedErrorObject(error));
+      const error = data as signInErrorType;
+      setErrorResponse(transformedSignInErrorObject(error));
       toast({
         description: "Something went wrong",
       });
