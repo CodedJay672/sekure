@@ -13,11 +13,11 @@ export interface AuthUser {
 export const initialState: AuthUser = {
   user: [
     {
-      id: undefined,
+      id: 0,
       full_name: "",
       poste: "",
       date_birth: "",
-      pourcentage_action: undefined,
+      pourcentage_action: 0,
       email: "",
       nationality: "",
       street: "",
@@ -28,15 +28,15 @@ export const initialState: AuthUser = {
       document1: "",
       document2: "",
       phone: "",
-      active: undefined,
-      updated_by: undefined,
+      active: 0,
+      updated_by: 0,
       image: "",
       email_verified_at: "",
       step: "",
       created_at: "",
       updated_at: "",
-      roles: undefined,
-      user_company: undefined,
+      roles: [],
+      user_company: [],
     },
   ],
   isLoggedIn: false,
@@ -48,7 +48,7 @@ const connexionSlice = createSlice({
   reducers: {
     updateConnexionData: (state, action: PayloadAction<Partial<User>>) => {
       //update the connexion data with the user data
-      state.user[0] = { ...state.user[0], ...action.payload };
+      state.user[0] = { ...action.payload };
       state.isLoggedIn = true;
     },
 
