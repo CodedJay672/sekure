@@ -94,7 +94,7 @@ export interface AllUsers {
 export interface ApiResponse {
   success: boolean;
   message: string;
-  user: Partial<User>;
+  user: Partial<User>[];
 }
 
 export interface APIErrors {

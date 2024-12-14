@@ -59,9 +59,9 @@ const SignInForm = () => {
         toast({
           description: data.message,
         });
-        dispatch(updateConnexionData(data.user));
+        dispatch(updateConnexionData(data.user[0]));
 
-        switch (data.user?.step) {
+        switch (data.user?.[0]?.step) {
           case "information":
             dispatch(jumpStep(1));
             router.push("/signup/business");

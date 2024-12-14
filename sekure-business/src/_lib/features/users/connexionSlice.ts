@@ -59,7 +59,7 @@ const connexionSlice = createSlice({
 
     updateUserRole: (state, action: PayloadAction<Role>) => {
       //update the user role
-      state.user[0] = { ...state.user?.[0], roles: [action.payload] };
+      state.user[0] = { ...state.user[0], roles: [action.payload] };
     },
 
     updateUserCompany: produce((draft, action: PayloadAction<Company>) => {
