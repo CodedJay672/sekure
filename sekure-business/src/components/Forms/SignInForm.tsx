@@ -32,7 +32,7 @@ import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
-import { jumpStep, nextStep } from "@/_lib/features/Auth/authSlice";
+import { jumpStep } from "@/_lib/features/Auth/authSlice";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -49,13 +49,17 @@ const SignInForm = () => {
     },
   });
 
-  const { mutate: getAuthorizedUser, isPending } = useMutation({
+  const {
+    mutate: getAuthorizedUser,
+    isPending,
+    error,
+  } = useMutation({
     mutationKey: ["getAuthorizedUser"],
     mutationFn: async (values: signInDataType) => {
       return await authenticateUser(values);
     },
     onSuccess: (data) => {
-      if ("user" in data) {
+      if ("user" in data && Array.isArray(data.user)) {
         toast({
           description: data.message,
         });
@@ -87,6 +91,11 @@ const SignInForm = () => {
         }
 
         queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
+        return;
+      } else {
+        toast({
+          description: "Expected user data not found",
+        });
       }
 
       const objError = data as signInErrorType;
@@ -98,9 +107,11 @@ const SignInForm = () => {
       return;
     },
     onError: (error) => {
-      toast({
-        description: error.message,
-      });
+      if (error.message !== "Cannot convert undefined or null to object") {
+        toast({
+          description: error.message,
+        });
+      }
     },
   });
 

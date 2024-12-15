@@ -30,6 +30,7 @@ export const authenticateUser = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
