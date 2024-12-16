@@ -128,6 +128,8 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
         description: userSumitData.message,
       });
       dispatch(updateUserObj(userSumitData));
+      dispatch(createUser(values));
+
       return dispatch(nextStep());
     } else {
       setErrorResponse(transformedErrorObject(userSumitData as IError));

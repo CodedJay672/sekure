@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
+  createUser,
   nextStep,
   previousStep,
   updateUserObj,
@@ -61,6 +62,7 @@ const AdresseForm = () => {
           description: submitAdresseResponse.message,
         });
         dispatch(updateUserObj(submitAdresseResponse));
+        dispatch(createUser(values));
         return dispatch(nextStep());
       } else {
         setErrorResponse(

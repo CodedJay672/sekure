@@ -68,6 +68,7 @@ const InformationForm = () => {
         description: submitInformationResponse.message,
       });
       dispatch(updateUserObj(submitInformationResponse));
+      dispatch(createUser(values));
       return dispatch(nextStep());
     } else {
       setErrorResponse(

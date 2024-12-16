@@ -93,6 +93,8 @@ const LegalForm: React.FC = () => {
         description: submitLegalFormResponse.message,
       });
       dispatch(updateUserObj(submitLegalFormResponse));
+      dispatch(createUser(newValues));
+
       return dispatch(nextStep());
     } else {
       setErrorResponse(

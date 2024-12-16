@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
 import { signupSchema } from "@/_validation/SignUp";
 import {
+  clearPersistor,
   createUser,
   nextStep,
   updateUserObj,
@@ -38,8 +39,8 @@ const SignupForm = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    console.log("Error response", errorResponse);
-  }, [errorResponse]);
+    localStorage.removeItem("persist:data");
+  }, []);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -59,7 +60,7 @@ const SignupForm = () => {
 
     if (newUserData.status) {
       dispatch(updateUserObj(newUserData));
-      dispatch(nextStep());
+
       toast({
         description: newUserData.message,
       });

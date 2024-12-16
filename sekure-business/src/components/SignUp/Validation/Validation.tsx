@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import { previousStep, updateUserObj } from "@/_lib/features/Auth/authSlice";
+import {
+  createUser,
+  previousStep,
+  updateUserObj,
+} from "@/_lib/features/Auth/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
 import { useSubmitValidationForm } from "@/components/react-query/queriesAndMutations";
@@ -41,6 +45,7 @@ const Validation: React.FC = () => {
         description: signUpUserResponse.message,
       });
       dispatch(updateUserObj(signUpUserResponse));
+
       if (signUpUserResponse.user?.step === "completed") {
         return router.push("get-otp");
       }
