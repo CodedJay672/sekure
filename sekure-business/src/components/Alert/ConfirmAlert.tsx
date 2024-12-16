@@ -32,7 +32,11 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
     await signOut();
     localStorage.clear();
     dispatch(logout());
-    dispatch(clearPersistor());
+
+    // clear local storage
+    localStorage.removeItem("persist:data");
+
+    // return to signin page
     router.replace("/signin");
     clickFn();
   };
