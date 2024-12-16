@@ -1,5 +1,5 @@
 import { stepsProps } from "@/components/SignUp/Steps";
-import { IError } from "./types/SignupTypes";
+import { IError, signUpResponse } from "./types/SignupTypes";
 import { signInReturnType } from "@/_validation/SignIn";
 
 export const changeStatus = (steps: stepsProps, idx: number) => {
@@ -17,13 +17,13 @@ export const transformedErrorObject = (originalErrorObject: IError) => {
   return Object.fromEntries(
     Object.entries(originalErrorObject["error : "]).map(([key, value]) => [
       key,
-      value.join(" "),
+      Array.isArray(value) ? value.join(" ") : value,
     ])
   );
 };
 
 export const transformedSignInErrorObject = (
-  originalErrorObject: signInReturnType
+  originalErrorObject: Partial<signInReturnType>
 ) => {
   if (!originalErrorObject.errors) {
     return {};
@@ -32,6 +32,20 @@ export const transformedSignInErrorObject = (
     Object.entries(originalErrorObject.errors).map(([key, value]) => [
       key,
       value.join(" "),
+    ])
+  );
+};
+
+export const transformedSignUpErrorObject = (
+  originalErrorObject: Partial<signUpResponse>
+) => {
+  if (!originalErrorObject.errors) {
+    return {};
+  }
+  return Object.fromEntries(
+    Object.entries(originalErrorObject).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? value.join(" ") : value,
     ])
   );
 };
@@ -60,31 +74,3 @@ export const convertFileToBase64 = async (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
-
-// export const completeUserSignUp = (data: signInReturnType) => {
-
-// switch (data.user?.[0]?.step) {
-//           case "information":
-//             dispatch(jumpStep(1));
-//             router.push("/signup/business");
-//             break;
-//           case "adresse":
-//             dispatch(jumpStep(2));
-//             router.push("/signup/business");
-//             break;
-//           case "actionnaire":
-//             dispatch(jumpStep(3));
-//             router.push("/signup/business");
-//             break;
-//           case "legal":
-//             dispatch(jumpStep(4));
-//             router.push("/signup/business");
-//             break;
-//           case "valide":
-//             dispatch(jumpStep(5));
-//             router.push("/signup/business");
-//             break;
-//           default:
-//             router.push("/signin/get-otp");
-//         }
-//       }

@@ -3,6 +3,9 @@ export interface signUpResponse {
   message: string;
   user: User;
   company: Company;
+  errors: {
+    [key: string]: string[];
+  };
 }
 
 export interface IError {

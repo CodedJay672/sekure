@@ -23,12 +23,12 @@ import {
   updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { actionairesDataType, ActionnairesSchema } from "@/_validation/SignUp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ActionnairesSchema } from "@/_validation/SignUp";
+import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { signupActionnaire } from "@/_data/user";
 import { IError } from "@/utils/types/SignupTypes";
 import { transformedErrorObject } from "@/utils";
+import { useSubmitAdjouterForm } from "@/components/react-query/queriesAndMutations";
 
 interface AdjourterFormProps {
   onPageChange: (page: string) => void;
@@ -42,41 +42,28 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
 
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mutate: signupActionnaireMutation, isPending } = useMutation({
-    mutationKey: ["signUpAdjourterMutation"],
-    mutationFn: async ({
-      infoDetails,
-      user_id,
-      company_id,
-    }: {
-      infoDetails: FormData;
-      user_id: number;
-      company_id: number;
-    }) => {
-      return await signupActionnaire(infoDetails, user_id, company_id);
-    },
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
-        toast({
-          description: data.message,
-        });
-        dispatch(updateUserObj(data));
-        return dispatch(nextStep());
-      }
+  const {
+    mutateAsync: signupActionnaireMutation,
+    isPending,
+    error: mutationError,
+  } = useSubmitAdjouterForm();
 
-      const errorObj = data as IError;
-      setErrorResponse(transformedErrorObject(errorObj));
-      toast({
-        description: "Something went wrong.",
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error?.message,
-      });
-    },
-  });
+  //   onSuccess: (data) => {
+  //     if ("user" in data) {
+  //       toast({
+  //         description: data.message,
+  //       });
+  //       dispatch(updateUserObj(data));
+  //       return dispatch(nextStep());
+  //     }
+
+  //     const errorObj = data as IError;
+  //     setErrorResponse(transformedErrorObject(errorObj));
+  //     toast({
+  //       description: "Something went wrong.",
+  //     });
+  //   },
+  // });
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
@@ -124,18 +111,32 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
         : "",
     };
 
-    if (userObj.user.id && userObj.company.id) {
-      signupActionnaireMutation({
-        infoDetails: formData,
-        user_id: userObj.user.id,
-        company_id: userObj.company.id,
+    if (userObj.user.id === undefined || userObj.company.id === undefined) {
+      return toast({
+        description: "Could not find a valid ID",
       });
-
-      return dispatch(createUser(newValues));
     }
 
+    const userSumitData = await signupActionnaireMutation({
+      infoDetails: formData,
+      user_id: userObj.user.id,
+      company_id: userObj.company.id,
+    });
+
+    if (userSumitData.status) {
+      toast({
+        description: userSumitData.message,
+      });
+      dispatch(updateUserObj(userSumitData));
+      return dispatch(nextStep());
+    } else {
+      setErrorResponse(transformedErrorObject(userSumitData as IError));
+    }
+  }
+
+  if (mutationError) {
     toast({
-      description: "Could not find a valid ID",
+      description: mutationError.message,
     });
   }
 

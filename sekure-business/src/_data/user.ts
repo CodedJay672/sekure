@@ -1,16 +1,15 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
-import { signInErrorType } from "@/_validation/SignIn";
 import {
   adressDataType,
   informationDataType,
-  InformationSchema,
   signUpDataType,
   signupSchema,
 } from "@/_validation/SignUp";
 import { IError, signUpResponse } from "@/utils/types/SignupTypes";
-import { AllUsers, User } from "@/utils/types/types";
+import { AllUsers } from "@/utils/types/types";
+import { User } from "@/_validation/SignIn";
 import { cache } from "react";
 
 interface IUserResponse {
@@ -109,7 +108,7 @@ export const updateUser = async (
 
 export const createUserCompany = async (
   data: signUpDataType
-): Promise<signInErrorType | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
   // declare the response variable
   let res: Response;
 
@@ -127,11 +126,6 @@ export const createUserCompany = async (
     throw new Error("NetworkError: Check your internet connection");
   }
 
-  if (!res.ok) {
-    const response = await res.json();
-    return response as signInErrorType;
-  }
-
   const userData = (await res.json()) as Partial<signUpResponse>;
   return userData;
 };
@@ -140,7 +134,7 @@ export const signupInformation = async (
   data: informationDataType,
   user_id: number,
   company_id: number
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
   let res: Response;
 
   try {
@@ -159,11 +153,6 @@ export const signupInformation = async (
     throw new Error(`Failed to sign up information: ${error.message}`);
   }
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    return errorData as IError;
-  }
-
   const userData = await res.json();
   return userData as Partial<signUpResponse>;
 };
@@ -172,9 +161,10 @@ export const signupAdresse = async (
   data: adressDataType,
   user_id: number,
   company_id: number
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
+  let res: Response;
   try {
-    const res = await fetch(
+    res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_adresse?user=${user_id}&company=${company_id}`,
       {
         method: "POST",
@@ -185,24 +175,19 @@ export const signupAdresse = async (
         body: JSON.stringify(data),
       }
     );
-
-    if (!res.ok) {
-      const response = await res.json();
-      return response as IError;
-    }
-
-    const userData = await res.json();
-    return userData as Partial<signUpResponse>;
   } catch (error) {
     throw new Error(`${error}`);
   }
+
+  const userData = await res.json();
+  return userData as Partial<signUpResponse>;
 };
 
 export const signupActionnaire = async (
   data: FormData,
   user_id: number,
   company_id: number
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
   let res: Response;
   try {
     res = await fetch(
@@ -216,11 +201,6 @@ export const signupActionnaire = async (
     throw new Error(`${error}`);
   }
 
-  if (!res.ok) {
-    const errorObj = await res.json();
-    return errorObj as IError;
-  }
-
   const userData = await res.json();
   return userData as Partial<signUpResponse>;
 };
@@ -229,7 +209,7 @@ export const signupLegal = async (
   data: FormData,
   user_id: number,
   company_id: number
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
   let res: Response;
   try {
     res = await fetch(
@@ -243,11 +223,6 @@ export const signupLegal = async (
     throw new Error("NetworkError: Check your internet connection");
   }
 
-  if (!res.ok) {
-    const errorObj = await res.json();
-    return errorObj as IError;
-  }
-
   const userData = await res.json();
   return userData as Partial<signUpResponse>;
 };
@@ -255,7 +230,7 @@ export const signupLegal = async (
 export const signupValide = async (
   user_id: number,
   company_id: number
-): Promise<IError | Partial<signUpResponse>> => {
+): Promise<Partial<signUpResponse>> => {
   try {
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/signup_valide?user=${user_id}&company=${company_id}`,
@@ -269,12 +244,8 @@ export const signupValide = async (
       }
     );
 
-    if (!res.ok) {
-      throw new Error("something went wrong");
-    }
-
     const userData = await res.json();
-    return userData as Partial<signUpResponse> | IError;
+    return userData as Partial<signUpResponse>;
   } catch (error) {
     throw new Error(`${error}`);
   }

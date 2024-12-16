@@ -24,62 +24,32 @@ import {
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { LegalSchema } from "@/_validation/SignUp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { signupLegal } from "@/_data/user";
 import { IError } from "@/utils/types/SignupTypes";
 import { transformedErrorObject } from "@/utils";
 import FileUploader from "@/components/ui/shared/FileUploader";
+import { useSubmitLegalForm } from "@/components/react-query/queriesAndMutations";
 
 const LegalForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth);
   const { userObj } = state;
   const [errorResponse, setErrorResponse] = useState({});
-
-  const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mutate: signupLegalMutation, isPending } = useMutation({
-    mutationKey: ["signUpLegalMutation"],
-    mutationFn: async ({
-      infoDetails,
-      user_id,
-      company_id,
-    }: {
-      infoDetails: FormData;
-      user_id: number;
-      company_id: number;
-    }) => {
-      return await signupLegal(infoDetails, user_id, company_id);
-    },
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["signUpLegalMutation"] });
-        toast({
-          description: data.message,
-        });
-        dispatch(updateUserObj(data));
-        return dispatch(nextStep());
-      }
-      const errorObj = data as IError;
-      setErrorResponse(transformedErrorObject(errorObj));
-      toast({
-        description: "Something went wrong.",
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error?.message,
-      });
-    },
-  });
+
+  // initialize the mutation function
+  const {
+    mutateAsync: signupLegalMutation,
+    isPending,
+    error: mutationError,
+  } = useSubmitLegalForm();
 
   const form = useForm<z.infer<typeof LegalSchema>>({
     resolver: zodResolver(LegalSchema),
     defaultValues: {},
   });
 
-  function onSubmit(values: z.infer<typeof LegalSchema>) {
+  async function onSubmit(values: z.infer<typeof LegalSchema>) {
     const formData = new FormData();
 
     if (
@@ -106,18 +76,34 @@ const LegalForm: React.FC = () => {
         : "",
     };
 
-    if (userObj.user.id && userObj.company.id) {
-      signupLegalMutation({
-        infoDetails: formData,
-        user_id: userObj.user.id,
-        company_id: userObj.company.id,
+    if (userObj.user.id === undefined || userObj.company.id === undefined) {
+      return toast({
+        description: "Could not find a valid ID",
       });
-
-      return dispatch(createUser(newValues));
     }
 
+    const submitLegalFormResponse = await signupLegalMutation({
+      infoDetails: formData,
+      user_id: userObj.user.id,
+      company_id: userObj.company.id,
+    });
+
+    if (submitLegalFormResponse.status) {
+      toast({
+        description: submitLegalFormResponse.message,
+      });
+      dispatch(updateUserObj(submitLegalFormResponse));
+      return dispatch(nextStep());
+    } else {
+      setErrorResponse(
+        transformedErrorObject(submitLegalFormResponse as IError)
+      );
+    }
+  }
+
+  if (mutationError) {
     toast({
-      description: "Could not find a valid ID",
+      description: mutationError.message,
     });
   }
 

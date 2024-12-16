@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,62 +17,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
-  createUser,
   nextStep,
   previousStep,
   updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { adressDataType, AdresseSchema } from "@/_validation/SignUp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AdresseSchema } from "@/_validation/SignUp";
 import { useToast } from "@/hooks/use-toast";
-import { signupAdresse } from "@/_data/user";
 import { IError } from "@/utils/types/SignupTypes";
 import { transformedErrorObject } from "@/utils";
+import { useSubmitAdresseForm } from "@/components/react-query/queriesAndMutations";
 
 const AdresseForm = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth);
   const { userObj, newUserData } = state;
   const [errorResponse, setErrorResponse] = useState({});
-
-  const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mutate: signUpInformationMutation, isPending } = useMutation({
-    mutationKey: ["signUpAdresseMutation"],
-    mutationFn: async ({
-      infoDetails,
-      user_id,
-      company_id,
-    }: {
-      infoDetails: adressDataType;
-      user_id: number;
-      company_id: number;
-    }) => {
-      return await signupAdresse(infoDetails, user_id, company_id);
-    },
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
-        toast({
-          description: data.message,
-        });
-        dispatch(updateUserObj(data));
-        return dispatch(nextStep());
-      }
 
-      const errorObj = data as IError;
-      setErrorResponse(transformedErrorObject(errorObj));
-      toast({
-        description: "Something went wrong.",
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error?.message,
-      });
-    },
-  });
+  const {
+    mutateAsync: submitAdresseForm,
+    isPending,
+    error: mutationError,
+  } = useSubmitAdresseForm();
 
   const form = useForm<z.infer<typeof AdresseSchema>>({
     resolver: zodResolver(AdresseSchema),
@@ -81,18 +48,36 @@ const AdresseForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof AdresseSchema>) {
+  async function onSubmit(values: z.infer<typeof AdresseSchema>) {
     if (userObj.user.id && userObj.company.id) {
-      signUpInformationMutation({
+      const submitAdresseResponse = await submitAdresseForm({
         infoDetails: values,
         user_id: userObj.user.id,
         company_id: userObj.company.id,
       });
-      return dispatch(createUser(values));
+
+      if (submitAdresseResponse.status) {
+        toast({
+          description: submitAdresseResponse.message,
+        });
+        dispatch(updateUserObj(submitAdresseResponse));
+        return dispatch(nextStep());
+      } else {
+        setErrorResponse(
+          transformedErrorObject(submitAdresseResponse as IError)
+        );
+        return;
+      }
     }
 
     toast({
-      description: "Could not find a valid ID",
+      description: "User or company id not found",
+    });
+  }
+
+  if (mutationError) {
+    toast({
+      description: mutationError?.message,
     });
   }
 

@@ -21,12 +21,14 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
-import { signUpDataType, signupSchema } from "@/_validation/SignUp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUserCompany } from "@/_data/user";
-import { createUser, updateUserObj } from "@/_lib/features/Auth/authSlice";
-import { transformedSignInErrorObject } from "@/utils";
-import { signInErrorType } from "@/_validation/SignIn";
+import { signupSchema } from "@/_validation/SignUp";
+import {
+  createUser,
+  nextStep,
+  updateUserObj,
+} from "@/_lib/features/Auth/authSlice";
+import { transformedSignUpErrorObject } from "@/utils";
+import { useCreateUserAccount } from "../react-query/queriesAndMutations";
 
 const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
@@ -34,7 +36,10 @@ const SignupForm = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth.newUserData);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    console.log("Error response", errorResponse);
+  }, [errorResponse]);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -44,40 +49,36 @@ const SignupForm = () => {
   });
 
   const {
-    mutate: createUserCompanyMutation,
-    data,
+    mutateAsync: createUserCompanyMutation,
     isPending,
-  } = useMutation({
-    mutationKey: ["signup"],
-    mutationFn: async (userValues: signUpDataType) => {
-      return await createUserCompany(userValues);
-    },
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["signup"] });
-        dispatch(updateUserObj(data));
-        toast({
-          description: data.message,
-        });
-        return router.push("/signup/business");
-      }
+    error: errorObj,
+  } = useCreateUserAccount();
 
-      const error = data as signInErrorType;
-      setErrorResponse(transformedSignInErrorObject(error));
-      toast({
-        description: "Something went wrong",
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-  });
+  async function onSubmit(values: z.infer<typeof signupSchema>) {
+    const newUserData = await createUserCompanyMutation(values);
 
-  function onSubmit(values: z.infer<typeof signupSchema>) {
-    createUserCompanyMutation(values);
+    if (newUserData.status) {
+      dispatch(updateUserObj(newUserData));
+      dispatch(nextStep());
+      toast({
+        description: newUserData.message,
+      });
+      router.push("/signup/business");
+    } else {
+      setErrorResponse(transformedSignUpErrorObject(newUserData));
+
+      // give error feedback to the user
+      toast({
+        description: newUserData.message,
+      });
+    }
     dispatch(createUser(values));
+  }
+
+  if (errorObj) {
+    toast({
+      description: errorObj.message,
+    });
   }
 
   return (

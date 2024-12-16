@@ -23,55 +23,25 @@ import {
   updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { CgSpinner } from "react-icons/cg";
-import { informationDataType, InformationSchema } from "@/_validation/SignUp";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { signupInformation } from "@/_data/user";
-import { IError } from "@/utils/types/SignupTypes";
+import { InformationSchema } from "@/_validation/SignUp";
+
 import { transformedErrorObject } from "@/utils";
 import { useState } from "react";
+import { useSubmitInformationForm } from "@/components/react-query/queriesAndMutations";
+import { IError } from "@/utils/types/SignupTypes";
 
 const InformationForm = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state.auth);
   const { userObj, newUserData } = state;
   const [errorResponse, setErrorResponse] = useState({});
-
-  const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mutate: signUpInformationMutation, isPending } = useMutation({
-    mutationKey: ["signUpInformationMutation"],
-    mutationFn: async ({
-      infoDetails,
-      user_id,
-      company_id,
-    }: {
-      infoDetails: informationDataType;
-      user_id: number;
-      company_id: number;
-    }) => {
-      return await signupInformation(infoDetails, user_id, company_id);
-    },
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["signupInformation"] });
-        toast({
-          description: data.message,
-        });
-        dispatch(updateUserObj(data));
-        return dispatch(nextStep());
-      }
-      const errorObj = data as IError;
-      setErrorResponse(transformedErrorObject(errorObj));
-      toast({
-        description: "Something went wrong.",
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error?.message,
-      });
-    },
-  });
+
+  const {
+    mutateAsync: submitInformationForm,
+    isPending,
+    error: mutationError,
+  } = useSubmitInformationForm();
 
   const form = useForm<z.infer<typeof InformationSchema>>({
     resolver: zodResolver(InformationSchema),
@@ -80,18 +50,35 @@ const InformationForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof InformationSchema>) {
-    if (userObj.user.id && userObj.company.id) {
-      signUpInformationMutation({
-        infoDetails: values,
-        user_id: userObj.user.id,
-        company_id: userObj.company.id,
+  async function onSubmit(values: z.infer<typeof InformationSchema>) {
+    if (userObj.user?.id === undefined || userObj.company?.id === undefined) {
+      return toast({
+        description: "User or Company not found.",
       });
-      return dispatch(createUser(values));
     }
 
+    const submitInformationResponse = await submitInformationForm({
+      infoDetails: values,
+      user_id: userObj.user?.id,
+      company_id: userObj.company?.id,
+    });
+
+    if (submitInformationResponse.status) {
+      toast({
+        description: submitInformationResponse.message,
+      });
+      dispatch(updateUserObj(submitInformationResponse));
+      return dispatch(nextStep());
+    } else {
+      setErrorResponse(
+        transformedErrorObject(submitInformationResponse as IError)
+      );
+    }
+  }
+
+  if (mutationError) {
     toast({
-      description: "Could not find a valid ID",
+      description: mutationError?.message,
     });
   }
 

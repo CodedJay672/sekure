@@ -7,11 +7,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
 import { previousStep, updateUserObj } from "@/_lib/features/Auth/authSlice";
-import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
-import { signupValide, updateUser } from "@/_data/user";
-import { IError, signUpResponse } from "@/utils/types/SignupTypes";
+import { useSubmitValidationForm } from "@/components/react-query/queriesAndMutations";
 
 const Validation: React.FC = () => {
   const router = useRouter();
@@ -20,50 +18,44 @@ const Validation: React.FC = () => {
   const state = useAppSelector((state) => state.auth.userObj);
   const { user, company } = state;
 
-  const { mutate: signUp, isPending } = useMutation({
-    mutationKey: ["signUp"],
-    mutationFn: async () => {
-      if (user.id && company.id) {
-        return await signupValide(user.id, company.id);
-      } else {
-        throw new Error("User not found.");
-      }
-    },
-    onSuccess: (data) => {
-      if ((data as signUpResponse).status) {
-        toast({
-          description: data?.message,
-        });
-        dispatch(updateUserObj(data));
+  const {
+    mutateAsync: signUpUser,
+    isPending,
+    error: mutationError,
+  } = useSubmitValidationForm();
 
-        if ("user" in data) {
-          if (data.user?.step === "completed") {
-            return router.push("get-otp");
-          }
-          return router.push("/signup/business");
-        }
-      } else {
-        const errors = data as IError;
-        if (errors["error : "]) {
-          const error = errors["error : "];
-          for (const key in error) {
-            toast({
-              description: error[key][0],
-            });
-          }
-        }
-      }
-    },
-    onError: (error) => {
-      toast({
-        description: error?.message,
+  const handleSubmit = async () => {
+    if (user.id === undefined || company.id === undefined) {
+      return toast({
+        description: "Une erreur s'est produite, veuillez réessayer",
       });
-    },
-  });
+    }
 
-  const handleSubmit = () => {
-    signUp();
+    const signUpUserResponse = await signUpUser({
+      user_id: user.id,
+      company_id: company.id,
+    });
+
+    if (signUpUserResponse.status) {
+      toast({
+        description: signUpUserResponse.message,
+      });
+      dispatch(updateUserObj(signUpUserResponse));
+      if (signUpUserResponse.user?.step === "completed") {
+        return router.push("get-otp");
+      }
+    }
+
+    toast({
+      description: signUpUserResponse.message,
+    });
   };
+
+  if (mutationError) {
+    toast({
+      description: "Une erreur s'est produite, veuillez réessayer",
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">

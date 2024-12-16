@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { signinSchema } from "@/_validation/SignIn";
+import { signinSchema } from "@/_validation/";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -23,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 
 //import the redux store deps
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useAppDispatch } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
@@ -65,6 +65,33 @@ const SignInForm = () => {
         toast({
           description: "User Company information not found",
         });
+      }
+
+      // redirect the user to the next step
+      switch (userData.user?.[0].step) {
+        case "information":
+          dispatch(jumpStep(1));
+          router.push("/signup/business");
+          break;
+        case "adresse":
+          dispatch(jumpStep(2));
+          router.push("/signup/business");
+          break;
+        case "actionnaire":
+          dispatch(jumpStep(3));
+          router.push("/signup/business");
+          break;
+        case "legal":
+          dispatch(jumpStep(4));
+          router.push("/signup/business");
+          break;
+        case "valide":
+          dispatch(jumpStep(5));
+          router.push("/signup/business");
+          break;
+        default:
+          router.push("/signin/get-otp");
+          break;
       }
     } else {
       setErrorObj(transformedSignInErrorObject(userData));
