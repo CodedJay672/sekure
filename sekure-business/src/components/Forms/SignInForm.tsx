@@ -13,18 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import {
-  signInDataType,
-  signInErrorType,
-  signinSchema,
-} from "@/_validation/SignIn";
+import { signinSchema } from "@/_validation/SignIn";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { authenticateUser } from "@/_lib/actions";
+
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 //import the redux store deps
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
@@ -33,90 +28,58 @@ import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
 import { jumpStep } from "@/_lib/features/Auth/authSlice";
+import { useSubmitSignInForm } from "../react-query/queriesAndMutations";
 
 const SignInForm = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const state = useAppSelector((state) => state.connexion.user);
   const dispatch = useAppDispatch();
   const [errorObj, setErrorObj] = useState({});
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      ...state[0],
+      email: "",
+      password: "",
     },
   });
 
   const {
-    mutate: getAuthorizedUser,
+    mutateAsync: submitSignInForm,
     isPending,
-    error,
-  } = useMutation({
-    mutationKey: ["getAuthorizedUser"],
-    mutationFn: async (values: signInDataType) => {
-      return await authenticateUser(values);
-    },
-    onSuccess: (data) => {
-      if ("user" in data && Array.isArray(data.user)) {
-        toast({
-          description: data.message,
-        });
-        dispatch(updateConnexionData(data.user[0]));
-
-        switch (data.user?.[0]?.step) {
-          case "information":
-            dispatch(jumpStep(1));
-            router.push("/signup/business");
-            break;
-          case "adresse":
-            dispatch(jumpStep(2));
-            router.push("/signup/business");
-            break;
-          case "actionnaire":
-            dispatch(jumpStep(3));
-            router.push("/signup/business");
-            break;
-          case "legal":
-            dispatch(jumpStep(4));
-            router.push("/signup/business");
-            break;
-          case "valide":
-            dispatch(jumpStep(5));
-            router.push("/signup/business");
-            break;
-          default:
-            router.push("/signin/get-otp");
-        }
-
-        queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
-        return;
-      } else {
-        toast({
-          description: "Expected user data not found",
-        });
-      }
-
-      const objError = data as signInErrorType;
-      setErrorObj(transformedSignInErrorObject(objError));
-
-      toast({
-        description: objError.message || "Une erreur s'est produite",
-      });
-      return;
-    },
-    onError: (error) => {
-      if (error.message !== "Cannot convert undefined or null to object") {
-        toast({
-          description: error.message,
-        });
-      }
-    },
-  });
+    error: objError,
+  } = useSubmitSignInForm();
 
   async function onSubmit(values: z.infer<typeof signinSchema>) {
-    getAuthorizedUser(values);
+    const userData = await submitSignInForm(values);
+
+    if (userData.success) {
+      if (Array.isArray(userData.user)) {
+        toast({
+          description: userData.message,
+        });
+
+        // dispatch the action to update the user data
+        dispatch(updateConnexionData(userData.user[0]));
+      } else {
+        toast({
+          description: "User Company information not found",
+        });
+      }
+    } else {
+      setErrorObj(transformedSignInErrorObject(userData));
+      // Handle the error case
+      toast({
+        description: userData.message || "Une erreur s'est produite",
+      });
+    }
+  }
+
+  // Handle the network error case
+  if (objError) {
+    toast({
+      description: objError.message,
+    });
   }
 
   return (

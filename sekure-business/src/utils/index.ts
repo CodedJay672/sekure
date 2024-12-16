@@ -1,6 +1,6 @@
 import { stepsProps } from "@/components/SignUp/Steps";
 import { IError } from "./types/SignupTypes";
-import { signInErrorType } from "@/_validation/SignIn";
+import { signInReturnType } from "@/_validation/SignIn";
 
 export const changeStatus = (steps: stepsProps, idx: number) => {
   return steps.steps.map((step) => {
@@ -23,8 +23,11 @@ export const transformedErrorObject = (originalErrorObject: IError) => {
 };
 
 export const transformedSignInErrorObject = (
-  originalErrorObject: signInErrorType
+  originalErrorObject: signInReturnType
 ) => {
+  if (!originalErrorObject.errors) {
+    return {};
+  }
   return Object.fromEntries(
     Object.entries(originalErrorObject.errors).map(([key, value]) => [
       key,
@@ -57,3 +60,31 @@ export const convertFileToBase64 = async (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+// export const completeUserSignUp = (data: signInReturnType) => {
+
+// switch (data.user?.[0]?.step) {
+//           case "information":
+//             dispatch(jumpStep(1));
+//             router.push("/signup/business");
+//             break;
+//           case "adresse":
+//             dispatch(jumpStep(2));
+//             router.push("/signup/business");
+//             break;
+//           case "actionnaire":
+//             dispatch(jumpStep(3));
+//             router.push("/signup/business");
+//             break;
+//           case "legal":
+//             dispatch(jumpStep(4));
+//             router.push("/signup/business");
+//             break;
+//           case "valide":
+//             dispatch(jumpStep(5));
+//             router.push("/signup/business");
+//             break;
+//           default:
+//             router.push("/signin/get-otp");
+//         }
+//       }

@@ -3,16 +3,16 @@
 import { OTPSchema } from "@/_validation";
 import {
   signInDataType,
-  signInErrorType,
+  signInReturnType,
   signinSchema,
 } from "@/_validation/SignIn";
 import { createSession, deleteSession } from "./session";
-import { APIErrors, ApiResponse, OTPVerify } from "@/utils/types/types";
+import { OTPVerify } from "@/utils/types/types";
 import { NewUser, signupSchema } from "@/_validation/SignUp";
 
 export const authenticateUser = async (
   values: signInDataType
-): Promise<signInErrorType | ApiResponse> => {
+): Promise<signInReturnType> => {
   //get the email and password from the form
   const { email, password } = values;
   let response: Response;
@@ -38,18 +38,13 @@ export const authenticateUser = async (
     throw new Error("NetworkError: Check your internet connection");
   }
 
-  if (!response.ok) {
-    const dataError = await response.json();
-    return dataError as signInErrorType;
-  }
-
   const data = await response.json();
-  return data as ApiResponse;
+  return data as signInReturnType;
 };
 
 export const createUserAccount = async (
   data: NewUser
-): Promise<ApiResponse | APIErrors> => {
+): Promise<signInReturnType> => {
   try {
     const validateData = signupSchema.safeParse(data);
     if (!validateData.success) {
@@ -60,16 +55,12 @@ export const createUserAccount = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify({ ...data, id_role: 2 }),
     });
 
-    if (res.status === 422) {
-      const userData = (await res.json()) as APIErrors;
-      return userData;
-    }
-
-    const userData = (await res.json()) as ApiResponse;
+    const userData = (await res.json()) as signInReturnType;
     return userData;
   } catch (error) {
     throw new Error(`${error}`);
