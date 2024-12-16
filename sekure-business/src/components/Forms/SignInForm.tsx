@@ -86,7 +86,7 @@ const SignInForm = () => {
           dispatch(jumpStep(4));
           router.push("/signup/business");
           break;
-        case "valide":
+        case "validation":
           dispatch(jumpStep(5));
           router.push("/signup/business");
           break;
