@@ -1,6 +1,6 @@
 import { persistor } from "@/_lib/redux/store";
 import { Company } from "@/utils/types/SignupTypes";
-import { Role, User } from "@/utils/types/types";
+import { User, Role } from "@/_validation/SignIn";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { produce } from "immer";
 
