@@ -1,4 +1,4 @@
-import { User } from "@/utils/types/types";
+import { User } from "@/_validation/SignIn";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: { users: User[] } = {
