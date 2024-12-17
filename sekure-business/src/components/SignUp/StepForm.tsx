@@ -8,15 +8,21 @@ import Validation from "./Validation/Validation";
 import ActionnairesPage from "./Actionnaires/ActionnairesPage";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 const StepForm = () => {
   const currentStep = useAppSelector((state) => state.auth.currentStep);
   const step = useAppSelector((state) => state.auth.userObj.user.step);
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (step === "completed") {
-      router.replace("/signin/get-otp");
+      router.replace("/signin");
+      toast({
+        description:
+          "Inscription terminée. Veuillez vous connecter avec vos identifiants",
+      });
     }
   }, [step]);
 

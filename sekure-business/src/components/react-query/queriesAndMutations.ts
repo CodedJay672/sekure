@@ -6,7 +6,7 @@ import {
   signupLegal,
   signupValide,
 } from "@/_data/user";
-import { authenticateUser } from "@/_lib/actions";
+import { authenticateUser, signIn } from "@/_lib/actions";
 import { signInDataType } from "@/_validation/";
 import {
   adressDataType,
@@ -115,5 +115,13 @@ export const useSubmitValidationForm = () => {
       user_id: number;
       company_id: number;
     }) => signupValide(user_id, company_id),
+  });
+};
+
+export const useSignUserIn = () => {
+  return useMutation({
+    mutationKey: ["signin"],
+    mutationFn: async ({ otp, id }: { otp: string, id: number }) => 
+     signIn({ id, otp }),
   });
 };

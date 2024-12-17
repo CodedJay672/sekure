@@ -17,11 +17,10 @@ import Link from "next/link";
 import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { signIn } from "@/_lib/actions";
-import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
+import { useSignUserIn } from "../react-query/queriesAndMutations";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
@@ -32,34 +31,41 @@ const PwdRecOTPFForm = () => {
     resolver: zodResolver(OTPSchema),
   });
 
-  const { mutate: userSignIn, isPending } = useMutation({
-    mutationKey: ["signin", state?.id],
-    mutationFn: async (values: { otp: string }) => {
-      const id = state?.id as number;
-      return signIn({ id, ...values });
-    },
-    onSuccess: (data) => {
-      // dispatch(clearPersistor());
-      if (data.success) {
-        toast({
-          description: data.message,
-        });
-        return router.push("/");
-      }
-
-      toast({
-        description: data.error as string,
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-  });
+  const {
+    mutateAsync: userSignIn,
+    isPending,
+    error: mutationError,
+  } = useSignUserIn();
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
-    userSignIn(values);
+    if (!state.id) {
+      router.push("/signin");
+      return toast({
+        description: "Une erreur s'est produite, veuillez réessayer",
+      });
+    }
+
+    const signInReturnData = await userSignIn({
+      id: state.id,
+      otp: values.otp,
+    });
+
+    if (signInReturnData.success) {
+      toast({
+        description: signInReturnData.message,
+      });
+      return router.push("/");
+    }
+
+    toast({
+      description: signInReturnData.error as string,
+    });
+  }
+
+  if (mutationError) {
+    toast({
+      description: "Une erreur s'est produite, veuillez réessayer",
+    });
   }
 
   return (

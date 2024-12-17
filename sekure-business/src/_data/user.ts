@@ -5,9 +5,8 @@ import {
   adressDataType,
   informationDataType,
   signUpDataType,
-  signupSchema,
 } from "@/_validation/SignUp";
-import { IError, signUpResponse } from "@/utils/types/SignupTypes";
+import { signUpResponse } from "@/utils/types/SignupTypes";
 import { AllUsers } from "@/utils/types/types";
 import { User } from "@/_validation/SignIn";
 import { cache } from "react";
@@ -243,6 +242,10 @@ export const signupValide = async (
         body: JSON.stringify(""),
       }
     );
+
+    if (!res.ok) {
+      throw new Error("Validation failed.");
+    }
 
     const userData = await res.json();
     return userData as Partial<signUpResponse>;

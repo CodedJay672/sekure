@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/_lib/redux/hooks";
-import {
-  createUser,
-  previousStep,
-  updateUserObj,
-} from "@/_lib/features/Auth/authSlice";
+import { previousStep, updateUserObj } from "@/_lib/features/Auth/authSlice";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
 import { useSubmitValidationForm } from "@/components/react-query/queriesAndMutations";
@@ -47,7 +43,11 @@ const Validation: React.FC = () => {
       dispatch(updateUserObj(signUpUserResponse));
 
       if (signUpUserResponse.user?.step === "completed") {
-        return router.push("get-otp");
+        toast({
+          description:
+            "Inscription terminée. Veuillez vous connecter avec vos identifiants",
+        });
+        return router.push("/signin");
       }
     }
 
