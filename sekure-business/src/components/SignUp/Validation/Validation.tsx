@@ -73,8 +73,9 @@ const Validation: React.FC = () => {
             {state?.company?.name}
           </h2>
           <p className="text-[12px] leading-[18px]">
-            {state?.company?.name} est une fintech qui permet de faire des
-            paiements de facture et en sans vous deplacer
+            {state?.company?.name}
+            {", "}
+            {state?.company?.description_company}
           </p>
         </div>
 

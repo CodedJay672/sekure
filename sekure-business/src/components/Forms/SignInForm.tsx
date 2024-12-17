@@ -91,7 +91,7 @@ const SignInForm = () => {
           router.push("/signup/business");
           break;
         default:
-          router.push("/signin");
+          router.push("/signin/get-otp");
           break;
       }
     } else {
