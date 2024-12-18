@@ -1,5 +1,6 @@
+import { ICompanyUpdate } from "@/_data/company";
 import { User } from "@/_validation/SignIn";
-
+import { Company } from "./SignupTypes";
 
 interface Pagination {
   current_page: number;
@@ -25,7 +26,6 @@ export interface AllUsers {
   success: boolean;
   data: Pagination;
 }
-
 
 export interface APIErrors {
   "error : ": {
@@ -196,4 +196,12 @@ export interface OTPVerify {
   message?: string;
   error?: string | { otp?: string[] };
   token?: string;
+}
+
+// Edited company interface
+export interface ICompanyUpdateResponse {
+  success: boolean;
+  message: string;
+  company?: Company;
+  errors?: APIErrors;
 }

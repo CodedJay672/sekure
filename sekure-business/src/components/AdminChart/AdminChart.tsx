@@ -12,16 +12,14 @@ interface AdminChartProps {
     date: string;
     total: number;
   }[];
+  total?: string | number;
 }
 
-const AdminChart: React.FC<AdminChartProps> = ({ variant, state }) => {
+const AdminChart: React.FC<AdminChartProps> = ({ variant, state, total }) => {
   const [period, setPeriod] = useState("per Jour");
-  const total = useAppSelector(
-    (state) => state.transactions?.total_transaction
-  );
 
   return (
-    <div className="flex-1 bg-white px-[27px] py-[14px] rounded-[10px]">
+    <div className="w-full bg-white px-[27px] py-[14px] rounded-[10px]">
       <div className="flex-between">
         <div className="flex-1 flex flex-col gap-1">
           <h2 className="text-base leading-5 text-dark3 font-semibold">{`${

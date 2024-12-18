@@ -11,12 +11,6 @@ import { IoIosArrowDown } from "react-icons/io";
 const Paramètres: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState("tab1");
 
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
-
-  const handleToggle = () => {
-    setIsSwitchOn(!isSwitchOn);
-  };
-
   const handleChecked = (e: any) => {
     setSelectedOption(e.target.value);
   };

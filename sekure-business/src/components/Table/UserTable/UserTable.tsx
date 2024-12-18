@@ -1,35 +1,24 @@
 "use client";
 
 import React from "react";
-import { getAllUsers } from "@/_data/user";
-import { setUsers } from "@/_lib/features/users/usersSlice";
 import { useAppDispatch } from "@/_lib/redux/hooks";
-import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import TableComponent from "@/components/ui/shared/TableComponent";
 import LoadingSpinner from "@/components/Alert/Loading";
+import { useGetAllUsers } from "@/components/react-query/queriesAndMutations";
 
 const UserTable: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { data, isPending, isSuccess } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      return await getAllUsers();
-    },
-  });
+  const { data: allUsers, isPending } = useGetAllUsers();
 
   if (isPending) {
     return (
-      <div className="h-44 flex justify-center items-center">
+      <div className="flex-1 h-44 flex justify-center items-center">
         <LoadingSpinner />
       </div>
     );
-  }
-
-  if (!isSuccess) {
-    dispatch(setUsers(data?.data.data || []));
   }
 
   return (
@@ -40,7 +29,7 @@ const UserTable: React.FC = () => {
       />
       <DataTable
         columns={columns}
-        data={data?.data.data || []}
+        data={allUsers?.data.data || []}
         filterValue="email"
       />
     </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import UserTable from "@/components/Table/UserTable/UserTable";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Utilisateurs: React.FC = () => {
   return (

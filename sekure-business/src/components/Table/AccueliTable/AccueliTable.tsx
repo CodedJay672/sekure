@@ -6,6 +6,7 @@ import { getAllTransactions } from "@/_data/transactionStatistics";
 import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 const AccueliTable: React.FC = () => {
   const { data, isPending } = useQuery({
@@ -18,7 +19,7 @@ const AccueliTable: React.FC = () => {
   if (isPending) {
     return (
       <div className="h-44 flex justify-center items-center">
-        <h1>Loading...</h1>
+        <LoadingSpinner />
       </div>
     );
   }

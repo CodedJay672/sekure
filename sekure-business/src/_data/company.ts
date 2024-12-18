@@ -2,6 +2,8 @@
 
 import { verifySession } from "@/_lib/session";
 import { businessNameSchema } from "@/_validation";
+import { Company } from "@/utils/types/SignupTypes";
+import { ICompanyUpdateResponse } from "@/utils/types/types";
 
 export const getAllCompany = async () => {
   try {
@@ -97,16 +99,14 @@ export const updateCompany = async (
   id: number,
   updated_by: number,
   company: ICompanyUpdate
-) => {
+): Promise<ICompanyUpdateResponse> => {
   try {
     const session = await verifySession("session");
 
     const validatedInput = businessNameSchema.safeParse(company);
 
     if (!validatedInput.success) {
-      return {
-        error: validatedInput.error.flatten().fieldErrors,
-      };
+      error: validatedInput.error.flatten().fieldErrors;
     }
 
     const response = await fetch(

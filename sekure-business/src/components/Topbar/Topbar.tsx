@@ -1,39 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import UserDropdown from "../ui/shared/UserDropdown";
 import Notifications from "../ui/shared/Notifications";
 import Switch from "../ui/shared/switch/Switch";
 import CustomBreadcrumb from "../ui/Breadcrumbs/Breadcrumbs";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser } from "@/_data/user";
+import { useAppSelector } from "@/_lib/redux/hooks";
+import { useGetUserByID } from "../react-query/queriesAndMutations";
 
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
-  const dispatch = useAppDispatch();
-  const queryClient = useQueryClient();
   const state = useAppSelector((state) => state.connexion.user);
 
   //initialize the redux store with user data in the local storage
-  const { data, isSuccess } = useQuery({
-    queryKey: ["getUser", state?.[0]?.id],
-    queryFn: async () => {
-      if (state[0].id) {
-        return await getUser(state?.[0]?.id);
-      }
-    },
-    enabled: !!state?.[0].id, // Only run the query if state.id is truthy
-  });
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      dispatch(updateConnexionData(data.user?.[0]));
-    }
-    queryClient.invalidateQueries({ queryKey: ["getUser"] });
-  }, [isSuccess, data, dispatch]);
+  const { data: signedInUserInfo } = useGetUserByID(state?.[0]?.id || 0);
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -61,7 +42,11 @@ const Topbar: React.FC = () => {
         <CustomBreadcrumb />
       </div>
       <div className="flex-between gap-2">
-        <UserDropdown />
+        <UserDropdown
+          full_name={signedInUserInfo?.user?.[0]?.full_name}
+          image={signedInUserInfo?.user?.[0]?.image}
+          user_company={signedInUserInfo?.user?.[0]?.user_company?.[0]}
+        />
         <Notifications />
         <Switch text="Mode test" isOn={isOn} handleToggle={handleToggle} />
       </div>

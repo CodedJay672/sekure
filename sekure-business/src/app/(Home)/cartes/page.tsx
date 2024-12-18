@@ -6,40 +6,25 @@ import StatsCard from "@/components/StatsCard/StatsCard";
 import { RiAddCircleFill } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { useRouter, usePathname } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCardStats } from "@/_data/card";
-import { getCardStat } from "@/_lib/features/cards/cardSlice";
-import { CardStats } from "@/utils/types/types";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
-import { useEffect } from "react";
+import { useGetCompanyCardsDetails } from "@/components/react-query/queriesAndMutations";
 
 const Cartes: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const id = useAppSelector(
     (state) => state.connexion.user?.[0]?.user_company?.[0]?.id
   );
-  const state = useAppSelector((state) => state.cards.cardStat.evolution_card);
-  const queryClient = useQueryClient();
 
-  const { data, isSuccess } = useQuery({
-    queryKey: ["cards stats", id],
-    queryFn: async () => {
-      if (!id) return;
-      return await getCardStats(id);
-    },
-  });
+  if (!id) return null;
 
-  const { numbe_card_type_visa, number_card_type_master } = data || {};
+  const { data: getCompanyCardDetails } = useGetCompanyCardsDetails(id);
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(getCardStat(data as CardStats));
-      queryClient.invalidateQueries({ queryKey: ["cards stats", id] });
-    }
-  }, [dispatch, data]);
+  if (!getCompanyCardDetails) return null;
+
+  const { numbe_card_type_visa, number_card_type_master } =
+    getCompanyCardDetails || {};
 
   return (
     <section className="wrapper">
@@ -48,34 +33,37 @@ const Cartes: React.FC = () => {
           <Card
             data1={{
               title: "Total Cartes",
-              value: data?.number_card || 0,
+              value: getCompanyCardDetails?.number_card || 0,
             }}
             data2={{
               title: "activees",
-              value: data?.number_card_active || 0,
+              value: getCompanyCardDetails?.number_card_active || 0,
             }}
             data3={{
               title: "suspendues",
-              value: data?.number_card_block || 0,
+              value: getCompanyCardDetails?.number_card_block || 0,
             }}
           />
           <Card
             data1={{
               title: "Cartes créées auj",
-              value: data?.number_card || 0,
+              value: getCompanyCardDetails?.number_card || 0,
             }}
             data2={{
               title: "Actifs",
-              value: data?.number_card_active || 0,
+              value: getCompanyCardDetails?.number_card_active || 0,
             }}
             data3={{
               title: "inactifs",
-              value: data?.number_card_inactive || 0,
+              value: getCompanyCardDetails?.number_card_inactive || 0,
             }}
           />
         </section>
         <section className="flex flex-col gap-4">
-          <AdminChart variant="simple" state={state} />
+          <AdminChart
+            variant="simple"
+            state={getCompanyCardDetails?.evolution_card}
+          />
         </section>
         <CartesTable />
       </div>

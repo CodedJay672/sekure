@@ -39,31 +39,6 @@ export const authenticateUser = async (
   return data as signInReturnType;
 };
 
-export const createUserAccount = async (
-  data: NewUser
-): Promise<signInReturnType> => {
-  try {
-    const validateData = signupSchema.safeParse(data);
-    if (!validateData.success) {
-      throw new Error("failed to validate data");
-    }
-
-    const res = await fetch(`${process.env.BACKEND_API_URL}/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify({ ...data, id_role: 2 }),
-    });
-
-    const userData = (await res.json()) as signInReturnType;
-    return userData;
-  } catch (error) {
-    throw new Error(`${error}`);
-  }
-};
-
 export const signIn = async ({
   id,
   otp,
@@ -85,6 +60,7 @@ export const signIn = async ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify({ user_id: id, otp }),
     });

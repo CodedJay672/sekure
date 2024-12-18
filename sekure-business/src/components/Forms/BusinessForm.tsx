@@ -17,54 +17,29 @@ import { businessNameSchema } from "../../_validation";
 import { Input } from "../ui/input";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { Button } from "../ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ICompanyUpdate, updateCompany } from "@/_data/company";
-import { setCompany } from "@/_lib/features/company/CompanySlice";
+import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "../ui/checkbox";
 import { CgSpinner } from "react-icons/cg";
-import { updateUserCompany } from "@/_lib/features/users/connexionSlice";
+import { useEditCompanyInformationMutation } from "../react-query/queriesAndMutations";
 import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
-import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { updateUserCompany } from "@/_lib/features/users/connexionSlice";
+import { Company } from "@/utils/types/SignupTypes";
 
 const BusinessForm = () => {
-  const queryClient = useQueryClient();
   const { toast } = useToast();
-  const router = useRouter();
-
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.connexion?.user?.[0]);
   const edit = useAppSelector((state) => state.edit.editUserInfo);
   const company = user?.user_company?.[0];
 
   const {
-    mutate: editCompany,
-    data,
+    mutateAsync: editCompanyInformation,
     isPending,
-  } = useMutation({
-    mutationKey: ["editCompany", company?.id],
-    mutationFn: async (data: ICompanyUpdate) => {
-      if (company?.id && user.id) {
-        return await updateCompany(company?.id, user.id, data);
-      }
-    },
-    onSuccess: (data) => {
-      if (data.success) {
-        dispatch(setCompany(data.company));
-        dispatch(updateUserCompany(data.company[0]));
-        queryClient.invalidateQueries({ queryKey: ["company", company?.id] });
-      }
-      toast({
-        description: data.message,
-      });
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-  });
+    error: mutationError,
+  } = useEditCompanyInformationMutation();
+
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof businessNameSchema>>({
     resolver: zodResolver(businessNameSchema),
@@ -78,15 +53,35 @@ const BusinessForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof businessNameSchema>) {
-    editCompany({
-      ...values,
-      active: (values.active as unknown as boolean) ?? false,
+  async function onSubmit(values: z.infer<typeof businessNameSchema>) {
+    const editedCompanyInfo = await editCompanyInformation({
+      company_id: company?.id as number,
+      user_id: user?.id as number,
+      companyInfo: {
+        ...values,
+        active: (values.active as unknown as boolean) ?? false,
+      },
     });
-    if (data?.success) {
+
+    if (editedCompanyInfo.success) {
+      toast({
+        description: editedCompanyInfo.message,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["useGetUserByID", user?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["allUsers"],
+      });
       dispatch(setEditUserInfo(false));
-      revalidatePath("/profil");
+      dispatch(updateUserCompany(editedCompanyInfo?.company as Company));
     }
+  }
+
+  if (mutationError) {
+    toast({
+      description: mutationError.message,
+    });
   }
 
   return (

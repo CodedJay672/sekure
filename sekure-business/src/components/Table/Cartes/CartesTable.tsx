@@ -2,23 +2,39 @@
 
 import React from "react";
 import TableComponent from "@/components/ui/shared/TableComponent";
-import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
-import { getCards } from "@/_data/card";
+import LoadingSpinner from "@/components/Alert/Loading";
+import { useGetAllCardsQuery } from "@/components/react-query/queriesAndMutations";
+import { useAppSelector } from "@/_lib/redux/hooks";
 
 const CartesTable: React.FC = () => {
-  const { data, isPending } = useQuery({
-    queryKey: ["transactions"],
-    queryFn: async () => {
-      return await getCards();
-    },
-  });
+  const company_id = useAppSelector(
+    (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+  );
+  const page = 1;
+  const per_page = 10;
+
+  if (!company_id) return null;
+
+  const {
+    data: allCompanyCards,
+    isPending,
+    error: errObj,
+  } = useGetAllCardsQuery({ company_id, page, per_page });
 
   if (isPending) {
     return (
       <div className="h-44 flex justify-center items-center">
-        <h1>Loading...</h1>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (errObj) {
+    return (
+      <div className="h-44 flex justify-center items-center">
+        <p>Erreur lors de la récupération des cartes</p>
       </div>
     );
   }
@@ -31,7 +47,7 @@ const CartesTable: React.FC = () => {
       />
       <DataTable
         columns={columns}
-        data={data?.data.data || []}
+        data={allCompanyCards?.data?.data || []}
         filterValue="user"
       />
     </section>

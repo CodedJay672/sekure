@@ -13,6 +13,7 @@ import PermissionsComponent from "../ui/shared/PermissionComponent";
 import { getRoles } from "@/_data/roles";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingSpinner from "../Alert/Loading";
+import { useGetAllRoles } from "../react-query/queriesAndMutations";
 
 const RolesTab: React.FC = () => {
   const queryClient = useQueryClient();
@@ -21,12 +22,7 @@ const RolesTab: React.FC = () => {
     queryKey: ["roles"],
   });
 
-  const { data, isPending, error } = useQuery({
-    queryKey: ["roles"],
-    queryFn: async () => {
-      return await getRoles();
-    },
-  });
+  const { data, isPending, error } = useGetAllRoles();
 
   if (isPending) {
     return (

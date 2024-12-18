@@ -26,6 +26,7 @@ export const getUser = cache(async (id: number) => {
     const response = await fetch(`${process.env.BACKEND_API_URL}/users/${id}`, {
       headers: {
         Athorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
       },
     });
 
@@ -49,6 +50,7 @@ export const getAllUsers = cache(async () => {
     const response = await fetch(`${process.env.BACKEND_API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
       },
     });
 

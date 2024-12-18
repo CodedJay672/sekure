@@ -1,39 +1,19 @@
 "use client";
 
-import { getTransactionStatistics } from "@/_data/transactionStatistics";
-import { updateTransactionsData } from "@/_lib/features/transactions/transactionsSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import AdminChart from "@/components/AdminChart/AdminChart";
 import Card from "@/components/Cards/Cards";
+import { useGetCompanyTransactionDetails } from "@/components/react-query/queriesAndMutations";
 import StatsCard from "@/components/StatsCard/StatsCard";
 import TransactionsTable from "@/components/Table/TransactionsTable/TransactionsTable";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect } from "react";
 
 const Transactions: React.FC = () => {
-  const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
   const id = useAppSelector(
     (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
   );
 
-  queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
-
-  const { data, isSuccess } = useQuery({
-    queryKey: ["transactionsStat", id],
-    queryFn: async () => {
-      return await getTransactionStatistics(id as number);
-    },
-  });
-
-  useEffect(() => {
-    if (isSuccess) {
-      if (data?.transactionSummary) {
-        dispatch(updateTransactionsData(data.transactionSummary));
-      }
-    }
-    queryClient.invalidateQueries({ queryKey: ["transactionsStat", id] });
-  }, [data, isSuccess, dispatch]);
+  const { data: getCompanyTransactionDetails } =
+    useGetCompanyTransactionDetails(id || 0);
 
   return (
     <section className="wrapper">
@@ -42,50 +22,71 @@ const Transactions: React.FC = () => {
           <Card
             data1={{
               title: "Volume Total",
-              value: data?.transactionSummary?.total_transaction || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.total_transaction || 0,
             }}
             data2={{
               title: "activees",
-              value: data?.transactionSummary?.transaction_pending || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.transaction_pending || 0,
             }}
             data3={{
               title: "suspendues",
-              value: data?.transactionSummary?.transaction_success || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.transaction_success || 0,
             }}
           />
           <Card
             data1={{
               title: "Transactions Auj",
-              value: data?.transactionSummary?.total_collection || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.total_collection || 0,
             }}
             data2={{
               title: "activees",
-              value: data?.transactionSummary?.collection_failed || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.collection_failed || 0,
             }}
             data3={{
               title: "suspendues",
-              value: data?.transactionSummary?.collection_successs || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.collection_successs || 0,
             }}
           />
           <Card
             data1={{
               title: "Numbre Total",
-              value: data?.transactionSummary?.total_payments || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.total_payments || 0,
             }}
             data2={{
               title: "Actifs",
-              value: data?.transactionSummary?.actifs_payments || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.actifs_payments || 0,
             }}
             data3={{
               title: "Inactifs",
-              value: data?.transactionSummary?.inactifs_payments || 0,
+              value:
+                getCompanyTransactionDetails?.transactionSummary
+                  ?.inactifs_payments || 0,
             }}
           />
         </section>
         <section className="w-full">
           <AdminChart
             variant="simple"
-            state={data?.transactionSummary?.evolution_transactions || []}
+            state={
+              getCompanyTransactionDetails?.transactionSummary
+                ?.evolution_transactions || []
+            }
           />
         </section>
         <TransactionsTable />

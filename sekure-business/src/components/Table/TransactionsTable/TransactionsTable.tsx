@@ -1,23 +1,18 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import TableComponent from "@/components/ui/shared/TableComponent";
-import { getAllTransactions } from "@/_data/transactionStatistics";
 import { columns } from "./columns";
 import { DataTable } from "../UserTable/data-table";
+import LoadingSpinner from "@/components/Alert/Loading";
+import { useGetAllTransactions } from "@/components/react-query/queriesAndMutations";
 
 const TransactionsTable = () => {
-  const { data, isPending } = useQuery({
-    queryKey: ["transactions"],
-    queryFn: async () => {
-      return await getAllTransactions();
-    },
-  });
+  const { data: allTransactions, isPending } = useGetAllTransactions();
 
   if (isPending) {
     return (
       <div className="h-44 flex justify-center items-center">
-        <h1>Loading...</h1>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -30,7 +25,7 @@ const TransactionsTable = () => {
       />
       <DataTable
         columns={columns}
-        data={data?.data.data || []}
+        data={allTransactions?.data.data || []}
         filterValue="montant"
       />
     </section>

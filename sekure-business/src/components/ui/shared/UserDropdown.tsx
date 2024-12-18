@@ -3,10 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import Image from "next/image";
+import { UserCompany } from "@/_validation/SignIn";
 
-const UserDropdown: React.FC = () => {
+type TUser = {
+  full_name: string | undefined;
+  image: string | undefined;
+  user_company: UserCompany | undefined;
+};
+
+const UserDropdown: React.FC<TUser> = ({ full_name, image, user_company }) => {
   const router = useRouter();
-  const user = useAppSelector((state) => state.connexion?.user?.[0]);
 
   return (
     <div className="flex relative cursor-pointer">
@@ -15,20 +21,20 @@ const UserDropdown: React.FC = () => {
         onClick={() => router.push("/profil")}
       >
         <h3 className="text-[11px] leading-[16.5px] font-semibold">
-          {user?.full_name}
+          {full_name}
         </h3>
         <p className="text-[7px] leading-[10.5px] font-normal">
-          {user?.user_company?.[0]?.name}
+          {user_company?.name}
         </p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">
-          ID: DT{user?.user_company?.[0]?.registry_number}
+          ID: DT{user_company?.registry_number}
         </span>
       </div>
 
       <div className="w-11 h-11 flex flex-center flex-col rounded-full bg-primary">
-        {user?.image ? (
+        {image ? (
           <Image
-            src={user?.image}
+            src={image}
             alt="user"
             width={40}
             height={40}

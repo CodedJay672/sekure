@@ -1,5 +1,14 @@
+import { getCards, getCardStats } from "@/_data/card";
+import { ICompanyUpdate, updateCompany } from "@/_data/company";
+import { getRoles } from "@/_data/roles";
+import {
+  getAllTransactions,
+  getTransactionStatistics,
+} from "@/_data/transactionStatistics";
 import {
   createUserCompany,
+  getAllUsers,
+  getUser,
   signupActionnaire,
   signupAdresse,
   signupInformation,
@@ -16,19 +25,11 @@ import {
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useSubmitSignInForm = () => {
-  // init queryClient
-  const queryClient = useQueryClient();
-
   // mutation to submit sign in form
   return useMutation({
     mutationKey: ["getAuthorizedUser"],
     mutationFn: (values: signInDataType) => {
       return authenticateUser(values);
-    },
-    onSuccess: (data) => {
-      if ("user" in data && Array.isArray(data.user)) {
-        queryClient.invalidateQueries({ queryKey: ["getAuthorizedUser"] });
-      }
     },
   });
 };
@@ -41,7 +42,6 @@ export const useCreateUserAccount = () => {
 };
 
 export const useSubmitInformationForm = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["updateUserInformation"],
     mutationFn: ({
@@ -53,11 +53,6 @@ export const useSubmitInformationForm = () => {
       user_id: number;
       company_id: number;
     }) => signupInformation(infoDetails, user_id, company_id),
-    onSuccess: (data) => {
-      if ("user" in data) {
-        queryClient.invalidateQueries({ queryKey: ["updateUserInformation"] });
-      }
-    },
   });
 };
 
@@ -121,7 +116,91 @@ export const useSubmitValidationForm = () => {
 export const useSignUserIn = () => {
   return useMutation({
     mutationKey: ["signin"],
-    mutationFn: async ({ otp, id }: { otp: string, id: number }) => 
-     signIn({ id, otp }),
+    mutationFn: ({ otp, id }: { otp: string; id: number }) =>
+      signIn({ id, otp }),
+  });
+};
+
+export const useGetCompanyTransactionDetails = (company_id: number) => {
+  return useQuery({
+    queryKey: ["transactionStatistics", company_id],
+    queryFn: () => getTransactionStatistics(company_id),
+  });
+};
+
+export const useGetAllCardsQuery = ({
+  company_id,
+  page,
+  per_page,
+}: {
+  company_id: number;
+  page: number;
+  per_page: number;
+}) => {
+  return useQuery({
+    queryKey: ["getAllCards", company_id],
+    queryFn: () =>
+      getCards({
+        company_id,
+        page,
+        per_page,
+      }),
+  });
+};
+
+export const useGetCompanyCardsDetails = (company_id: number) => {
+  return useQuery({
+    queryKey: ["getCardStats", company_id],
+    queryFn: () => getCardStats(company_id),
+  });
+};
+
+export const useGetAllTransactions = () => {
+  return useQuery({
+    queryKey: ["allTransactions"],
+    queryFn: async () => {
+      return await getAllTransactions();
+    },
+  });
+};
+
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: ["allUsers"],
+    queryFn: () => {
+      return getAllUsers();
+    },
+  });
+};
+
+export const useGetUserByID = (id: number) => {
+  return useQuery({
+    queryKey: ["useGetUserByID", id],
+    queryFn: () => getUser(id),
+    enabled: !!id,
+  });
+};
+
+export const useGetAllRoles = () => {
+  return useQuery({
+    queryKey: ["allRoles"],
+    queryFn: () => {
+      return getRoles();
+    },
+  });
+};
+
+export const useEditCompanyInformationMutation = () => {
+  return useMutation({
+    mutationKey: ["editCompany"],
+    mutationFn: ({
+      company_id,
+      user_id,
+      companyInfo,
+    }: {
+      company_id: number;
+      user_id: number;
+      companyInfo: ICompanyUpdate;
+    }) => updateCompany(company_id, user_id, companyInfo),
   });
 };

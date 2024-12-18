@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "../button";
 import {
   Sheet,
   SheetContent,
@@ -44,7 +43,7 @@ const RoleSection: React.FC<IRoleSectionData> = ({ role, tagline, data }) => {
             <div key={idx} className="flex gap-4 items-center">
               <span className="w-[25px] h-[25px] bg-notif rounded-full"></span>
               <p className="text-xs leading-4 font-light text-placeholder-text">
-                {role?.poste}
+                {role?.full_name}
               </p>
             </div>
           ))
