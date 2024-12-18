@@ -7,6 +7,7 @@ import { columns } from "./columns";
 import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllCardsQuery } from "@/components/react-query/queriesAndMutations";
 import { useAppSelector } from "@/_lib/redux/hooks";
+import { number } from "zod";
 
 const CartesTable: React.FC = () => {
   const company_id = useAppSelector(
@@ -14,9 +15,6 @@ const CartesTable: React.FC = () => {
   );
   const page = 1;
   const per_page = 10;
-
-  if (!company_id) return null;
-
   const {
     data: allCompanyCards,
     isPending,

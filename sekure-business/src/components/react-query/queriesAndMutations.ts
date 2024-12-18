@@ -133,18 +133,22 @@ export const useGetAllCardsQuery = ({
   page,
   per_page,
 }: {
-  company_id: number;
+  company_id: number | undefined;
   page: number;
   per_page: number;
 }) => {
   return useQuery({
     queryKey: ["getAllCards", company_id],
-    queryFn: () =>
-      getCards({
+    queryFn: () => {
+      if (company_id === undefined) {
+        throw new Error("Comany not found");
+      }
+      return getCards({
         company_id,
         page,
         per_page,
-      }),
+      });
+    },
   });
 };
 
