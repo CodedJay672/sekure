@@ -1,6 +1,6 @@
 import { getCards, getCardStats } from "@/_data/card";
 import { ICompanyUpdate, updateCompany } from "@/_data/company";
-import { createCustomer, IValues } from "@/_data/customers";
+import { createCustomer, getAllCustomers, IValues } from "@/_data/customers";
 import { getRoles } from "@/_data/roles";
 import {
   getAllTransactions,
@@ -225,5 +225,25 @@ export const useCreateCustomerMutation = () => {
     }) => createCustomer(company_id, created_by, values),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["getAllCustomers"] }),
+  });
+};
+
+export const useGetAllCustomersQuery = ({
+  company_id,
+  page,
+  query,
+}: {
+  company_id: number;
+  page: number;
+  query: string;
+}) => {
+  return useQuery({
+    queryKey: ["getAllCustomers"],
+    queryFn: () =>
+      getAllCustomers({
+        company_id,
+        page,
+        query,
+      }),
   });
 };

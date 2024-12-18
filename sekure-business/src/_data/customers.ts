@@ -83,3 +83,90 @@ export const createCustomer = async (
   const data = await response.json();
   return data as Partial<TCreateCustomerResponse>;
 };
+
+// get all customers
+interface IGetCustomerResponse {
+  success: boolean;
+  data: {
+    current_page: number;
+    data: {
+      id: number;
+      id_map: null;
+      first_name: string;
+      last_name: string;
+      email: string;
+      balance: number;
+      country: string;
+      tier: string;
+      id_company: number;
+      created_by: number;
+      status: string;
+      updated_by: string;
+      street: string;
+      city: string;
+      state: string;
+      postal_code: string;
+      phone_country_code: string;
+      phone_number: string;
+      identification_number: string;
+      type: string;
+      image: string;
+      photo: string;
+      number: string;
+      dob: string;
+      active: 0;
+      created_at: string;
+      updated_at: string;
+      cards: [];
+    }[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: {
+      url: null;
+      label: "&laquo; Previous";
+      active: false;
+    }[];
+    next_page_url: string;
+    path: string;
+    per_page: number;
+    prev_page_url: string;
+    to: number;
+    total: number;
+  };
+}
+
+export const getAllCustomers = async ({
+  company_id,
+  page,
+  query,
+}: {
+  company_id: number;
+  page: number;
+  query: string | null;
+}): Promise<Partial<IGetCustomerResponse>> => {
+  let response: Response;
+
+  try {
+    // ensure user is logged in
+    const session = await verifySession("session");
+
+    response = await fetch(
+      `${process.env.BACKEND_API_URL}/customers?company=${company_id}&page=${page}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.value?.token}`,
+          accept: "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    throw new Error(`error: ${error}`);
+  }
+
+  const data = await response.json();
+  return data;
+};
