@@ -16,10 +16,9 @@ const Cartes: React.FC = () => {
   const id = useAppSelector(
     (state) => state.connexion.user?.[0]?.user_company?.[0]?.id
   );
-
-  if (!id) return null;
-
-  const { data: getCompanyCardDetails } = useGetCompanyCardsDetails(id);
+  const { data: getCompanyCardDetails } = useGetCompanyCardsDetails(
+    id as number
+  );
 
   if (!getCompanyCardDetails) return null;
 

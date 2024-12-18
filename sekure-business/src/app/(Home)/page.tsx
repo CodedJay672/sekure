@@ -11,10 +11,9 @@ export default function Home() {
   const id = useAppSelector(
     (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
   );
-
-  if (!id) return null;
-  const { data: companyTransactionsDetails } =
-    useGetCompanyTransactionDetails(id);
+  const { data: companyTransactionsDetails } = useGetCompanyTransactionDetails(
+    id as number
+  );
 
   return (
     <section className="wrapper">
