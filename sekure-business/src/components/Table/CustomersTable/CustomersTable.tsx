@@ -6,29 +6,20 @@ import { DataTable } from "../UserTable/data-table";
 import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllCustomersQuery } from "@/components/react-query/queriesAndMutations";
 import { useAppSelector } from "@/_lib/redux/hooks";
-// import { useToast } from "@/hooks/use-toast";
 
 const CustomersTable = () => {
-  const company_id = useAppSelector(
-    (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
-  );
+  const company_id =
+    useAppSelector(
+      (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+    ) ?? 0;
   const page = 1;
   const query = "";
-  // const { toast } = useToast();
-
-  if (!company_id) return null;
 
   const { data: allCustomers, isPending } = useGetAllCustomersQuery({
     company_id,
     page,
     query,
   });
-
-  // if (allCustomers?.success) {
-  //   toast({
-  //     description: `you are viewing the first page of ${allCustomers?.data?.total} cusomers`,
-  //   });
-  // }
 
   if (isPending) {
     return (
