@@ -7,7 +7,6 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import Provider from "@/utils/providers/tanstackProvider";
 import StoreProvider from "../StoreProvider";
-import { getCookie, verifySession } from "@/_lib/session";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +19,12 @@ export default async function RootLayout({
   children,
   convertmodal,
   rechargemodal,
+  customermodal,
 }: Readonly<{
   children: React.ReactNode;
   convertmodal: React.ReactNode;
   rechargemodal: React.ReactNode;
+  customermodal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -35,6 +36,7 @@ export default async function RootLayout({
               <Sidebar />
               {convertmodal}
               {rechargemodal}
+              {customermodal}
               {children}
             </main>
             <Toaster />

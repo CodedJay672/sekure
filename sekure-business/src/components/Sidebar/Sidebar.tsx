@@ -5,18 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
-import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/_lib/redux/hooks";
 import { useState } from "react";
 import ConfirmAlert from "../Alert/ConfirmAlert";
 import { Dialog, DialogContent, DialogOverlay } from "../ui/dialog";
-import { Button } from "../ui/button";
+import { PiPlusBold } from "react-icons/pi";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [showCustomers, setShowCustomers] = useState(false);
+
+  const handleToggle = () => {
+    setShowCustomers((prev) => !prev);
+  };
 
   return (
     <nav className="w-[234px] flex-between flex-col gap-24 sticky">
@@ -52,6 +53,44 @@ const Sidebar: React.FC = () => {
           </Link>
         ))}
       </div>
+
+      <div className="w-full flex flex-col gap-1 pl-10">
+        <div className="w-full">
+          <h2 className="text-dark1 py-1 text-bold text-xs leading-[21px] mb-3">
+            Personalized information
+          </h2>
+        </div>
+        <div className="w-full">
+          <h2
+            className={`text-dark1 px-3 py-1 text-bold text-xs leading-[21px] mb-3 cursor-pointer hover:text-primary hover:border-b-2 border-primary ${
+              showCustomers
+                ? "bg-gray-300 border-b-2 border-primary text-primary"
+                : ""
+            } hover:bg-white transition-all`}
+            onClick={() => handleToggle()}
+          >
+            CUSTOMERS
+          </h2>
+          {showCustomers && (
+            <div>
+              <Link
+                href="/customers"
+                className="w-full h-9 text-sm px-6 mb-1 flex flex-start items-center gap-3 hover:bg-white group transition-all"
+              >
+                all customers
+              </Link>
+              <Link
+                href="/create-customer"
+                className="w-full h-9 text-sm px-6 mb-3 flex flex-start items-center gap-3 hover:bg-white group transition-all"
+              >
+                <PiPlusBold />
+                create customer
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="w-full border-t pt-10 border-t-dark3">
         {bottomNav.map((link, idx) => (
           <Link
