@@ -72,7 +72,7 @@ const CreateCustomerForm: React.FC = () => {
   return (
     <div className="w-full flex-center flex-col gap-4">
       <span className="taxt-[13px] leading-[17px] text-[#242424] font-semibold mt-3">
-        Register a new user
+        Register a new customer
       </span>
 
       <Form {...form}>

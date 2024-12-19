@@ -9,19 +9,10 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import SheetForm from "../ui/shared/SheetForm";
-import PermissionsComponent from "../ui/shared/PermissionComponent";
-import { getRoles } from "@/_data/roles";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LoadingSpinner from "../Alert/Loading";
 import { useGetAllRoles } from "../react-query/queriesAndMutations";
 
 const RolesTab: React.FC = () => {
-  const queryClient = useQueryClient();
-
-  queryClient.invalidateQueries({
-    queryKey: ["roles"],
-  });
-
   const { data, isPending, error } = useGetAllRoles();
 
   if (isPending) {
@@ -49,17 +40,14 @@ const RolesTab: React.FC = () => {
               <span className="text-center">Créer un rôle</span>
             </div>
           </SheetTrigger>
-          <SheetContent className="flex flex-col w-[380px] overflow-auto">
+          <SheetContent
+            className="flex flex-col w-[380px] overflow-auto"
+            aria-describedby="create role sheet"
+          >
             <SheetHeader>
               <SheetTitle>Créer un nouveau rôle</SheetTitle>
             </SheetHeader>
             <SheetForm />
-            <div className="overflow-auto">
-              <PermissionsComponent />
-            </div>
-            <div className="primary-btn w-[330px] h-[34px] my-[2px] text-xs leading-[34.5px] rounded-[9px] tracking-[-0.5%] font-semibold px-6 py-4 flex-center">
-              <span className="text-center">Créer le rôle</span>
-            </div>
           </SheetContent>
         </Sheet>
       </div>

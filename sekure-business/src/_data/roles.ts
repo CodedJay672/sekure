@@ -27,3 +27,43 @@ export const getRoles = async () => {
     throw new Error("Fetching failed" + error);
   }
 };
+
+export interface ICreateRoleResponse {
+  success: boolean;
+  message: string;
+  role: {
+    name: string;
+    updated_at: string;
+    created_at: string;
+    id: number;
+  };
+}
+
+export const createRole = async (
+  role: string
+): Promise<ICreateRoleResponse> => {
+  try {
+    // verify login session
+    const session = await verifySession("session");
+
+    // create role
+    const response = await fetch(`${process.env.BACKEND_API_URL}/roles`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
+      },
+      body: JSON.stringify({ name: role }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create role");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Failed to create role" + error);
+  }
+};

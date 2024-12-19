@@ -1,7 +1,7 @@
 import { getCards, getCardStats } from "@/_data/card";
 import { ICompanyUpdate, updateCompany } from "@/_data/company";
 import { createCustomer, getAllCustomers, IValues } from "@/_data/customers";
-import { getRoles } from "@/_data/roles";
+import { createRole, getRoles } from "@/_data/roles";
 import {
   getAllTransactions,
   getTransactionStatistics,
@@ -245,5 +245,14 @@ export const useGetAllCustomersQuery = ({
         page,
         query,
       }),
+  });
+};
+
+export const useCreateRoleMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["createRole"],
+    mutationFn: (role: string) => createRole(role),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["allRoles"] }),
   });
 };
