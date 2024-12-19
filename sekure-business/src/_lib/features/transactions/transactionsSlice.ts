@@ -1,7 +1,8 @@
+import { Transactions } from "@/utils/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TransactionSummary } from "@/utils/types/types";
 
-const initialState: TransactionSummary = {
+const initialState: Transactions = {
+  success: false,
   total_transaction: 0,
   transaction_pending: 0,
   transaction_success: 0,
@@ -26,10 +27,7 @@ const transactionsSlice = createSlice({
   name: "transactions",
   initialState,
   reducers: {
-    updateTransactionsData: (
-      state,
-      action: PayloadAction<TransactionSummary>
-    ) => {
+    updateTransactionsData: (state, action: PayloadAction<Transactions>) => {
       //update the connexion data with the user data
       return { ...state, ...action.payload };
     },
