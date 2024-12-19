@@ -6,14 +6,34 @@ import { useAppSelector } from "@/_lib/redux/hooks";
 import { useGetCompanyTransactionDetails } from "@/components/react-query/queriesAndMutations";
 import Card from "@/components/Cards/Cards";
 import Wallet from "@/components/Wallet/Wallet";
+import Modal from "@/components/ui/shared/Modal";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 export default function Home() {
   const id = useAppSelector(
     (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
   );
-  const { data: companyTransactionsDetails } = useGetCompanyTransactionDetails(
+  const companyTransactionsDetails = useGetCompanyTransactionDetails(
     id as number
   );
+
+  if (companyTransactionsDetails.isPending) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
+    );
+  }
+
+  if (companyTransactionsDetails.error) {
+    return (
+      <Modal>
+        <div className="size-32 rounded-lg flex-center">
+          Something went wrong! Please refresh the page.
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <section className="wrapper">
@@ -22,74 +42,51 @@ export default function Home() {
           <Card
             data1={{
               title: "Total Transactions",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.total_transaction ?? 0,
+              value: companyTransactionsDetails?.data?.total_transaction,
             }}
             data2={{
               title: "reussies",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.transaction_pending ?? 0,
+              value: companyTransactionsDetails?.data?.transaction_pending,
             }}
             data3={{
               title: "en cours",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.transaction_success ?? 0,
+              value: companyTransactionsDetails?.data?.transaction_success,
             }}
           />
           <Card
             data1={{
               title: "Total Paimeents",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.total_payments ?? 0,
+              value: companyTransactionsDetails?.data?.total_payments,
             }}
             data2={{
               title: "Actifs",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.actifs_payments ?? 0,
+              value: companyTransactionsDetails?.data?.actifs_payments,
             }}
             data3={{
               title: "Inactifs",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.inactifs_payments ?? 0,
+              value: companyTransactionsDetails?.data?.inactifs_payments,
             }}
           />
           <Card
             data1={{
               title: "Total Collectes",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.total_collection ?? 0,
+              value: companyTransactionsDetails?.data?.total_collection,
             }}
             data2={{
               title: "Reussies",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.collection_failed ?? 0,
+              value: companyTransactionsDetails?.data?.collection_failed,
             }}
             data3={{
               title: "Echoues",
-              value:
-                companyTransactionsDetails?.transactionSummary
-                  ?.collection_successs ?? 0,
+              value: companyTransactionsDetails?.data?.collection_successs,
             }}
           />
         </div>
         <section className="w-full min-h-32 flex-center flex-col bg-white rounded-xl overflow-hidden">
           <AdminChart
             variant="detailed"
-            state={
-              companyTransactionsDetails?.transactionSummary
-                ?.evolution_transactions || []
-            }
-            total={
-              companyTransactionsDetails?.transactionSummary?.total_transaction
-            }
+            state={companyTransactionsDetails?.data?.evolution_transactions}
+            total={companyTransactionsDetails?.data?.total_transaction}
           />
         </section>
         <AccueliTable />
@@ -97,30 +94,18 @@ export default function Home() {
       <section className="flex flex-col max-w-[354px] w-[300px] gap-3">
         <Wallet
           type="XAF"
-          deposit={
-            companyTransactionsDetails?.transactionSummary?.wallet_xaf as number
-          }
-          withdraw={
-            companyTransactionsDetails?.transactionSummary?.wallet_xaf as number
-          }
+          deposit={companyTransactionsDetails?.data?.wallet_xaf}
+          withdraw={companyTransactionsDetails?.data?.wallet_xaf}
         />
         <Wallet
           type="USD"
-          deposit={
-            companyTransactionsDetails?.transactionSummary?.wallet_usa as number
-          }
-          withdraw={
-            companyTransactionsDetails?.transactionSummary?.wallet_usa as number
-          }
+          deposit={companyTransactionsDetails?.data?.wallet_usa}
+          withdraw={companyTransactionsDetails?.data?.wallet_usa}
         />
         <Wallet
           type="IVC"
-          deposit={
-            companyTransactionsDetails?.transactionSummary?.wallet_civ as number
-          }
-          withdraw={
-            companyTransactionsDetails?.transactionSummary?.wallet_civ as number
-          }
+          deposit={companyTransactionsDetails?.data?.wallet_civ}
+          withdraw={companyTransactionsDetails?.data?.wallet_civ}
         />
       </section>{" "}
     </section>

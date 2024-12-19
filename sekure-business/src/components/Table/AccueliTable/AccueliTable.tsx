@@ -7,20 +7,30 @@ import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
 import LoadingSpinner from "@/components/Alert/Loading";
+import { useAppSelector } from "@/_lib/redux/hooks";
+import { useGetAllTransactions } from "@/components/react-query/queriesAndMutations";
 
 const AccueliTable: React.FC = () => {
-  const { data, isPending } = useQuery({
-    queryKey: ["transactions"],
-    queryFn: async () => {
-      return await getAllTransactions();
-    },
-  });
+  const company_id =
+    useAppSelector(
+      (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+    ) ?? 0;
 
-  if (isPending) {
+  const allCompanyTransaction = useGetAllTransactions({ company_id });
+
+  if (allCompanyTransaction?.isPending) {
     return (
       <div className="h-44 flex justify-center items-center">
         <LoadingSpinner />
       </div>
+    );
+  }
+
+  if (allCompanyTransaction.error) {
+    return (
+      <p className="text-sm font-semibold text-center">
+        Oops! Could not fetch Transactions data. Refresh the page.
+      </p>
     );
   }
 
@@ -32,7 +42,7 @@ const AccueliTable: React.FC = () => {
       />
       <DataTable
         columns={columns}
-        data={data?.data.data || []}
+        data={allCompanyTransaction?.data?.data?.data || []}
         filterValue="vers"
       />
     </section>

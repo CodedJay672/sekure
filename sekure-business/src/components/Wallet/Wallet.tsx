@@ -6,8 +6,8 @@ import Link from "next/link";
 import { MenuOption } from "../ui/shared/MenuOption";
 interface IWalletDetails {
   type: string;
-  deposit: number;
-  withdraw: number;
+  deposit: string | number;
+  withdraw: string | number;
 }
 
 const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {

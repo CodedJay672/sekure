@@ -127,10 +127,13 @@ export const useSignUserIn = () => {
   });
 };
 
+export const useEditSignedInUserMutation = () => {};
+
 export const useGetCompanyTransactionDetails = (company_id: number) => {
   return useQuery({
     queryKey: ["transactionStatistics", company_id],
     queryFn: () => getTransactionStatistics(company_id),
+    enabled: !!company_id,
   });
 };
 
@@ -139,22 +142,20 @@ export const useGetAllCardsQuery = ({
   page,
   per_page,
 }: {
-  company_id: number | undefined;
+  company_id: number;
   page: number;
   per_page: number;
 }) => {
   return useQuery({
     queryKey: ["getAllCards", company_id],
     queryFn: () => {
-      if (company_id === undefined) {
-        throw new Error("Comany not found");
-      }
       return getCards({
         company_id,
         page,
         per_page,
       });
     },
+    enabled: !!company_id,
   });
 };
 
@@ -165,12 +166,24 @@ export const useGetCompanyCardsDetails = (company_id: number) => {
   });
 };
 
-export const useGetAllTransactions = () => {
+export const useGetAllTransactions = ({
+  company_id,
+  page,
+  query,
+}: {
+  company_id: number;
+  page?: number;
+  query?: string;
+}) => {
   return useQuery({
-    queryKey: ["allTransactions"],
-    queryFn: async () => {
-      return await getAllTransactions();
-    },
+    queryKey: ["allTransactions", company_id],
+    queryFn: () =>
+      getAllTransactions({
+        company_id,
+        page,
+        query,
+      }),
+    enabled: !!company_id,
   });
 };
 
@@ -267,6 +280,7 @@ export const useGetCustomersBySearchQuery = ({
         page,
         query,
       }),
+    enabled: !!query,
   });
 };
 

@@ -33,8 +33,9 @@ export interface APIErrors {
   };
 }
 
-//transaction types
-export interface TransactionSummary {
+// Interface for the main object with success field as BooleanLike
+export interface Transactions {
+  success: boolean;
   total_transaction: number | string;
   transaction_pending: number | string;
   transaction_success: number | string;
@@ -51,12 +52,6 @@ export interface TransactionSummary {
     date: string;
     total: number;
   }[];
-}
-
-// Interface for the main object with success field as BooleanLike
-export interface Transactions {
-  success: boolean;
-  transactionSummary: TransactionSummary | null;
 }
 
 export interface AllTransactions {

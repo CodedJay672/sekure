@@ -8,12 +8,13 @@ import StatsCard from "@/components/StatsCard/StatsCard";
 import TransactionsTable from "@/components/Table/TransactionsTable/TransactionsTable";
 
 const Transactions: React.FC = () => {
-  const id = useAppSelector(
-    (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
-  );
+  const id =
+    useAppSelector(
+      (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+    ) ?? 0;
 
   const { data: getCompanyTransactionDetails } =
-    useGetCompanyTransactionDetails(id || 0);
+    useGetCompanyTransactionDetails(id);
 
   return (
     <section className="wrapper">
@@ -22,71 +23,50 @@ const Transactions: React.FC = () => {
           <Card
             data1={{
               title: "Volume Total",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.total_transaction || 0,
+              value: getCompanyTransactionDetails?.total_transaction || 0,
             }}
             data2={{
               title: "activees",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.transaction_pending || 0,
+              value: getCompanyTransactionDetails?.transaction_pending || 0,
             }}
             data3={{
               title: "suspendues",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.transaction_success || 0,
+              value: getCompanyTransactionDetails?.transaction_success || 0,
             }}
           />
           <Card
             data1={{
               title: "Transactions Auj",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.total_collection || 0,
+              value: getCompanyTransactionDetails?.total_collection || 0,
             }}
             data2={{
               title: "activees",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.collection_failed || 0,
+              value: getCompanyTransactionDetails?.collection_failed || 0,
             }}
             data3={{
               title: "suspendues",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.collection_successs || 0,
+              value: getCompanyTransactionDetails?.collection_successs || 0,
             }}
           />
           <Card
             data1={{
               title: "Numbre Total",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.total_payments || 0,
+              value: getCompanyTransactionDetails?.total_payments || 0,
             }}
             data2={{
               title: "Actifs",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.actifs_payments || 0,
+              value: getCompanyTransactionDetails?.actifs_payments || 0,
             }}
             data3={{
               title: "Inactifs",
-              value:
-                getCompanyTransactionDetails?.transactionSummary
-                  ?.inactifs_payments || 0,
+              value: getCompanyTransactionDetails?.inactifs_payments || 0,
             }}
           />
         </section>
         <section className="w-full">
           <AdminChart
             variant="simple"
-            state={
-              getCompanyTransactionDetails?.transactionSummary
-                ?.evolution_transactions || []
-            }
+            state={getCompanyTransactionDetails?.evolution_transactions || []}
           />
         </section>
         <TransactionsTable />

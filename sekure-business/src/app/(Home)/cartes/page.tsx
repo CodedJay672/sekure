@@ -32,29 +32,29 @@ const Cartes: React.FC = () => {
           <Card
             data1={{
               title: "Total Cartes",
-              value: getCompanyCardDetails?.number_card || 0,
+              value: getCompanyCardDetails?.number_card,
             }}
             data2={{
               title: "activees",
-              value: getCompanyCardDetails?.number_card_active || 0,
+              value: getCompanyCardDetails?.number_card_active,
             }}
             data3={{
               title: "suspendues",
-              value: getCompanyCardDetails?.number_card_block || 0,
+              value: getCompanyCardDetails?.number_card_block,
             }}
           />
           <Card
             data1={{
               title: "Cartes créées auj",
-              value: getCompanyCardDetails?.number_card || 0,
+              value: getCompanyCardDetails?.number_card,
             }}
             data2={{
               title: "Actifs",
-              value: getCompanyCardDetails?.number_card_active || 0,
+              value: getCompanyCardDetails?.number_card_active,
             }}
             data3={{
               title: "inactifs",
-              value: getCompanyCardDetails?.number_card_inactive || 0,
+              value: getCompanyCardDetails?.number_card_inactive,
             }}
           />
         </section>

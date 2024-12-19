@@ -4,10 +4,24 @@ import TableComponent from "@/components/ui/shared/TableComponent";
 import { columns } from "./columns";
 import { DataTable } from "../UserTable/data-table";
 import LoadingSpinner from "@/components/Alert/Loading";
-import { useGetAllTransactions } from "@/components/react-query/queriesAndMutations";
+import {
+  useGetAllCardsQuery,
+  useGetAllTransactions,
+} from "@/components/react-query/queriesAndMutations";
+import { useAppSelector } from "@/_lib/redux/hooks";
 
 const TransactionsTable = () => {
-  const { data: allTransactions, isPending } = useGetAllTransactions();
+  const company_id =
+    useAppSelector(
+      (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+    ) ?? 0;
+  const page = 1;
+  const per_page = 10;
+  const { data: allTransactions, isPending } = useGetAllCardsQuery({
+    company_id,
+    page,
+    per_page,
+  });
 
   if (isPending) {
     return (
