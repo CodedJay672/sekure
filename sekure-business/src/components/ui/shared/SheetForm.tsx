@@ -29,12 +29,14 @@ const SheetForm: React.FC = () => {
 
     if (createdRole.success) {
       setRole("");
+      setEmptyError("");
       toast({
         description: createdRole.message,
       });
     }
 
     if (createRoleError) {
+      setEmptyError(createRoleError.message);
       toast({
         description: createRoleError.message,
       });

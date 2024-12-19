@@ -1,6 +1,11 @@
 import { getCards, getCardStats } from "@/_data/card";
 import { ICompanyUpdate, updateCompany } from "@/_data/company";
-import { createCustomer, getAllCustomers, IValues } from "@/_data/customers";
+import {
+  createCustomer,
+  getAllCustomers,
+  getCustomersBySearch,
+  IValues,
+} from "@/_data/customers";
 import { createRole, getRoles } from "@/_data/roles";
 import {
   getAllTransactions,
@@ -231,6 +236,23 @@ export const useCreateCustomerMutation = () => {
 export const useGetAllCustomersQuery = ({
   company_id,
   page,
+}: {
+  company_id: number;
+  page: number;
+}) => {
+  return useQuery({
+    queryKey: ["getAllCustomers"],
+    queryFn: () =>
+      getAllCustomers({
+        company_id,
+        page,
+      }),
+  });
+};
+
+export const useGetCustomersBySearchQuery = ({
+  company_id,
+  page,
   query,
 }: {
   company_id: number;
@@ -238,9 +260,9 @@ export const useGetAllCustomersQuery = ({
   query: string;
 }) => {
   return useQuery({
-    queryKey: ["getAllCustomers"],
+    queryKey: ["getAllCustomersBySearch"],
     queryFn: () =>
-      getAllCustomers({
+      getCustomersBySearch({
         company_id,
         page,
         query,

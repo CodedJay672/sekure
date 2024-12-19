@@ -140,6 +140,38 @@ interface IGetCustomerResponse {
 export const getAllCustomers = async ({
   company_id,
   page,
+}: {
+  company_id: number;
+  page: number;
+}): Promise<Partial<IGetCustomerResponse>> => {
+  let response: Response;
+
+  try {
+    // ensure user is logged in
+    const session = await verifySession("session");
+
+    response = await fetch(
+      `${process.env.BACKEND_API_URL}/customers?company=${company_id}&page=${page}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.value?.token}`,
+          accept: "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    throw new Error(`error: ${error}`);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const getCustomersBySearch = async ({
+  company_id,
+  page,
   query,
 }: {
   company_id: number;
@@ -153,7 +185,7 @@ export const getAllCustomers = async ({
     const session = await verifySession("session");
 
     response = await fetch(
-      `${process.env.BACKEND_API_URL}/customers?company=${company_id}&page=${page}`,
+      `${process.env.BACKEND_API_URL}/customers?company=${company_id}&page=${page}&search_query=${query}`,
       {
         method: "GET",
         headers: {
