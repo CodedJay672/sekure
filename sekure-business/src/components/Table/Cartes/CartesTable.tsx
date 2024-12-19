@@ -10,9 +10,10 @@ import { useAppSelector } from "@/_lib/redux/hooks";
 import { number } from "zod";
 
 const CartesTable: React.FC = () => {
-  const company_id = useAppSelector(
-    (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
-  );
+  const company_id =
+    useAppSelector(
+      (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
+    ) ?? 0;
   const page = 1;
   const per_page = 10;
   const {
