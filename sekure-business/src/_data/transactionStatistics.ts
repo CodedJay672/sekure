@@ -6,7 +6,6 @@ import { cache } from "react";
 
 export const getTransactionStatistics = cache(
   async (id: number): Promise<Transactions> => {
-    console.log(id);
     try {
       //verify user session to get user data
       const session = await verifySession("session");

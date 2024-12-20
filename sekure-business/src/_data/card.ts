@@ -52,40 +52,70 @@ export const getCardStats = async (id: number): Promise<CardStats> => {
     throw new Error("failed to fetch card stats" + error);
   }
 
-  const data = (await response.json()) as CardStats;
+  const data = await response.json();
   return data;
 };
 
-export const createCard = async ({
-  id,
-  customer_id,
-  version,
+interface ICreatedCard {
+  status: boolean;
+  message: string;
+  card: {
+    owner: number;
+    created_by: number;
+    reference: null;
+    id_card_map: null;
+    name: null;
+    card_number: null;
+    masked_pan: null;
+    expiry: null;
+    cvv: null;
+    status: null;
+    type: null;
+    issuer: null;
+    currency: null;
+    balance: null;
+    balance_updated_at: null;
+    street: null;
+    city: null;
+    state: null;
+    postal_code: null;
+    country: null;
+    updated_at: string;
+    created_at: string;
+    id: 2;
+  };
+}
+export const createCustomerCard = async ({
+  created_by,
+  email,
+  brand,
 }: {
-  id: number;
-  customer_id: number;
-  version: string;
-}) => {
+  created_by: number;
+  email: string;
+  brand: string;
+}): Promise<ICreatedCard> => {
+  // declare response object
+  let response: Response;
   try {
+    // verify session and redirect users if not logged in
     const session = await verifySession("session");
 
-    const response = await fetch(
-      `${process.env.BACKEND_API_URL}/cards?created_by=${id}`,
+    response = await fetch(
+      `${process.env.BACKEND_API_URL}/cards?created_by=${created_by}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.value?.token}`,
+          accept: "application/json",
         },
-        body: JSON.stringify({ customer_id, brand: version }),
+        body: JSON.stringify({ email, brand }),
       }
     );
-
-    if (!response.ok) {
-      throw new Error("error creating card");
-    }
-
-    const data = await response.json();
   } catch (error) {
-    console.log("error creating card" + error);
+    throw new Error("error creating card" + error);
   }
+
+  const data = await response.json();
+  return data;
 };

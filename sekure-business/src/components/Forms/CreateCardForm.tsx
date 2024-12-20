@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { custom, z } from "zod";
 
 import {
   Form,
@@ -25,9 +25,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { createCard, getCards } from "@/_data/card";
-import { useMutation } from "@tanstack/react-query";
+import { useAppSelector } from "@/_lib/redux/hooks";
+import { useCreateCustomerCardMutation } from "../react-query/queriesAndMutations";
+import Modal from "../ui/shared/Modal";
+import SuccessAlert from "../Alert/SuccessAlert";
+import LoadingSpinner from "../Alert/Loading";
 import { useToast } from "@/hooks/use-toast";
 
 interface CreateCardFormProps {
@@ -35,60 +37,41 @@ interface CreateCardFormProps {
 }
 
 const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
+  const user = useAppSelector((state) => state.connexion?.user?.[0]);
   const { toast } = useToast();
-  const state = useAppSelector((state) => state.connexion?.user?.[0]);
-  const dispatch = useAppDispatch();
+
+  const { mutateAsync: createCusomerCard, isPending: isCreatingCustomerCard } =
+    useCreateCustomerCardMutation();
+
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
   });
 
-  const {
-    mutate: newCard,
-    isSuccess,
-    error,
-  } = useMutation({
-    mutationKey: ["createCard"],
-    mutationFn: async ({
-      id,
-      customer_id,
-      version,
-    }: {
-      id: number;
-      customer_id: number;
-      version: string;
-    }) => {
-      if (state?.id !== id) {
-        return await createCard({ id, customer_id, version });
-      } else {
-        throw new Error("User ID is undefined");
-      }
-    },
-    onSuccess: () => {
-      console.log("Card created successfully");
-    },
-  });
+  async function onSubmit(values: z.infer<typeof cardCreateSchema>) {
+    const customerCard = await createCusomerCard({
+      created_by: user?.id ?? 0,
+      email: values.email,
+      brand: values.cardType,
+    });
 
-  function onSubmit(values: z.infer<typeof cardCreateSchema>) {
-    if (values.email !== state?.email) {
+    if (customerCard.status) {
+      form.reset();
       toast({
-        description: "L'email ne correspond pas à l'utilisateur connecté",
+        description: customerCard.message,
       });
-      return;
-    }
-
-    if (state?.id !== undefined) {
-      newCard({ id: state?.id, customer_id: 0, version: values.cardType });
     } else {
       toast({
-        description: "User ID is undefined",
+        description: customerCard.message,
       });
     }
   }
 
-  if (isSuccess) {
-    toast({
-      description: "Carte créée avec succès",
-    });
+  if (isCreatingCustomerCard) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
+    );
   }
 
   return (

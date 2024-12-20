@@ -1,4 +1,4 @@
-import { getCards, getCardStats } from "@/_data/card";
+import { createCustomerCard, getCards, getCardStats } from "@/_data/card";
 import { ICompanyUpdate, updateCompany } from "@/_data/company";
 import {
   createCustomer,
@@ -147,7 +147,7 @@ export const useGetAllCardsQuery = ({
   per_page: number;
 }) => {
   return useQuery({
-    queryKey: ["getAllCards", company_id],
+    queryKey: ["getAllCards"],
     queryFn: () => {
       return getCards({
         company_id,
@@ -156,6 +156,26 @@ export const useGetAllCardsQuery = ({
       });
     },
     enabled: !!company_id,
+  });
+};
+
+export const useCreateCustomerCardMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["createCard"],
+    mutationFn: ({
+      created_by,
+      email,
+      brand,
+    }: {
+      email: string;
+      created_by: number;
+      brand: string;
+    }) => createCustomerCard({ created_by, email, brand }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllCards"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllCustomers"] });
+    },
   });
 };
 
