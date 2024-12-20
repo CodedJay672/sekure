@@ -47,7 +47,7 @@ export const getAllTransactions = async ({
     const session = await verifySession("session");
 
     const response = await fetch(
-      `${process.env.BACKEND_API_URL}/transactions?company=${company_id}`,
+      `${process.env.BACKEND_API_URL}/transactions?company=${company_id}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${session.value?.token}`,

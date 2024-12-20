@@ -56,10 +56,13 @@ export const getCardStats = async (id: number): Promise<CardStats> => {
   return data;
 };
 
-interface ICreatedCard {
+export interface ICreatedCard {
   status: boolean;
-  message: string;
-  card: {
+  message?: string;
+  error?: {
+    [key: string]: string[];
+  };
+  card?: {
     owner: number;
     created_by: number;
     reference: null;

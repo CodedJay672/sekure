@@ -1,6 +1,7 @@
 import { stepsProps } from "@/components/SignUp/Steps";
 import { IError, signUpResponse } from "./types/SignupTypes";
 import { signInReturnType } from "@/_validation/SignIn";
+import { ICreatedCard } from "@/_data/card";
 
 export const changeStatus = (steps: stepsProps, idx: number) => {
   return steps.steps.map((step) => {
@@ -40,6 +41,20 @@ export const transformedSignUpErrorObject = (
   originalErrorObject: Partial<signUpResponse>
 ) => {
   if (!originalErrorObject.errors) {
+    return {};
+  }
+  return Object.fromEntries(
+    Object.entries(originalErrorObject).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? value.join(" ") : value,
+    ])
+  );
+};
+
+export const transformedGenericErrorObject = (
+  originalErrorObject: Partial<ICreatedCard>
+) => {
+  if (!originalErrorObject.error) {
     return {};
   }
   return Object.fromEntries(

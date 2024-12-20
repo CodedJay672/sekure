@@ -28,9 +28,12 @@ import {
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { useCreateCustomerCardMutation } from "../react-query/queriesAndMutations";
 import Modal from "../ui/shared/Modal";
-import SuccessAlert from "../Alert/SuccessAlert";
 import LoadingSpinner from "../Alert/Loading";
 import { useToast } from "@/hooks/use-toast";
+import { transformedGenericErrorObject } from "@/utils";
+import { signInReturnType } from "@/_validation/SignIn";
+import { useEffect, useState } from "react";
+import { ICreatedCard } from "@/_data/card";
 
 interface CreateCardFormProps {
   btnText: string;
@@ -39,9 +42,14 @@ interface CreateCardFormProps {
 const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
   const user = useAppSelector((state) => state.connexion?.user?.[0]);
   const { toast } = useToast();
+  const [errorObj, setErrorObj] = useState({});
 
   const { mutateAsync: createCusomerCard, isPending: isCreatingCustomerCard } =
     useCreateCustomerCardMutation();
+
+  useEffect(() => {
+    console.log(errorObj);
+  }, [errorObj]);
 
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
@@ -61,8 +69,9 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
       });
     } else {
       toast({
-        description: customerCard.message,
+        description: "The selected email is invalid.",
       });
+      setErrorObj(transformedGenericErrorObject(customerCard));
     }
   }
 
@@ -112,7 +121,6 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
                   </span>
                 </div>
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
             </FormItem>
           )}
         />
@@ -130,7 +138,13 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
                   {...field}
                 />
               </FormControl>
-              <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              {errorObj && field.name in errorObj ? (
+                <small className="text-xs text-red-600 align-right">
+                  {errorObj.email as string}
+                </small>
+              ) : (
+                <FormMessage className="text-xs font-normal leading-6 text-red-700" />
+              )}{" "}
             </FormItem>
           )}
         />
