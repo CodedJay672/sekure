@@ -3,15 +3,71 @@
 import { verifySession } from "@/_lib/session";
 import { CardsResponse, CardStats } from "@/utils/types/types";
 
+export interface ICustomer {
+  id: number;
+  id_map: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  balance: number;
+  country: string;
+  tier: number;
+  id_company: number;
+  created_by: number;
+  status: string;
+  updated_by: number;
+  street: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  phone_country_code: string;
+  phone_number: string;
+  identification_number: string;
+  type: string;
+  image: string;
+  photo: string;
+  number: string;
+  dob: string;
+  active: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type TCustomerCard = {
+  id: number;
+  owner: number;
+  reference: string;
+  id_card_map: string;
+  name: string;
+  card_number: number;
+  masked_pan: string;
+  expiry: string;
+  expiry_date: string;
+  cvv: number;
+  status: string;
+  type: string;
+  issuer: number;
+  currency: string;
+  balance: number;
+  balance_updated_at: string;
+  street: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  created_by: number;
+  company: number;
+  active: number;
+  created_at: string;
+  updated_at: string;
+  customer: ICustomer;
+};
+
 export const getCards = async ({
   company_id,
-  page,
-  per_page,
 }: {
   company_id: number;
-  page: number;
-  per_page: number;
-}): Promise<CardsResponse<any>> => {
+}): Promise<CardsResponse<TCustomerCard>> => {
   let response: Response;
   try {
     //verify session
@@ -19,7 +75,7 @@ export const getCards = async ({
 
     // fetch list of cards
     response = await fetch(
-      `${process.env.BACKEND_API_URL}/cards?company=${company_id}&page=${page}&perPage=${per_page}`,
+      `${process.env.BACKEND_API_URL}/cards?company=${company_id}`,
       {
         headers: { Authorization: `Bearer ${session?.value?.token}` },
       }
@@ -117,6 +173,26 @@ export const createCustomerCard = async ({
     );
   } catch (error) {
     throw new Error("error creating card" + error);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const getCardDetails = async (id: number) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(`${process.env.BACKEND_API_URL}/cards/${id}`, {
+      headers: {
+        Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
+      },
+    });
+  } catch (error) {
+    throw new Error("Error: " + error);
   }
 
   const data = await response.json();

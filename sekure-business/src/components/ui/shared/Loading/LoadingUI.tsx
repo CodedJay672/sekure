@@ -1,10 +1,11 @@
 import LoadingSpinner from "@/components/Alert/Loading";
+import Modal from "../Modal";
 
 const LoadingUI = () => {
   return (
-    <div className="w-1/2 h-dvh place-content-center">
-      <LoadingSpinner />;
-    </div>
+    <Modal>
+      <LoadingSpinner />
+    </Modal>
   );
 };
 

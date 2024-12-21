@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
+import RowAction from "@/components/ui/shared/RowAction/RowAction";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 // This type is used to define the shape of our data.
@@ -15,6 +16,9 @@ export type User = {
   date_birth?: string | "";
 };
 
+const columnHelper = createColumnHelper<User>();
+
+// Define the columns for the table
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "full_name",
@@ -70,4 +74,8 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "date_birth",
     header: "Date D'ajout",
   },
+  columnHelper.display({
+    id: "actions",
+    cell: (props) => <RowAction row={props.row} />,
+  }),
 ];

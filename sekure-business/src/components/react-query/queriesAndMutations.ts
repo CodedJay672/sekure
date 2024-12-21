@@ -1,4 +1,9 @@
-import { createCustomerCard, getCards, getCardStats } from "@/_data/card";
+import {
+  createCustomerCard,
+  getCardDetails,
+  getCards,
+  getCardStats,
+} from "@/_data/card";
 import { ICompanyUpdate, updateCompany } from "@/_data/company";
 import {
   createCustomer,
@@ -28,7 +33,12 @@ import {
   informationDataType,
   signUpDataType,
 } from "@/_validation/SignUp";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 
 export const useSubmitSignInForm = () => {
   // mutation to submit sign in form
@@ -137,25 +147,24 @@ export const useGetCompanyTransactionDetails = (company_id: number) => {
   });
 };
 
-export const useGetAllCardsQuery = ({
-  company_id,
-  page,
-  per_page,
-}: {
-  company_id: number;
-  page: number;
-  per_page: number;
-}) => {
+export const useGetAllCardsQuery = ({ company_id }: { company_id: number }) => {
   return useQuery({
     queryKey: ["getAllCards"],
     queryFn: () => {
       return getCards({
         company_id,
-        page,
-        per_page,
       });
     },
+    placeholderData: keepPreviousData,
     enabled: !!company_id,
+  });
+};
+
+export const useGetCardDetailsQuery = (id: number) => {
+  return useQuery({
+    queryKey: ["getCardDetails", id],
+    queryFn: () => getCardDetails(id),
+    enabled: !!id,
   });
 };
 
@@ -175,6 +184,8 @@ export const useCreateCustomerCardMutation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getAllCards"] });
       queryClient.invalidateQueries({ queryKey: ["getAllCustomers"] });
+      queryClient.invalidateQueries({ queryKey: ["getCardStats"] });
+      queryClient.invalidateQueries({ queryKey: ["allTransactions"] });
     },
   });
 };

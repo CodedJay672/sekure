@@ -1,21 +1,21 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ICustomer, TCustomerCard } from "@/_data/card";
+import RowAction from "@/components/ui/shared/RowAction/RowAction";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-export type Cartes = {
-  user: string | "";
-  card_name: string | "";
-  card_number: string | "";
-  type: "Credit" | "Debit";
-  active: number | 0;
-  date_creation: string | "";
-};
+// create column helper to define a column action
+const columnHelper = createColumnHelper<Partial<TCustomerCard>>();
 
-export const columns: ColumnDef<Cartes>[] = [
+export const columns: ColumnDef<Partial<TCustomerCard>>[] = [
   {
-    accessorKey: "user",
+    accessorKey: "customer",
     header: "Utilisateur",
+    cell: ({ row }) => {
+      const customer = row.getValue("customer") as ICustomer;
+      return `${customer?.first_name} ${customer?.last_name}`;
+    },
   },
   {
-    accessorKey: "card_name",
+    accessorKey: "name",
     header: "Nom De Carte",
   },
   {
@@ -48,7 +48,15 @@ export const columns: ColumnDef<Cartes>[] = [
     },
   },
   {
-    accessorKey: "date_creation",
+    accessorKey: "created_at",
     header: "Date De Creatio",
+    cell: ({ row }) => {
+      const date = row.getValue("created_at") as Date;
+      return new Date(date).toLocaleDateString();
+    },
   },
+  columnHelper.display({
+    id: "actions",
+    cell: (props) => <RowAction row={props.row} />,
+  }),
 ];

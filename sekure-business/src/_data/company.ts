@@ -2,7 +2,6 @@
 
 import { verifySession } from "@/_lib/session";
 import { businessNameSchema } from "@/_validation";
-import { Company } from "@/utils/types/SignupTypes";
 import { ICompanyUpdateResponse } from "@/utils/types/types";
 
 export const getAllCompany = async () => {
@@ -131,4 +130,25 @@ export const updateCompany = async (
   } catch (error) {
     throw new Error(`Error updating company: ${error}`);
   }
+};
+
+export const deleteCompanyByID = async (id: number) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(`${process.env.BACKEND_API_URL}/companies/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.value?.token}`,
+      },
+    });
+  } catch (error) {
+    throw new Error(`Error deleting company: ${error}`);
+  }
+
+  const data = await response.json();
+  return data;
 };

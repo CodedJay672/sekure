@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React from "react";
 import Card from "@/components/Cards/Cards";
 import { Button } from "@/components/ui/button";
 import Active from "@/components/ui/shared/Active";
@@ -9,10 +9,34 @@ import VisaCard from "@/components/ui/shared/VisaCard";
 import Image from "next/image";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
-import { Data } from "@/constants/types";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
+import { useParams } from "next/navigation";
+import { useGetCardDetailsQuery } from "@/components/react-query/queriesAndMutations";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 const CardDetails: React.FC = () => {
+  const { id } = useParams();
+
+  const cardDetails = useGetCardDetailsQuery(id as unknown as number);
+
+  if (cardDetails.isPending) {
+    return (
+      <div className="flex-1 flex-center min-h-dvh">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!cardDetails.data?.status) {
+    return (
+      <div className="flex-1 flex-center min-h-dvh">
+        <h1 className="text-base leading-5 text-gray-400">
+          {cardDetails.data?.message}
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <section className="wrapper max-w-full">
       <div className="max-w-[354px] flex flex-col gap-3 rounded-[10px]">
@@ -24,7 +48,7 @@ const CardDetails: React.FC = () => {
             <Active />
           </div>
           <span className="flex-1 text-xs leading-4 text-placeholder-text">
-            Créé le 05 Aout 2024
+            Créé le 12/12/2021
           </span>
           <VisaCard />
 

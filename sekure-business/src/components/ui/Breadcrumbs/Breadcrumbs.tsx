@@ -26,7 +26,8 @@ const CustomBreadcrumb = () => {
       .map((str) => {
         if (str === "") return "accueil";
         return str;
-      });
+      })
+      .filter((str) => Number.isNaN(Number(str)));
     setPathArray(Array.from(new Set(path)));
     setPage(path.pop() || "");
   }, [pathname]);

@@ -5,7 +5,6 @@ import { signInDataType, signinSchema } from "@/_validation/";
 import { signInReturnType } from "@/_validation/SignIn";
 import { createSession, deleteSession } from "./session";
 import { OTPVerify } from "@/utils/types/types";
-import { NewUser, signupSchema } from "@/_validation/SignUp";
 
 export const authenticateUser = async (
   values: signInDataType

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
+import RowAction from "@/components/ui/shared/RowAction/RowAction";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
 export type Customer = {
@@ -8,6 +9,8 @@ export type Customer = {
   email: string | "";
   country: string | "";
 };
+
+const columnHelper = createColumnHelper<Customer>();
 
 export const columns: ColumnDef<Customer>[] = [
   {
@@ -39,4 +42,8 @@ export const columns: ColumnDef<Customer>[] = [
     accessorKey: "country",
     header: "Pays",
   },
+  columnHelper.display({
+    id: "actions",
+    cell: (props) => <RowAction row={props.row} />,
+  }),
 ];

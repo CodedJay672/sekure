@@ -155,9 +155,14 @@ const InformationForm = () => {
             name="created_company"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Date de creation de l’entreprise
-                </FormLabel>
+                <div className="flex flex-col gap-1">
+                  <FormLabel className="text-xs font-light">
+                    Date de creation de l’entreprise
+                  </FormLabel>
+                  <span className="text-[10px] font-semibold text-gray-300">
+                    accepted format: yyyy-mm-dd
+                  </span>
+                </div>
                 <FormControl>
                   <Input
                     type="text"

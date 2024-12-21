@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   SortingState,
   getSortedRowModel,
   useReactTable,
   ColumnFiltersState,
   getFilteredRowModel,
+  PaginationState,
 } from "@tanstack/react-table";
 
 import {
@@ -36,21 +37,24 @@ export function DataTable<TData, TValue>({
   data,
   filterValue,
 }: DataTableProps<TData, TValue>) {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const column = useMemo(() => columns, []);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const defaultData = useMemo(() => [], []);
 
   // Create a table instance
   const table = useReactTable({
-    data,
-    columns,
+    data: data ?? defaultData,
+    columns: column,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageIndex: 0, //custom initial page index
-        pageSize: 5, //custom default page size
-      },
-    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    debugTable: true,
+    // getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -58,6 +62,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
+      pagination,
     },
   });
 

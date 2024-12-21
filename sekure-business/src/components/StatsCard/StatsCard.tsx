@@ -12,8 +12,8 @@ import {
   Filler,
   ArcElement,
   ChartOptions,
-} from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+} from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
 ChartJs.register(
   CategoryScale,
@@ -32,21 +32,20 @@ interface StatsCardProps {
 }
 
 const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
-
   const data = {
-    backgroundColor: ['#242424', '#33E89C' ],
-    labels: ['visa', 'mastercard'],
+    backgroundColor: ["#242424", "#33E89C"],
+    labels: ["visa", "mastercard"],
     datasets: [
       {
-        label: 'My First Dataset',
+        label: "Cartes",
         data: [entry[0], entry[1]],
-        backgroundColor: ['#242424', '#33E89C' ],
+        backgroundColor: ["#242424", "#33E89C"],
         hoverOffset: 4,
       },
     ],
-  }
+  };
 
-  const options: ChartOptions<'doughnut'> = {
+  const options: ChartOptions<"doughnut"> = {
     layout: {
       padding: {
         right: 90,
@@ -55,17 +54,17 @@ const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
     plugins: {
       legend: {
         display: true,
-        position: 'right',
-        align: 'center',
+        position: "right",
+        align: "center",
         labels: {
           usePointStyle: true,
-          pointStyle: 'circle',
+          pointStyle: "circle",
           boxWidth: 10,
           font: {
             size: 12,
             lineHeight: 16,
-          }
-        }
+          },
+        },
       },
     },
     responsive: true,
@@ -75,15 +74,15 @@ const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
     elements: {
       arc: {
         borderWidth: 1,
-      }
+      },
     },
-  }
+  };
 
   return (
     <article className="py-3 rounded-[10px] flex w-[268x] h-[97px]">
       <Doughnut data={data} options={options} />
     </article>
-  )
-}
+  );
+};
 
-export default StatsCard
+export default StatsCard;

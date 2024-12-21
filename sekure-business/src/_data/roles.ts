@@ -67,3 +67,112 @@ export const createRole = async (
     throw new Error("Failed to create role" + error);
   }
 };
+
+export const getRoleByID = async (id: number) => {
+  let response: Response;
+
+  try {
+    //verify session
+    const session = await verifySession("session");
+
+    // fetch role by id
+    response = await fetch(`${process.env.BACKEND_API_URL}/roles/${id}`, {
+      headers: {
+        Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
+      },
+    });
+  } catch (error) {
+    throw new Error("Error" + error);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const updateRoleByID = async ({
+  id_role,
+  updated_by,
+  value,
+}: {
+  id_role: number;
+  updated_by: number;
+  value: { name: string; active: boolean };
+}) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(
+      `${process.env.BACKEND_API_URL}/roles/${id_role}?updated_by=${updated_by}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.value?.token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify(value),
+      }
+    );
+  } catch (error) {
+    throw new Error("Error" + error);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const deleteRoleByID = async (id: number) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(`${process.env.BACKEND_API_URL}/roles/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
+      },
+    });
+  } catch (error) {
+    throw new Error("Error" + error);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const createRoleAffectation = async ({
+  id_role,
+  id_user,
+}: {
+  id_role: number;
+  id_user: number;
+}) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(
+      `${process.env.BACKEND_API_URL}/roles-affectations`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.value?.token}`,
+          accept: "application/json",
+        },
+        body: JSON.stringify({ id_role, id_user }),
+      }
+    );
+  } catch (error) {
+    throw new Error("Error" + error);
+  }
+
+  const data = await response.json();
+  return data;
+};

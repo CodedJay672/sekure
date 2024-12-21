@@ -4,7 +4,6 @@ import { BsFillTriangleFill } from "react-icons/bs";
 import CustomDropdown from "../ui/shared/CustomDropdown";
 import BarChart from "../ui/shared/BarChart";
 import { useState } from "react";
-import { useAppSelector } from "@/_lib/redux/hooks";
 
 interface AdminChartProps {
   variant?: "detailed" | "simple";

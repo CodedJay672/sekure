@@ -52,6 +52,8 @@ const BarChart: React.FC<State> = ({ state }) => {
             size: 8,
           },
         },
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
       },
       y: {
         max: 250,

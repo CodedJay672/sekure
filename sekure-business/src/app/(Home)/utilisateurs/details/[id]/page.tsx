@@ -5,14 +5,33 @@ import Card from "@/components/Cards/Cards";
 import { Button } from "@/components/ui/button";
 import Active from "@/components/ui/shared/Active";
 import CardNumber from "@/components/ui/shared/CardNumber";
-import SearchBar from "@/components/ui/shared/SearchBar";
-import TableComponent from "@/components/ui/shared/TableComponent";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { RxPinRight } from "react-icons/rx";
+import { useParams } from "next/navigation";
+import { useGetUserByID } from "@/components/react-query/queriesAndMutations";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 const UtilisateursDetails: React.FC = () => {
-  const [query, setQuery] = useState<string>("");
+  const { id } = useParams<{ id: string }>();
+
+  const userDetails = useGetUserByID(Number(id));
+
+  if (userDetails.isPending) {
+    return (
+      <div className="flex-1 flex-center min-h-dvh">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!userDetails.data?.success) {
+    return (
+      <div className="flex-1 flex-center min-h-dvh">
+        <p>Erreur lors de la récupération des informations de l'utilisateur</p>
+      </div>
+    );
+  }
 
   return (
     <section className="wrapper flex gap-4">

@@ -1,4 +1,5 @@
-import { ColumnDef } from "@tanstack/react-table";
+import RowAction from "@/components/ui/shared/RowAction/RowAction";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 export type Transactions = {
   mode_wallet_company: string;
@@ -7,6 +8,8 @@ export type Transactions = {
   balance_before_company: number;
   currency: string;
 };
+
+const columnHelper = createColumnHelper<Transactions>();
 
 export const columns: ColumnDef<Transactions>[] = [
   {
@@ -19,7 +22,7 @@ export const columns: ColumnDef<Transactions>[] = [
   },
   {
     accessorKey: "balance_before_company",
-    header: "Balance Before Company",
+    header: "Prev. Balance",
   },
   {
     accessorKey: "currency",
@@ -29,4 +32,8 @@ export const columns: ColumnDef<Transactions>[] = [
     accessorKey: "type",
     header: "Type",
   },
+  columnHelper.display({
+    id: "actions",
+    cell: (props) => <RowAction row={props.row} />,
+  }),
 ];
