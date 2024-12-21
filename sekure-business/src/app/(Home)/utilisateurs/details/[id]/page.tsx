@@ -28,7 +28,9 @@ const UtilisateursDetails: React.FC = () => {
   if (!userDetails.data?.success) {
     return (
       <div className="flex-1 flex-center min-h-dvh">
-        <p>Erreur lors de la récupération des informations de l'utilisateur</p>
+        <p>
+          Erreur lors de la récupération des informations de l&apos;utilisateur
+        </p>
       </div>
     );
   }
