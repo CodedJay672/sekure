@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useAppDispatch } from "@/_lib/redux/hooks";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import TableComponent from "@/components/ui/shared/TableComponent";
@@ -9,8 +8,6 @@ import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllUsers } from "@/components/react-query/queriesAndMutations";
 
 const UserTable: React.FC = () => {
-  const dispatch = useAppDispatch();
-
   const { data: allUsers, isPending } = useGetAllUsers();
 
   if (isPending) {
@@ -31,6 +28,7 @@ const UserTable: React.FC = () => {
         columns={columns}
         data={allUsers?.data.data || []}
         filterValue="email"
+        pagesize={allUsers?.data?.last_page || 1}
       />
     </section>
   );

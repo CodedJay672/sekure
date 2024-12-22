@@ -29,12 +29,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   filterValue: string;
+  pagesize: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterValue,
+  pagesize,
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -57,6 +59,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    pageCount: pagesize,
     state: {
       sorting,
       columnFilters,

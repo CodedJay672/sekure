@@ -45,6 +45,7 @@ const CartesTable: React.FC = () => {
         columns={columns}
         data={allCompanyCards?.data?.data}
         filterValue="type"
+        pagesize={allCompanyCards?.data?.last_page || 1}
       />
     </section>
   );
