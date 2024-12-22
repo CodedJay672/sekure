@@ -1,15 +1,17 @@
-import React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../sheet";
+"use client";
+
+import React, { useState } from "react";
 import PermissionsComponent from "./PermissionComponent";
 import { IRoleSectionData } from "@/constants/types";
+import SheetSlider from "./SheetSlider";
 
 const RoleSection: React.FC<IRoleSectionData> = ({ role, tagline, data }) => {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className="w-full max-w-[802px] mb-10">
       <div className="w-full flex-between">
@@ -19,22 +21,16 @@ const RoleSection: React.FC<IRoleSectionData> = ({ role, tagline, data }) => {
             {tagline}
           </p>
         </div>
-        <Sheet>
-          <SheetTrigger>
-            <div className="secondary-btn h-[34px] text-xs leading-[34.5px] tracking-[-0.5%] font-semibold px-5 py-3 bg-gray-200 flex-center">
-              voir les accès
-            </div>
-          </SheetTrigger>
-          <SheetContent
-            className="overflow-auto"
-            aria-describedby="admin permissions"
-          >
-            <SheetHeader>
-              <SheetTitle>Accès pour Admin</SheetTitle>
-            </SheetHeader>
-            <PermissionsComponent />
-          </SheetContent>
-        </Sheet>
+
+        <div
+          className="secondary-btn h-[34px] text-xs leading-[34.5px] tracking-[-0.5%] font-semibold px-5 py-3 bg-gray-200 flex-center hover:cursor-pointer"
+          onClick={handleOpenChange}
+        >
+          voir les accès
+        </div>
+        <SheetSlider open={open} openChange={handleOpenChange}>
+          <PermissionsComponent />
+        </SheetSlider>
       </div>
 
       <div className="w-[592px] grid grid-cols-3 gap-4 mt-5">

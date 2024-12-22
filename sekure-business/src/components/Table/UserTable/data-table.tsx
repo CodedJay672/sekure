@@ -5,7 +5,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  // getPaginationRowModel,
   SortingState,
   getSortedRowModel,
   useReactTable,
@@ -54,7 +53,6 @@ export function DataTable<TData, TValue>({
     onPaginationChange: setPagination,
     manualPagination: true,
     debugTable: true,
-    // getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -106,6 +104,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-gray-50 cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

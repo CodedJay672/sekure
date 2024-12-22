@@ -45,6 +45,7 @@ const SheetForm: React.FC = () => {
 
   return (
     <>
+      <h1 className="text-[20px] leading-[24px] font-bold">Créer un rôle</h1>
       <div className="w-full">
         <Label
           htmlFor="role"
@@ -63,7 +64,7 @@ const SheetForm: React.FC = () => {
           <small className="text-red-500">{emptyError}</small>
         </Label>
       </div>
-      <div className="overflow-auto">
+      <div className="w-full h-[70dvh] overflow-hidden mt-6">
         <PermissionsComponent />
       </div>
       <Button

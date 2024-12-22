@@ -2,8 +2,6 @@
 
 import React from "react";
 import TableComponent from "@/components/ui/shared/TableComponent";
-import { getAllTransactions } from "@/_data/transactionStatistics";
-import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
 import LoadingSpinner from "@/components/Alert/Loading";

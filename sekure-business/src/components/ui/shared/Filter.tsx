@@ -1,34 +1,35 @@
 "use client";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { useState } from "react";
 import Image from "next/image";
 import FilterForm from "./FilterForm";
+import SheetSlider from "./SheetSlider";
 
 const Filter = () => {
+  const [open, setOpen] = useState(false);
+
+  const openChange = () => {
+    setOpen(!open);
+  };
+
   return (
-    <Sheet>
-      <SheetTrigger>
+    <>
+      <div
+        className="outline-none cursor-pointer rounded-[9px]"
+        onClick={openChange}
+      >
         <Image
           src="/assets/icons-pack-2/filter.svg"
           alt="filter"
           width={89}
           height={32}
-          className="object-cover cursor-pointer rounded-[9px]"
+          className="object-cover"
         />
-      </SheetTrigger>
-      <SheetContent className="overflow-auto" side="right">
-        <SheetHeader>
-          <SheetTitle>Filtrer</SheetTitle>
-        </SheetHeader>
+      </div>
+      <SheetSlider open={open} openChange={openChange}>
         <FilterForm />
-      </SheetContent>
-    </Sheet>
+      </SheetSlider>
+    </>
   );
 };
 
