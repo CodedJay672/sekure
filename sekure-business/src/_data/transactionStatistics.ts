@@ -1,6 +1,7 @@
 "use server";
 
 import { verifySession } from "@/_lib/session";
+import { TransactionByIDResponse } from "@/components/Table/TransactionsTable/validation";
 import { AllTransactions, Transactions } from "@/utils/types/types";
 import { cache } from "react";
 
@@ -101,7 +102,9 @@ export const getAllTransactions = async ({
   }
 };
 
-export const getTransactionByID = async (transaction_id: number) => {
+export const getTransactionByID = async (
+  transaction_id: number
+): Promise<TransactionByIDResponse> => {
   let response: Response;
 
   try {
@@ -109,7 +112,7 @@ export const getTransactionByID = async (transaction_id: number) => {
     const session = await verifySession("session");
 
     response = await fetch(
-      `${process.env.BACKEND_API_URL}/transaction/${transaction_id}`,
+      `${process.env.BACKEND_API_URL}/transactions/${transaction_id}`,
       {
         headers: {
           Authorization: `Bearer ${session.value?.token}`,
@@ -132,7 +135,7 @@ export const updateTransactionByID = async (transaction_id: number) => {
     const session = await verifySession("session");
 
     response = await fetch(
-      `${process.env.BACKEND_API_URL}/transaction/${transaction_id}`,
+      `${process.env.BACKEND_API_URL}/transactions/${transaction_id}`,
       {
         method: "PUT",
         headers: {

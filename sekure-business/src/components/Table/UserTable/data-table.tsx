@@ -24,6 +24,8 @@ import {
 import Pagination from "@/components/ui/shared/Pagination";
 import SearchBar from "@/components/ui/shared/SearchBar";
 import Filter from "@/components/ui/shared/Filter";
+import SheetSlider from "@/components/ui/shared/SheetSlider";
+import RowDetailsSlider from "@/components/ui/shared/RowDetails/RowDetailsSlider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -46,6 +48,14 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const defaultData = useMemo(() => [], []);
+
+  // state to control the sheet when table row is cicked
+  const [isOpen, setisOpen] = useState(false);
+  const [rowID, setRowID] = useState<TData | null>(null);
+
+  const handleSheetState = () => {
+    setisOpen(!isOpen);
+  };
 
   // Create a table instance
   const table = useReactTable({
@@ -109,6 +119,10 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className="hover:bg-gray-50 cursor-pointer"
+                    onClick={() => {
+                      setRowID(row.original);
+                      handleSheetState();
+                    }}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
@@ -136,6 +150,9 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
+        <SheetSlider open={isOpen} openChange={handleSheetState}>
+          <RowDetailsSlider data={rowID} />
+        </SheetSlider>
       </div>
     </>
   );

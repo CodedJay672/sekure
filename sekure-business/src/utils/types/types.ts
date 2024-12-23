@@ -1,4 +1,3 @@
-import { ICompanyUpdate } from "@/_data/company";
 import { User } from "@/_validation/SignIn";
 import { Company } from "./SignupTypes";
 
@@ -57,6 +56,34 @@ export interface Transactions {
 export interface AllTransactions {
   success: boolean;
   data: Data;
+}
+
+export interface TransactionsDetals {
+  id: number;
+  id_map: string;
+  created_at: string;
+  updated_at: string;
+  mode_wallet_company: string;
+  mode_wallet_superadmin: string;
+  mode_card: string;
+  mode_compte: string;
+  type: string;
+  id_card: number;
+  active: number;
+  updated_by: number;
+  company: number;
+  amount: number;
+  balance_before_company: number;
+  balance_after_company: number;
+  balance_before_card: number;
+  balance_after_card: number;
+  balance_before_superadmin: number;
+  balance_after_superadmin: number;
+  balance_before_compte: number;
+  balance_after_compte: number;
+  status: string;
+  reference: string;
+  currency: string;
 }
 
 interface Data {

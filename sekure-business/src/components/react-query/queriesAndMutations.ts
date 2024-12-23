@@ -14,6 +14,7 @@ import {
 import { createRole, getRoles } from "@/_data/roles";
 import {
   getAllTransactions,
+  getTransactionByID,
   getTransactionStatistics,
 } from "@/_data/transactionStatistics";
 import {
@@ -197,6 +198,7 @@ export const useGetCompanyCardsDetails = (company_id: number) => {
   });
 };
 
+// transaction queries and mutations
 export const useGetAllTransactions = ({
   company_id,
   page,
@@ -218,6 +220,14 @@ export const useGetAllTransactions = ({
   });
 };
 
+export const useGetTransactionDetailsByID = (id: number) => {
+  return useQuery({
+    queryKey: ["getTransactionById", id],
+    queryFn: () => getTransactionByID(id),
+  });
+};
+
+// Users queries and mutations
 export const useGetAllUsers = () => {
   return useQuery({
     queryKey: ["allUsers"],
