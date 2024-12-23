@@ -34,6 +34,7 @@ import { transformedGenericErrorObject } from "@/utils";
 import { signInReturnType } from "@/_validation/SignIn";
 import { useEffect, useState } from "react";
 import { ICreatedCard } from "@/_data/card";
+import SuccessAlert from "../Alert/SuccessAlert";
 
 interface CreateCardFormProps {
   btnText: string;
@@ -44,12 +45,11 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
   const { toast } = useToast();
   const [errorObj, setErrorObj] = useState({});
 
-  const { mutateAsync: createCusomerCard, isPending: isCreatingCustomerCard } =
-    useCreateCustomerCardMutation();
-
-  useEffect(() => {
-    console.log(errorObj);
-  }, [errorObj]);
+  const {
+    mutateAsync: createCusomerCard,
+    data,
+    isPending: isCreatingCustomerCard,
+  } = useCreateCustomerCardMutation();
 
   const form = useForm<z.infer<typeof cardCreateSchema>>({
     resolver: zodResolver(cardCreateSchema),
@@ -65,7 +65,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
     if (customerCard.status) {
       form.reset();
       toast({
-        description: customerCard.message,
+        description: "Card created successfully.",
       });
     } else {
       toast({
@@ -79,6 +79,14 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
     return (
       <Modal>
         <LoadingSpinner />
+      </Modal>
+    );
+  }
+
+  if (data?.status) {
+    return (
+      <Modal>
+        <SuccessAlert text="Card creation was successful" />
       </Modal>
     );
   }
