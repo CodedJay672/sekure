@@ -8,7 +8,7 @@ type TRowDetailsSlider = {
 const RowDetailsSlider: React.FC<TRowDetailsSlider> = ({ data }) => {
   return (
     <div className="w-full h-dvh px-2 pb-14 overflow-auto">
-      <AccueilRowsSlider id={data?.id} />
+      <AccueilRowsSlider data={data} />
     </div>
   );
 };

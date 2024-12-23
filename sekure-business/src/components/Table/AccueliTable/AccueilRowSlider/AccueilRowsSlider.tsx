@@ -1,36 +1,20 @@
 "use client";
 
-import { useGetTransactionDetailsByID } from "@/components/react-query/queriesAndMutations";
-import { CopyIcon, Router } from "lucide-react";
+import { CopyIcon } from "lucide-react";
 import React from "react";
-import { CgSpinner } from "react-icons/cg";
 import toast, { Toaster } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Transaction } from "../../TransactionsTable/validation";
 
 type TAccueilRowsSlider = {
-  id: number;
+  data: Transaction;
 };
 
-const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
+const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data }) => {
   const router = useRouter();
-  const transactionDetails = useGetTransactionDetailsByID(id);
-  const { created_at } = transactionDetails?.data?.transaction?.[0] || {};
+  const pathname = usePathname();
 
-  if (transactionDetails?.isPending) {
-    return (
-      <div className="size-auto flex-center">
-        <CgSpinner size={20} className="animate-spin" />
-      </div>
-    );
-  }
-
-  if (transactionDetails.error) {
-    return (
-      <p className="text-[10px] font-thin text-gray-500">
-        Oops! Could not fetch transaction details. Refresh the page.
-      </p>
-    );
-  }
+  const { created_at } = data;
 
   return (
     <>
@@ -45,7 +29,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="w-1/2 py-2">
           <span className="font-bold text-[11px] leading-4 text-[#1f1f1f]">
-            {transactionDetails?.data?.transaction?.[0]?.type}
+            {data?.type}
           </span>
         </div>
         <div className="w-1/2 py-2">
@@ -55,7 +39,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="w-1/2 py-2">
           <span className="font-bold text-[11px] leading-4 text-[#1f1f1f]">
-            {transactionDetails?.data?.transaction?.[0]?.status}
+            {data?.status}
           </span>
         </div>
         <div className="w-1/2 py-2">
@@ -92,15 +76,12 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-bold text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.reference}
+            {data?.reference}
             <CopyIcon
               size={10}
               className="ml-2"
               onClick={() =>
-                navigator.clipboard.writeText(
-                  transactionDetails?.data?.transaction?.[0]
-                    ?.reference as string
-                )
+                navigator.clipboard.writeText(data?.reference as string)
               }
             />
           </span>
@@ -112,15 +93,12 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.card?.name || "N/A"}
+            {data?.card?.name || "N/A"}
             <CopyIcon
               size={10}
               className="ml-2"
               onClick={() =>
-                navigator.clipboard.writeText(
-                  transactionDetails?.data?.transaction?.[0]
-                    ?.reference as string
-                )
+                navigator.clipboard.writeText(data?.reference as string)
               }
             />
           </span>
@@ -132,7 +110,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.card?.country || "N/A"}
+            {data?.card?.country || "N/A"}
           </span>
         </div>
         <div className="flex-1 py-2">
@@ -142,15 +120,12 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.card?.company || "N/A"}
+            {data?.card?.company || "N/A"}
             <CopyIcon
               size={10}
               className="ml-2"
               onClick={() =>
-                navigator.clipboard.writeText(
-                  transactionDetails?.data?.transaction?.[0]
-                    ?.reference as string
-                )
+                navigator.clipboard.writeText(data?.reference as string)
               }
             />
           </span>
@@ -162,7 +137,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.mode_card || "N/A"}
+            {data?.mode_card || "N/A"}
           </span>
         </div>
         <div className="flex-1 py-2">
@@ -172,15 +147,12 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.card?.issuer || "N/A"}
+            {data?.card?.issuer || "N/A"}
             <CopyIcon
               size={10}
               className="ml-2"
               onClick={() =>
-                navigator.clipboard.writeText(
-                  transactionDetails?.data?.transaction?.[0]
-                    ?.reference as string
-                )
+                navigator.clipboard.writeText(data?.reference as string)
               }
             />
           </span>
@@ -192,13 +164,10 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.balance_before_superadmin?.toLocaleString(
-              "fr-FR",
-              {
-                style: "currency",
-                currency: "XOF",
-              }
-            ) || "N/A"}
+            {data?.balance_before_superadmin?.toLocaleString("fr-FR", {
+              style: "currency",
+              currency: "XOF",
+            }) || "N/A"}
           </span>
         </div>
         <div className="flex-1 py-2">
@@ -208,13 +177,10 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.balance_before_company?.toLocaleString(
-              "fr-FR",
-              {
-                style: "currency",
-                currency: "XOF",
-              }
-            ) || "N/A"}
+            {data?.balance_before_company?.toLocaleString("fr-FR", {
+              style: "currency",
+              currency: "XOF",
+            }) || "N/A"}
           </span>
         </div>
         <div className="flex-1 py-2">
@@ -224,13 +190,10 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.balance_before_compte?.toLocaleString(
-              "fr-FR",
-              {
-                style: "currency",
-                currency: "XOF",
-              }
-            ) || "N/A"}
+            {data?.balance_before_compte?.toLocaleString("fr-FR", {
+              style: "currency",
+              currency: "XOF",
+            }) || "N/A"}
           </span>
         </div>
         <div className="flex-1 py-2">
@@ -240,13 +203,10 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         </div>
         <div className="flex-1 py-2">
           <span className="font-normal text-[11px] leading-4 text-[#1f1f1f] flex items-center">
-            {transactionDetails?.data?.transaction?.[0]?.balance_after_card?.toLocaleString(
-              "fr-FR",
-              {
-                style: "currency",
-                currency: "XOF",
-              }
-            ) || "N/A"}
+            {data?.balance_after_card?.toLocaleString("fr-FR", {
+              style: "currency",
+              currency: "XOF",
+            }) || "N/A"}
           </span>
         </div>
       </div>
@@ -254,9 +214,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
         <button
           className="w-full py-2 text-[#f5f5f5] bg-[#1f1f1f] text-[11px] font-semibold rounded-md"
           onClick={() =>
-            router.push(
-              `/utilisateur/${transactionDetails?.data?.transaction?.[0]?.card?.owner}`
-            )
+            router.push(`${pathname}/details/${data?.card?.owner}`)
           }
         >
           voir utilisateur
@@ -265,9 +223,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ id }) => {
           className="w-full py-2 bg-primary text-gray-100 text-[11px] font-semibold rounded-md"
           onClick={() => {
             try {
-              navigator.clipboard.writeText(
-                JSON.stringify(transactionDetails?.data?.transaction?.[0])
-              );
+              navigator.clipboard.writeText(JSON.stringify(data));
               toast.success("copied to clipboard");
             } catch (error) {
               throw new Error("Could not copy transaction reference");

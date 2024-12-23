@@ -2,18 +2,9 @@ import { TCustomerCard } from "@/_data/card";
 import { formatDate } from "@/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { CopyIcon } from "lucide-react";
+import { Transaction } from "../TransactionsTable/validation";
 
-export type Transactions = {
-  index: number;
-  reference: string;
-  card: Partial<TCustomerCard>;
-  type: string;
-  amount: number;
-  status: string;
-  created_at: string;
-};
-
-export const columns: ColumnDef<Transactions>[] = [
+export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "index",
     cell: (props) => <span>{props.row.index + 1}</span>,
