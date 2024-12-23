@@ -27,11 +27,12 @@ const TransactionsTable = () => {
   }
 
   return (
-    <section className="bg-white py-4 px-[17px] flex flex-col gap-2">
+    <section className="bg-white py-4 px-[17px] flex flex-col gap-2 w-full">
       <TableComponent
         heading="List des transactions effectuees"
         tagline="liste en temps réel des dernieres transactions effectuées avec les cartes"
       />
+
       <DataTable
         columns={columns}
         data={allTransactions?.data.data || []}

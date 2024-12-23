@@ -89,3 +89,21 @@ export const convertFileToBase64 = async (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export const formatDate = (date: string) => {
+  const day = new Date(date).toLocaleDateString("fr-FR", {
+    day: "2-digit",
+  });
+  const month = new Date(date).toLocaleDateString("fr-FR", {
+    month: "long",
+  });
+  const year = new Date(date).toLocaleDateString("fr-FR", {
+    year: "numeric",
+  });
+
+  const time = new Date(date).toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return `${day} / ${month} / ${year}, - ${time}`;
+};

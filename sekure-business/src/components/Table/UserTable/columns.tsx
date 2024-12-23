@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import RowAction from "@/components/ui/shared/RowAction/RowAction";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
@@ -20,6 +19,10 @@ const columnHelper = createColumnHelper<User>();
 
 // Define the columns for the table
 export const columns: ColumnDef<User>[] = [
+  columnHelper.display({
+    id: "index",
+    cell: (props) => props.row.index + 1,
+  }),
   {
     accessorKey: "full_name",
     header: "Nom",
@@ -34,6 +37,7 @@ export const columns: ColumnDef<User>[] = [
             e.stopPropagation();
             column.toggleSorting(column.getIsSorted() === "asc");
           }}
+          className="text-[10px]"
         >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -57,14 +61,14 @@ export const columns: ColumnDef<User>[] = [
 
       if (isActive) {
         return (
-          <span className="text-xs text-white bg-primary rounded-full py-1 px-3">
+          <span className="text-[10px] text-white bg-primary rounded-full py-1 px-3">
             Actif
           </span>
         );
       }
 
       return (
-        <span className="text-xs text-white bg-red-400 rounded-full py-1 px-3">
+        <span className="text-[10px] text-white bg-red-400 rounded-full py-1 px-3">
           Inactif
         </span>
       );
@@ -72,10 +76,14 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "date_birth",
+    cell: ({ row }) => {
+      const date = row.getValue("date_birth") as string;
+      const formatedDate = new Date(date).toLocaleDateString("fr-FR", {
+        dateStyle: "long",
+      });
+
+      return formatedDate;
+    },
     header: "Date D'ajout",
   },
-  columnHelper.display({
-    id: "actions",
-    cell: (props) => <RowAction row={props.row} />,
-  }),
 ];

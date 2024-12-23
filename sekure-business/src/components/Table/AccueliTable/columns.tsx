@@ -1,39 +1,76 @@
-import RowAction from "@/components/ui/shared/RowAction/RowAction";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { TCustomerCard } from "@/_data/card";
+import { formatDate } from "@/utils";
+import { ColumnDef } from "@tanstack/react-table";
+import { CopyIcon } from "lucide-react";
 
 export type Transactions = {
-  mode_wallet_company: string;
+  index: number;
+  reference: string;
+  card: Partial<TCustomerCard>;
   type: string;
   amount: number;
-  balance_before_company: number;
-  currency: string;
+  status: string;
+  created_at: string;
 };
-
-const columnHelper = createColumnHelper<Transactions>();
 
 export const columns: ColumnDef<Transactions>[] = [
   {
-    accessorKey: "mode_wallet_company",
-    header: "Mode",
+    accessorKey: "index",
+    cell: (props) => <span>{props.row.index + 1}</span>,
+    header: "No",
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "reference",
+    cell: ({ row }) => {
+      const ref = row.getValue("reference") as string;
+      return (
+        <span className="flex items-center">
+          {ref}{" "}
+          <CopyIcon
+            size={10}
+            className="ml-2"
+            onClick={() => {
+              navigator.clipboard.writeText(ref);
+            }}
+          />
+        </span>
+      );
+    },
+    header: "Reference",
   },
   {
-    accessorKey: "balance_before_company",
-    header: "Prev. Balance",
-  },
-  {
-    accessorKey: "currency",
-    header: "Currency",
+    accessorKey: "card",
+    cell: ({ row }) => {
+      const card = row.getValue("card") as TCustomerCard;
+      return `${card?.name}`;
+    },
+    header: "De/Vers",
   },
   {
     accessorKey: "type",
     header: "Type",
   },
-  columnHelper.display({
-    id: "actions",
-    cell: (props) => <RowAction row={props.row} />,
-  }),
+  {
+    accessorKey: "amount",
+    cell: ({ row }) => {
+      const amount = row.getValue("amount") as number;
+      return amount.toLocaleString("fr-FR", {
+        style: "currency",
+        currency: "XOF",
+      });
+    },
+    header: "Montant",
+  },
+  {
+    accessorKey: "status",
+    header: "Statut",
+  },
+  {
+    accessorKey: "created_at",
+    cell: ({ row }) => {
+      const data = row.getValue("created_at") as string;
+      return formatDate(data);
+    },
+    header: "Date",
+  },
 ];

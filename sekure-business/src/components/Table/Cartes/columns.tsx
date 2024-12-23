@@ -1,11 +1,16 @@
 import { ICustomer, TCustomerCard } from "@/_data/card";
-import RowAction from "@/components/ui/shared/RowAction/RowAction";
+import { formatDate } from "@/utils";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 // create column helper to define a column action
 const columnHelper = createColumnHelper<Partial<TCustomerCard>>();
 
 export const columns: ColumnDef<Partial<TCustomerCard>>[] = [
+  columnHelper.display({
+    id: "index",
+    cell: (props) => <span>{props.row.index + 1}</span>,
+    header: "No",
+  }),
   {
     accessorKey: "customer",
     header: "Utilisateur",
@@ -15,11 +20,11 @@ export const columns: ColumnDef<Partial<TCustomerCard>>[] = [
     },
   },
   {
-    accessorKey: "name",
-    header: "Nom De Carte",
-  },
-  {
     accessorKey: "card_number",
+    cell: ({ row }) => {
+      const card = row.getValue("card_number") as string;
+      return `**** **** **** ${card}`;
+    },
     header: "Numero De Carte",
   },
   {
@@ -34,14 +39,14 @@ export const columns: ColumnDef<Partial<TCustomerCard>>[] = [
 
       if (isActive) {
         return (
-          <span className="text-xs text-white bg-primary rounded-full py-1 px-3">
+          <span className="text-[10px] text-white bg-primary rounded-full py-1 px-3">
             Actif
           </span>
         );
       }
 
       return (
-        <span className="text-xs text-white bg-red-400 rounded-full py-1 px-3">
+        <span className="text-[10px] text-white bg-red-400 rounded-full py-1 px-3">
           Inactif
         </span>
       );
@@ -51,12 +56,8 @@ export const columns: ColumnDef<Partial<TCustomerCard>>[] = [
     accessorKey: "created_at",
     header: "Date De Creatio",
     cell: ({ row }) => {
-      const date = row.getValue("created_at") as Date;
-      return new Date(date).toLocaleDateString();
+      const data = row.getValue("created_at") as string;
+      return formatDate(data);
     },
   },
-  columnHelper.display({
-    id: "actions",
-    cell: (props) => <RowAction row={props.row} />,
-  }),
 ];
