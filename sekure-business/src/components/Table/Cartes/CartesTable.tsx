@@ -9,6 +9,7 @@ import { useGetAllCardsQuery } from "@/components/react-query/queriesAndMutation
 import { useAppSelector } from "@/_lib/redux/hooks";
 
 const CartesTable: React.FC = () => {
+  const page = useAppSelector((state) => state?.edit?.page);
   const company_id =
     useAppSelector(
       (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
@@ -17,7 +18,7 @@ const CartesTable: React.FC = () => {
     data: allCompanyCards,
     isPending,
     error: errObj,
-  } = useGetAllCardsQuery({ company_id });
+  } = useGetAllCardsQuery({ company_id, page });
 
   if (isPending) {
     return (

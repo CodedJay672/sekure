@@ -41,6 +41,7 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 
+// authentication queries and mutations
 export const useSubmitSignInForm = () => {
   // mutation to submit sign in form
   return useMutation({
@@ -138,22 +139,20 @@ export const useSignUserIn = () => {
   });
 };
 
-export const useEditSignedInUserMutation = () => {};
-
-export const useGetCompanyTransactionDetails = (company_id: number) => {
+// card queries and mutations
+export const useGetAllCardsQuery = ({
+  company_id,
+  page,
+}: {
+  company_id: number;
+  page: number;
+}) => {
   return useQuery({
-    queryKey: ["transactionStatistics", company_id],
-    queryFn: () => getTransactionStatistics(company_id),
-    enabled: !!company_id,
-  });
-};
-
-export const useGetAllCardsQuery = ({ company_id }: { company_id: number }) => {
-  return useQuery({
-    queryKey: ["getAllCards"],
+    queryKey: ["getAllCards", company_id, page],
     queryFn: () => {
       return getCards({
         company_id,
+        page,
       });
     },
     placeholderData: keepPreviousData,
@@ -209,7 +208,7 @@ export const useGetAllTransactions = ({
   query?: string;
 }) => {
   return useQuery({
-    queryKey: ["allTransactions", company_id],
+    queryKey: ["allTransactions", company_id, page],
     queryFn: () =>
       getAllTransactions({
         company_id,
@@ -227,7 +226,15 @@ export const useGetTransactionDetailsByID = (id: number) => {
   });
 };
 
-// Users queries and mutations
+export const useGetCompanyTransactionDetails = (company_id: number) => {
+  return useQuery({
+    queryKey: ["transactionStatistics", company_id],
+    queryFn: () => getTransactionStatistics(company_id),
+    enabled: !!company_id,
+  });
+};
+
+// Users (roles and company) queries and mutations
 export const useGetAllUsers = () => {
   return useQuery({
     queryKey: ["allUsers"],
@@ -269,6 +276,16 @@ export const useEditCompanyInformationMutation = () => {
   });
 };
 
+export const useCreateRoleMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["createRole"],
+    mutationFn: (role: string) => createRole(role),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["allRoles"] }),
+  });
+};
+
+// Customers queries and mutations
 export const useCreateCustomerMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -322,14 +339,5 @@ export const useGetCustomersBySearchQuery = ({
         query,
       }),
     enabled: !!query,
-  });
-};
-
-export const useCreateRoleMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey: ["createRole"],
-    mutationFn: (role: string) => createRole(role),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["allRoles"] }),
   });
 };

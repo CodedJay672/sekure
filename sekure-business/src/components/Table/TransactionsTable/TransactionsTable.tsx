@@ -8,11 +8,11 @@ import { useGetAllTransactions } from "@/components/react-query/queriesAndMutati
 import { useAppSelector } from "@/_lib/redux/hooks";
 
 const TransactionsTable = () => {
+  const page = useAppSelector((state) => state?.edit?.page);
   const company_id =
     useAppSelector(
       (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
     ) ?? 0;
-  const page = 1;
   const { data: allTransactions, isPending } = useGetAllTransactions({
     company_id,
     page,

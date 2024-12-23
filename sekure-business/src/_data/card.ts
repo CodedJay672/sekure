@@ -65,8 +65,12 @@ export type TCustomerCard = {
 
 export const getCards = async ({
   company_id,
+  page,
+  query,
 }: {
   company_id: number;
+  page: number;
+  query?: string;
 }): Promise<CardsResponse<TCustomerCard>> => {
   let response: Response;
   try {
@@ -75,7 +79,7 @@ export const getCards = async ({
 
     // fetch list of cards
     response = await fetch(
-      `${process.env.BACKEND_API_URL}/cards?company=${company_id}`,
+      `${process.env.BACKEND_API_URL}/cards?company=${company_id}&page=${page}`,
       {
         headers: { Authorization: `Bearer ${session?.value?.token}` },
       }

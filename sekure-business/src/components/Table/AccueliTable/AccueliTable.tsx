@@ -13,8 +13,7 @@ const AccueliTable: React.FC = () => {
     useAppSelector(
       (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
     ) ?? 0;
-
-  const page = 1;
+  const page = useAppSelector((state) => state?.edit?.page);
 
   const allCompanyTransaction = useGetAllTransactions({ company_id, page });
 
