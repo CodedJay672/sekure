@@ -35,7 +35,7 @@ const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.newUserData);
+  const state = useAppSelector((state) => state.auth?.newUserData);
   const { toast } = useToast();
 
   useEffect(() => {

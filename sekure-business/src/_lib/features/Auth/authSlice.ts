@@ -2,6 +2,7 @@ import { NewUser } from "@/_validation/SignUp";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User, Company, signUpResponse } from "@/utils/types/SignupTypes";
 import { persistor } from "@/_lib/redux/store";
+import { writeToLocalStorage } from "./authAction";
 
 export type AddUserData = {
   currentStep: {
@@ -98,7 +99,6 @@ const authSlice = createSlice({
 
     clearPersistor: (state) => {
       //reset the auth data
-      persistor.purge();
       state = initialState;
     },
 
