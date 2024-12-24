@@ -4,7 +4,7 @@ import { decrypt } from "./_lib/session";
 
 //check if route is protected
 const protectedRoute = "/";
-const publicRoute = ["/signin", "/signup"];
+const publicRoute = ["/signin", "/signin/get-otp", "/signup"];
 
 export default async function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
@@ -21,8 +21,8 @@ export default async function middleware(req: NextRequest) {
 
   if (
     isPublicRoute &&
-    session?.token &&
-    !req.nextUrl.pathname.startsWith("/")
+    session?.value
+    // !req.nextUrl.pathname.startsWith("/")
   ) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
