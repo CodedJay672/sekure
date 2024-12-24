@@ -15,9 +15,13 @@ const AccueliTable: React.FC = () => {
     ) ?? 0;
   const page = useAppSelector((state) => state?.edit?.page);
 
-  const allCompanyTransaction = useGetAllTransactions({ company_id, page });
+  const {
+    data: allCompanyTransaction,
+    isPending,
+    error: errorObj,
+  } = useGetAllTransactions({ company_id, page });
 
-  if (allCompanyTransaction?.isPending) {
+  if (isPending) {
     return (
       <div className="h-44 flex justify-center items-center">
         <LoadingSpinner />
@@ -25,9 +29,9 @@ const AccueliTable: React.FC = () => {
     );
   }
 
-  if (allCompanyTransaction.error) {
+  if (errorObj) {
     return (
-      <p className="text-sm font-semibold text-center">
+      <p className="text-sm font-semibold text-center text-gray-400">
         Oops! Could not fetch Transactions data. Refresh the page.
       </p>
     );
@@ -41,9 +45,9 @@ const AccueliTable: React.FC = () => {
       />
       <DataTable
         columns={columns}
-        data={allCompanyTransaction?.data?.data?.data || []}
+        data={allCompanyTransaction?.data?.data || []}
         filterValue="vers"
-        pagesize={allCompanyTransaction?.data?.data?.last_page || 1}
+        pagesize={allCompanyTransaction?.data?.last_page || 1}
       />
     </section>
   );

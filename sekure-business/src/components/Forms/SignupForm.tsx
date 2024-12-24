@@ -38,10 +38,6 @@ const SignupForm = () => {
   const state = useAppSelector((state) => state.auth?.newUserData);
   const { toast } = useToast();
 
-  useEffect(() => {
-    localStorage.removeItem("persist:data");
-  }, []);
-
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {

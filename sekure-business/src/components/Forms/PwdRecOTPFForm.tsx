@@ -21,23 +21,22 @@ import { useToast } from "@/hooks/use-toast";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useSignUserIn } from "../react-query/queriesAndMutations";
+import { useState } from "react";
 
 const PwdRecOTPFForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const state = useAppSelector((state) => state.connexion.user[0]);
+  const [inactive, setInactive] = useState(false);
 
   const form = useForm<z.infer<typeof OTPSchema>>({
     resolver: zodResolver(OTPSchema),
   });
 
-  const {
-    mutateAsync: userSignIn,
-    isPending,
-    error: mutationError,
-  } = useSignUserIn();
+  const { mutateAsync: userSignIn, error: mutationError } = useSignUserIn();
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
+    setInactive(true);
     if (!state.id) {
       router.push("/signin");
       return toast({
@@ -55,11 +54,12 @@ const PwdRecOTPFForm = () => {
         description: signInReturnData.message,
       });
       return router.push("/");
+    } else {
+      setInactive(false);
+      toast({
+        description: signInReturnData.error as string,
+      });
     }
-
-    toast({
-      description: signInReturnData.error as string,
-    });
   }
 
   if (mutationError) {
@@ -110,10 +110,12 @@ const PwdRecOTPFForm = () => {
         <div className="py-3 flex items-center gap-2">
           <Button
             type="submit"
-            className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
-            disabled={isPending}
+            className={`w-[186px] h-[50px] bg-primary rounded-md text-white  my-3 ${
+              inactive ? "cursor-not-allowed" : ""
+            }`}
+            disabled={inactive}
           >
-            {isPending ? (
+            {inactive ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Me connecter"

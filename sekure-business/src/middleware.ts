@@ -19,11 +19,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/signin", req.nextUrl));
   }
 
-  if (
-    isPublicRoute &&
-    session?.value
-    // !req.nextUrl.pathname.startsWith("/")
-  ) {
+  if (isPublicRoute && session?.value) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 

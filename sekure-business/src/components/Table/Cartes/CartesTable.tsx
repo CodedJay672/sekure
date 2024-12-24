@@ -31,7 +31,9 @@ const CartesTable: React.FC = () => {
   if (errObj) {
     return (
       <div className="h-44 flex justify-center items-center">
-        <p>Erreur lors de la récupération des cartes</p>
+        <p className="text-sm font-semibold text-center text-gray-400">
+          Erreur lors de la récupération des cartes
+        </p>
       </div>
     );
   }
