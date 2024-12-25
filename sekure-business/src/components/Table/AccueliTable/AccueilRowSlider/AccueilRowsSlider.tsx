@@ -213,7 +213,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data }) => {
       <div className="w-full mt-4 flex flex-col gap-2">
         <button
           className="w-full py-2 text-[#f5f5f5] bg-[#1f1f1f] text-[11px] font-semibold rounded-md"
-          onClick={() => console.log(`${data?.id}`)}
+          onClick={() => router.push(`${pathname}/details/${data?.id}`)}
         >
           voir utilisateur
         </button>
