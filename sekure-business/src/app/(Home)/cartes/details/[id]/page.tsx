@@ -10,12 +10,13 @@ import Image from "next/image";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useGetCardDetailsQuery } from "@/components/react-query/queriesAndMutations";
 import LoadingSpinner from "@/components/Alert/Loading";
 
 const CardDetails: React.FC = () => {
   const { id } = useParams();
+  const router = useRouter();
 
   const cardDetails = useGetCardDetailsQuery(id as unknown as number);
 
@@ -45,12 +46,24 @@ const CardDetails: React.FC = () => {
             <h1 className="text-base leading-5 font-semibold text-dark3 flex-1">
               Details de carte
             </h1>
-            <Active />
+            <Active active={cardDetails?.data?.data?.active} />
           </div>
           <span className="flex-1 text-xs leading-4 text-placeholder-text">
-            Créé le 12/12/2021
+            Créé le{" "}
+            {new Date(cardDetails?.data?.data?.created_at).toLocaleDateString(
+              "fr-FR",
+              {
+                dateStyle: "long",
+              }
+            )}
           </span>
-          <VisaCard />
+          <VisaCard
+            holder={`${cardDetails?.data?.data?.customer?.first_name} ${cardDetails?.data?.data?.customer?.last_name}`}
+            number={cardDetails?.data?.data?.card_number}
+            cvv={cardDetails?.data?.data?.cvv}
+            expiry={cardDetails?.data?.data?.expiry_date}
+            type={cardDetails?.data?.data?.type}
+          />
 
           <div className="flex-between mt-3">
             <span className="text-xs leading-[34.5px] tracking-[-0.5%] font-medium text-dark3">
@@ -65,6 +78,7 @@ const CardDetails: React.FC = () => {
               variant="default"
               type="button"
               className="primary-btn rounded-[9px] w-[154px] text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[3px]"
+              onClick={() => router.push("/card/create-card")}
             >
               Créer une carte
               <RiAddCircleFill
@@ -86,17 +100,30 @@ const CardDetails: React.FC = () => {
                   width={24}
                   height={24}
                   className="object-contain"
+                  onClick={() => router.push("/recharge-wallet")}
                 />
               </div>
             </Button>
           </div>
         </div>
         <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
-          <CardNumber heading="ID de carte" number="xxxx xxxx xxxx 4565" />
-          <CardNumber heading="Numéro de carte" number="xxxx xxxx xxxx 4565" />
-          <CardNumber heading="Nom sur carte" number="xxxx xxxx xxxx 4565" />
-          <CardNumber heading="Date exp" number="xxxx xxxx xxxx 4565" />
-          <CardNumber heading="CVV" number="xxxx xxxx xxxx 4565" />
+          <CardNumber
+            heading="ID de carte"
+            number={cardDetails?.data?.data?.id}
+          />
+          <CardNumber
+            heading="Numéro de carte"
+            number={cardDetails?.data?.data?.card_number}
+          />
+          <CardNumber
+            heading="Nom sur carte"
+            number={`${cardDetails?.data?.data?.customer?.first_name} ${cardDetails?.data?.data?.customer?.last_name}`}
+          />
+          <CardNumber
+            heading="Date exp"
+            number={cardDetails?.data?.data?.expiry_date}
+          />
+          <CardNumber heading="CVV" number={cardDetails?.data?.data?.cvv} />
         </div>
         <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
           <Button variant="default" type="button" className="bg-danger">

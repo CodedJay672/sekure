@@ -1,6 +1,20 @@
 import Image from "next/image";
 
-const VisaCard: React.FC = () => {
+interface IVisaCardProps {
+  holder: string;
+  number: string;
+  cvv: string;
+  expiry: string;
+  type: string;
+}
+
+const VisaCard: React.FC<IVisaCardProps> = ({
+  holder,
+  number,
+  cvv,
+  expiry,
+  type,
+}) => {
   return (
     <div className="w-[326px] h-[239px] rounded-[20px] p-5 bg-primary mt-4 relative shadow-md">
       <Image
@@ -26,26 +40,17 @@ const VisaCard: React.FC = () => {
           />
         </div>
         <div className="w-full mt-[34.72px]">
-          <Image
-            src="/assets/cardholder.png"
-            alt="cardholder"
-            width={202.32}
-            height={12.07}
-          />
+          <span className="text-white font-medium text-base leading-4">
+            {holder.toUpperCase()}
+          </span>
           <div className="flex mt-2">
-            <Image
-              src="/assets/cardnumber.png"
-              alt="cardnumber"
-              width={165.61}
-              height={7.64}
-              className="mr-2 object-contain"
-            />
-            <Image
-              src="/assets/cardnumber2.png"
-              alt="cardnumber"
-              width={34.92}
-              height={11.42}
-            />
+            {number &&
+              number.split("").map((num, index) => (
+                <span>
+                  {index % 4 === 0 && index !== 0 && <span> </span>}
+                  {index < 12 ? "*" : num}
+                </span>
+              ))}
           </div>
           <div className="mt-2 flex gap-4">
             <div className="flex flex-col gap-[13px]">
@@ -56,52 +61,47 @@ const VisaCard: React.FC = () => {
                 height={6.34}
                 className="object-contain"
               />
-              <Image
-                src="/assets/cvvnumber.png"
-                alt="cvv"
-                width={33.36}
-                height={7.64}
-                className="object-contain"
-              />
+              {cvv &&
+                cvv.split("").map((num, index) => <span key={index}>*</span>)}
             </div>
             <div className="flex flex-col gap-2">
               <Image
                 src="/assets/expiration.png"
-                alt="cvv"
+                alt="exp"
                 width={41.89}
                 height={9.09}
               />
               <div className="flex gap-1">
-                <Image
-                  src="/assets/expirationnumber.png"
-                  alt="cvv"
-                  width={20.52}
-                  height={7.64}
-                  className="object-contain"
-                />
-                <Image
-                  src="/assets/expnum.png"
-                  alt="cvv"
-                  width={28.19}
-                  height={14.43}
-                  className="object-contain"
-                />
+                {expiry &&
+                  expiry
+                    .split("")
+                    .map((num, index) => <span key={index}>{num}</span>)}
               </div>
             </div>
           </div>
         </div>
         <div className="flex mt-6">
-          <Image
-            src="/assets/sekurevisa.png"
-            alt="sekurevisa"
-            width={264}
-            height={20.86}
-            className="object-contain"
-          />
+          {type === "visa" ? (
+            <Image
+              src="/assets/sekurevisa.png"
+              alt="sekurevisa"
+              width={264}
+              height={20.86}
+              className="object-contain"
+            />
+          ) : (
+            <Image
+              src="/assets/sekuremastercard.png"
+              alt="sekuremastercard"
+              width={264}
+              height={20.86}
+              className="object-contain"
+            />
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default VisaCard
+export default VisaCard;

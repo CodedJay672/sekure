@@ -8,12 +8,16 @@ import CardNumber from "@/components/ui/shared/CardNumber";
 import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import { RxPinRight } from "react-icons/rx";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useGetUserByID } from "@/components/react-query/queriesAndMutations";
 import LoadingSpinner from "@/components/Alert/Loading";
+import Image from "next/image";
+import UserCard from "@/components/ui/shared/UserCard/UserCard";
+import SearchBar from "@/components/ui/shared/SearchBar";
 
 const UtilisateursDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
   const userDetails = useGetUserByID(Number(id));
 
@@ -39,10 +43,21 @@ const UtilisateursDetails: React.FC = () => {
     <section className="wrapper flex gap-4">
       <div className="flex flex-col gap-3 border max-w-[354px]">
         <div className="flex px-3 py-4 bg-white rounded-[10px] items-center">
-          <div className="flex-none bg-notif w-[69px] h-[69px] rounded-full mr-4" />
-          <CardNumber
-            heading="xxxx xxxx xxxx 4565"
-            number="Ajouté le 14 Aout 2024"
+          {userDetails?.data?.user?.[0]?.image ? (
+            <Image
+              src={userDetails?.data?.user?.[0]?.image}
+              alt="user profile"
+            />
+          ) : (
+            <div className="flex-none bg-notif w-[69px] h-[69px] rounded-full mr-4" />
+          )}
+          <UserCard
+            heading={userDetails?.data?.user?.[0]?.full_name}
+            number={new Date(
+              userDetails?.data?.user?.[0]?.created_at
+            ).toLocaleDateString("fr-FR", {
+              dateStyle: "long",
+            })}
           />
         </div>
         <div className="px-3 py-4 bg-white rounded-[10px]">
@@ -50,16 +65,29 @@ const UtilisateursDetails: React.FC = () => {
             <h2 className="text-xs leading-5 font-semibold">
               Details de Compte
             </h2>
-            <Active />
+            <Active active={userDetails?.data?.user?.[0]?.active} />
           </div>
           <div className="mt-3">
-            <CardNumber heading="ID Utilisateur" number="xxxx xxxx xxxx 4565" />
-            <CardNumber heading="Email" number="xxxx xxxx xxxx 4565" />
+            <CardNumber
+              heading="ID Utilisateur"
+              number={userDetails?.data?.user?.[0]?.id as unknown as string}
+            />
+            <CardNumber
+              heading="Email"
+              number={userDetails?.data?.user?.[0]?.email}
+            />
             <CardNumber
               heading="Num de telephone"
-              number="xxxx xxxx xxxx 4565"
+              number={userDetails?.data?.user?.[0]?.phone || "N/A"}
             />
-            <CardNumber heading="Date Naissance" number="xxxx xxxx xxxx 4565" />
+            <CardNumber
+              heading="Date Naissance"
+              number={new Date(
+                userDetails?.data?.user?.[0]?.date_birth
+              ).toLocaleDateString("fr-FR", {
+                dateStyle: "long",
+              })}
+            />
           </div>
         </div>
         <div className="flex-between py-4 px-3 bg-white rounded-[10px] gap-2">
@@ -90,6 +118,7 @@ const UtilisateursDetails: React.FC = () => {
               variant="default"
               type="button"
               className="text-xs w-[154px] pr-[3px] text-white leading-[34.5px] tracking-[-0.5%] text-center flex-between"
+              onClick={() => router.push("/cartes/create-card")}
             >
               <span className="flex-1">Créer une carte</span>
               <RiAddCircleFill size={24} className="fill-white" />
@@ -129,7 +158,11 @@ const UtilisateursDetails: React.FC = () => {
             Liste des transactions
           </h2>
           <div className="w-full flex-between mt-2 gap-2">
-            {/* <SearchBar placeholder="Enter search term..." setData={setQuery} /> */}
+            {/* <SearchBar
+              placeholder="Enter search term..."
+              filterValue="name"
+              table={[]}
+            /> */}
             <div className="max-w-[108px] h-8 rounded-[5px] bg-notif">
               <span className="text-xs leading-[34.5px] tracking-[-0.5px] text-center font-normal text-placeholder-text px-2">
                 Date de debut
