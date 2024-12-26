@@ -37,7 +37,7 @@ const AccueliTable: React.FC = () => {
       <DataTable
         columns={columns}
         data={allCompanyTransaction?.data?.data || []}
-        filterValue="vers"
+        filterValue="reference"
         pagesize={allCompanyTransaction?.data?.last_page || 1}
       />
     </section>

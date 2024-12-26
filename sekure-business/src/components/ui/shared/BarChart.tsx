@@ -56,7 +56,7 @@ const BarChart: React.FC<State> = ({ state }) => {
         categoryPercentage: 1.0,
       },
       y: {
-        max: 250,
+        max: 250000,
         ticks: {
           color: "#403F3A",
           font: {
@@ -64,7 +64,9 @@ const BarChart: React.FC<State> = ({ state }) => {
           },
           callback: function (value: string | number) {
             const numericValue = Number(value); // Convert the value to a number
-            return numericValue > 0 ? numericValue + "K" : numericValue; // Remove the 'K' from the y-axis labels
+            return numericValue / 1000 > 0
+              ? numericValue / 1000 + "K"
+              : numericValue / 1000; // Remove the 'K' from the y-axis labels
           },
         },
       },
