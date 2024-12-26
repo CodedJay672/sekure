@@ -46,7 +46,7 @@ const VisaCard: React.FC<IVisaCardProps> = ({
           <div className="flex mt-2">
             {number &&
               number.split("").map((num, index) => (
-                <span>
+                <span key={index} className="text-white text-lg">
                   {index % 4 === 0 && index !== 0 && <span> </span>}
                   {index < 12 ? "*" : num}
                 </span>
