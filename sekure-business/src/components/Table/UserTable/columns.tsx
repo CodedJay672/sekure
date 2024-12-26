@@ -3,17 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type User = {
-  full_name?: string | "";
-  email?: string | "";
-  poste?: string | "";
-  localisation?: string | "";
-  active?: number | "";
-  date_birth?: string | "";
-};
+import { User } from "@/_validation/SignIn";
 
 const columnHelper = createColumnHelper<User>();
 
