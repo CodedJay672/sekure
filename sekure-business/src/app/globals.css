@@ -241,7 +241,7 @@
   }
 
   .alert {
-    @apply w-full bg-background text-dark rounded-lg flex-center flex-col gap-3;
+    @apply w-full bg-background text-dark rounded-lg flex-center flex-col gap-3 animate-in zoom-in animate-out zoom-out;
   }
 
   .input {

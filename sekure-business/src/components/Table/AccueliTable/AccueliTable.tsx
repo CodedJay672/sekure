@@ -4,7 +4,6 @@ import React from "react";
 import TableComponent from "@/components/ui/shared/TableComponent";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
-import LoadingSpinner from "@/components/Alert/Loading";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { useGetAllTransactions } from "@/components/react-query/queriesAndMutations";
 
@@ -21,18 +20,10 @@ const AccueliTable: React.FC = () => {
     error: errorObj,
   } = useGetAllTransactions({ company_id, page });
 
-  if (isPending) {
-    return (
-      <div className="h-44 flex justify-center items-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   if (errorObj) {
     return (
       <p className="text-sm font-semibold text-center text-gray-400">
-        Oops! Could not fetch Transactions data. Refresh the page.
+        {errorObj.message}
       </p>
     );
   }

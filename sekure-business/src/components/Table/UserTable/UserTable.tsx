@@ -4,19 +4,10 @@ import React from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import TableComponent from "@/components/ui/shared/TableComponent";
-import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllUsers } from "@/components/react-query/queriesAndMutations";
 
 const UserTable: React.FC = () => {
   const { data: allUsers, isPending } = useGetAllUsers();
-
-  if (isPending) {
-    return (
-      <div className="flex-1 h-44 flex justify-center items-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
 
   return (
     <section className="bg-white py-4 px-[17px] flex flex-col gap-2">

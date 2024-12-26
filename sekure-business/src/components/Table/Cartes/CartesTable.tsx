@@ -4,7 +4,6 @@ import React from "react";
 import TableComponent from "@/components/ui/shared/TableComponent";
 import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
-import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllCardsQuery } from "@/components/react-query/queriesAndMutations";
 import { useAppSelector } from "@/_lib/redux/hooks";
 
@@ -20,19 +19,11 @@ const CartesTable: React.FC = () => {
     error: errObj,
   } = useGetAllCardsQuery({ company_id, page });
 
-  if (isPending) {
-    return (
-      <div className="h-44 flex justify-center items-center">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   if (errObj) {
     return (
       <div className="h-44 flex justify-center items-center">
         <p className="text-sm font-semibold text-center text-gray-400">
-          Erreur lors de la récupération des cartes
+          {errObj.message}
         </p>
       </div>
     );
@@ -46,7 +37,7 @@ const CartesTable: React.FC = () => {
       />
       <DataTable
         columns={columns}
-        data={allCompanyCards?.data?.data}
+        data={allCompanyCards?.data?.data || []}
         filterValue="type"
         pagesize={allCompanyCards?.data?.last_page || 1}
       />

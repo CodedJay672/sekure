@@ -35,6 +35,7 @@ import { signInReturnType } from "@/_validation/SignIn";
 import { useEffect, useState } from "react";
 import { ICreatedCard } from "@/_data/card";
 import SuccessAlert from "../Alert/SuccessAlert";
+import { CgSpinner } from "react-icons/cg";
 
 interface CreateCardFormProps {
   btnText: string;
@@ -64,23 +65,12 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
 
     if (customerCard.status) {
       form.reset();
-      toast({
-        description: "Card created successfully.",
-      });
     } else {
       toast({
         description: "The selected email is invalid.",
       });
       setErrorObj(transformedGenericErrorObject(customerCard));
     }
-  }
-
-  if (isCreatingCustomerCard) {
-    return (
-      <Modal>
-        <LoadingSpinner />
-      </Modal>
-    );
   }
 
   if (data?.status) {
@@ -164,10 +154,17 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ btnText }) => {
         <Button
           variant="default"
           type="submit"
-          className="primary-btn flex-between w-full"
+          className="primary-btn place-content-center w-full"
+          disabled={isCreatingCustomerCard}
         >
-          <span className="flex-1 text-center">{btnText}</span>
-          <ArrowRightIcon size={16} color="#fff" />
+          {isCreatingCustomerCard ? (
+            <CgSpinner size={20} className="animate-spin" />
+          ) : (
+            <div className="flex-between w-full">
+              <span className="flex-1 text-center">{btnText}</span>
+              <ArrowRightIcon size={16} color="#fff" />
+            </div>
+          )}
         </Button>
       </form>
     </Form>

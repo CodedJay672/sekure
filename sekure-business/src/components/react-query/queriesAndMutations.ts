@@ -215,6 +215,7 @@ export const useGetAllTransactions = ({
         page,
         query,
       }),
+    placeholderData: keepPreviousData,
     enabled: !!company_id,
   });
 };
@@ -241,6 +242,7 @@ export const useGetAllUsers = () => {
     queryFn: () => {
       return getAllUsers();
     },
+    placeholderData: keepPreviousData,
   });
 };
 
