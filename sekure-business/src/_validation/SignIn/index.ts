@@ -17,6 +17,7 @@ export interface UserCompany {
   country: string;
   zip: string;
   state: string;
+  appartement: string;
   city: string;
   street: string;
   localisation: string;
@@ -62,6 +63,7 @@ export interface User {
   step: string;
   created_at: string;
   updated_at: string;
+  appartement: string;
   roles: Role[];
   user_company: UserCompany[];
 }

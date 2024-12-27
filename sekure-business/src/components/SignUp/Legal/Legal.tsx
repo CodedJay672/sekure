@@ -32,7 +32,7 @@ import { useSubmitLegalForm } from "@/components/react-query/queriesAndMutations
 
 const LegalForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth);
+  const state = useAppSelector((state) => state?.auth);
   const { userObj } = state;
   const [errorResponse, setErrorResponse] = useState({});
   const { toast } = useToast();

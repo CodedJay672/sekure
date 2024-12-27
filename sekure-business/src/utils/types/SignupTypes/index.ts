@@ -1,8 +1,8 @@
 export interface signUpResponse {
   status: boolean;
   message: string;
-  user: User;
-  company: Company;
+  user: Partial<User>;
+  company: Partial<Company>;
   errors: {
     [key: string]: string[];
   };
@@ -20,7 +20,7 @@ export interface User {
   id: number;
   full_name: string;
   poste: string;
-  date_birth: Date;
+  date_birth: string;
   pourcentage_action: number;
   email: string;
   nationality: string;
@@ -36,10 +36,10 @@ export interface User {
   active: number;
   updated_by?: number;
   image?: string;
-  email_verified_at: Date;
+  email_verified_at: string;
   step: string;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Company {

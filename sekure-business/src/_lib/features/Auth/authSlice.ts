@@ -95,6 +95,10 @@ const authSlice = createSlice({
       };
     },
 
+    resetState: (state) => {
+      state = initialState;
+    },
+
     jumpStep: (state, action: PayloadAction<number>) => {
       //increment the current step
       state.currentStep.number = action.payload;
@@ -120,8 +124,14 @@ const authSlice = createSlice({
 });
 
 //export the action to update the connexion data when users sign in
-export const { createUser, jumpStep, nextStep, previousStep, updateUserObj } =
-  authSlice.actions;
+export const {
+  createUser,
+  jumpStep,
+  nextStep,
+  previousStep,
+  updateUserObj,
+  resetState,
+} = authSlice.actions;
 
 //export the reducer
 export default authSlice.reducer;

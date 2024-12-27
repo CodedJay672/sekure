@@ -25,10 +25,15 @@ import { useToast } from "@/hooks/use-toast";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
-import { jumpStep } from "@/_lib/features/Auth/authSlice";
+import {
+  jumpStep,
+  resetState,
+  updateUserObj,
+} from "@/_lib/features/Auth/authSlice";
 import { useSubmitSignInForm } from "../react-query/queriesAndMutations";
+import { signUpResponse } from "@/utils/types/SignupTypes";
 
 const SignInForm = () => {
   const router = useRouter();
@@ -54,19 +59,6 @@ const SignInForm = () => {
     const userData = await submitSignInForm(values);
 
     if (userData.success) {
-      if (Array.isArray(userData.user)) {
-        toast({
-          description: userData.message,
-        });
-
-        // dispatch the action to update the user data
-        dispatch(updateConnexionData(userData.user[0]));
-      } else {
-        toast({
-          description: "User Company information not found",
-        });
-      }
-
       // redirect the user to the next step
       switch (userData.user?.[0].step) {
         case "information":
@@ -90,9 +82,38 @@ const SignInForm = () => {
           router.push("/signup/business");
           break;
         default:
+          if (Array.isArray(userData.user)) {
+            toast({
+              description: userData.message,
+            });
+
+            // update the signedIn user information
+            dispatch(updateConnexionData(userData?.user?.[0]));
+
+            // reset the authentication state
+            dispatch(resetState());
+          } else {
+            toast({
+              description: "User Company information not found",
+            });
+          }
           router.push("/signin/get-otp");
           break;
       }
+
+      toast({
+        description: userData?.message,
+      });
+      const signUpUserObj: Partial<signUpResponse> = {
+        user: {
+          ...userData?.user?.[0],
+        },
+        company: {
+          ...userData?.user?.[0]?.user_company?.[0],
+        },
+      };
+
+      dispatch(updateUserObj(signUpUserObj));
     } else {
       setErrorObj(transformedSignInErrorObject(userData));
       // Handle the error case

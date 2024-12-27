@@ -22,38 +22,52 @@ import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
 import { signupSchema } from "@/_validation/SignUp";
-import {
-  createUser,
-  nextStep,
-  updateUserObj,
-} from "@/_lib/features/Auth/authSlice";
+import { createUser, updateUserObj } from "@/_lib/features/Auth/authSlice";
 import { transformedSignUpErrorObject } from "@/utils";
-import { useCreateUserAccount } from "../react-query/queriesAndMutations";
-import { persistor } from "@/_lib/redux/store";
+import {
+  useCreateUserAccount,
+  useGetCompanyByIdQuery,
+  useGetUserByID,
+} from "../react-query/queriesAndMutations";
+import { signUpResponse } from "@/utils/types/SignupTypes";
 
 const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth?.newUserData);
+  const signedinUser = useAppSelector((state) => state.connexion?.user?.[0]);
+  const newUserData = useAppSelector((state) => state.auth?.newUserData);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      ...state,
+      ...newUserData,
     },
   });
+
+  const { data: userInformation } = useGetUserByID(signedinUser.id || 0);
+  const { data: userCompanyInformation } = useGetCompanyByIdQuery(
+    signedinUser?.user_company?.[0]?.id || 0
+  );
+
+  //initialize the auth info
+  useEffect(() => {
+    if (userInformation?.success && userCompanyInformation?.success) {
+      const userData = {
+        user: userInformation.user?.[0],
+        company: userCompanyInformation?.company,
+      } as unknown as signUpResponse;
+
+      dispatch(updateUserObj(userData));
+    }
+  }, []);
 
   const {
     mutateAsync: createUserCompanyMutation,
     isPending,
     error: errorObj,
   } = useCreateUserAccount();
-
-  useEffect(() => {
-    persistor.purge();
-  }, []);
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     const newUserData = await createUserCompanyMutation(values);
