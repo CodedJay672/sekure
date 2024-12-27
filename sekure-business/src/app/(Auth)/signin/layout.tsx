@@ -118,8 +118,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Image
           src="/assets/images/login-img.png"
           alt="login image"
-          width={488}
-          height={780}
+          width={430}
+          height={400}
           className="object-contain"
         />
       </div>
