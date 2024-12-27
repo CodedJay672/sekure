@@ -24,18 +24,12 @@ import { CgSpinner } from "react-icons/cg";
 import { signupSchema } from "@/_validation/SignUp";
 import { createUser, updateUserObj } from "@/_lib/features/Auth/authSlice";
 import { transformedSignUpErrorObject } from "@/utils";
-import {
-  useCreateUserAccount,
-  useGetCompanyByIdQuery,
-  useGetUserByID,
-} from "../react-query/queriesAndMutations";
-import { signUpResponse } from "@/utils/types/SignupTypes";
+import { useCreateUserAccount } from "../react-query/queriesAndMutations";
 
 const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const signedinUser = useAppSelector((state) => state.connexion?.user?.[0]);
   const newUserData = useAppSelector((state) => state.auth?.newUserData);
   const { toast } = useToast();
 
@@ -45,23 +39,6 @@ const SignupForm = () => {
       ...newUserData,
     },
   });
-
-  const { data: userInformation } = useGetUserByID(signedinUser.id || 0);
-  const { data: userCompanyInformation } = useGetCompanyByIdQuery(
-    signedinUser?.user_company?.[0]?.id || 0
-  );
-
-  //initialize the auth info
-  useEffect(() => {
-    if (userInformation?.success && userCompanyInformation?.success) {
-      const userData = {
-        user: userInformation.user?.[0],
-        company: userCompanyInformation?.company,
-      } as unknown as signUpResponse;
-
-      dispatch(updateUserObj(userData));
-    }
-  }, []);
 
   const {
     mutateAsync: createUserCompanyMutation,

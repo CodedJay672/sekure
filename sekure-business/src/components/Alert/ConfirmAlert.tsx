@@ -5,6 +5,7 @@ import { signOut } from "@/_lib/actions";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { logout } from "@/_lib/features/users/connexionSlice";
 import { useRouter } from "next/navigation";
+import { resetState } from "@/_lib/features/Auth/authSlice";
 
 interface IConfirmAlert {
   heading: string;
@@ -29,6 +30,9 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
   const handleConfirm = async () => {
     await signOut();
     dispatch(logout());
+
+    //reset the state
+    dispatch(resetState());
 
     // return to signin page
     router.replace("/signin");

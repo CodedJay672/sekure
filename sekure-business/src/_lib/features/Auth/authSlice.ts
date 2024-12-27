@@ -95,9 +95,7 @@ const authSlice = createSlice({
       };
     },
 
-    resetState: (state) => {
-      state = initialState;
-    },
+    resetState: () => initialState,
 
     jumpStep: (state, action: PayloadAction<number>) => {
       //increment the current step

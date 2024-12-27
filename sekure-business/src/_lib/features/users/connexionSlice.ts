@@ -71,6 +71,7 @@ const connexionSlice = createSlice({
     logout: (state) => {
       //reset the connexion data
       Object.assign(state, initialState);
+      persistor.purge();
     },
   },
 });

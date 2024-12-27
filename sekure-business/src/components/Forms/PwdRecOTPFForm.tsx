@@ -17,7 +17,6 @@ import Link from "next/link";
 import { OTPSchema } from "@/_validation";
 import { useRouter } from "next/navigation";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { useToast } from "@/hooks/use-toast";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useSignUserIn } from "../react-query/queriesAndMutations";
@@ -50,16 +49,11 @@ const PwdRecOTPFForm = () => {
 
     if (signInReturnData.success) {
       toast.success(signInReturnData?.message || "Authentication Success!");
-      // toast({
-      //   description: signInReturnData.message,
-      // });
+
       return router.push("/");
     } else {
       setInactive(false);
       toast.error(signInReturnData?.error as string);
-      // toast({
-      //   description: signInReturnData.error as string,
-      // });
     }
   }
 
