@@ -1,6 +1,7 @@
 import { NewUser } from "@/_validation/SignUp";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User, Company, signUpResponse } from "@/utils/types/SignupTypes";
+import { PURGE } from "redux-persist";
 
 export type AddUserData = {
   currentStep: {
@@ -84,7 +85,6 @@ const authSlice = createSlice({
     //add the create user action
     createUser: (state, action: PayloadAction<Partial<NewUser>>) => {
       //update the state with the userData
-
       state.newUserData = { ...state.newUserData, ...action.payload };
     },
 
@@ -93,11 +93,6 @@ const authSlice = createSlice({
         user: { ...state.userObj.user, ...action.payload.user },
         company: { ...state.userObj.company, ...action.payload.company },
       };
-    },
-
-    clearPersistor: (state) => {
-      //reset the auth data
-      state = initialState;
     },
 
     jumpStep: (state, action: PayloadAction<number>) => {
@@ -117,17 +112,16 @@ const authSlice = createSlice({
       state.currentStep.number -= 1;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, (state) => {
+      state = initialState;
+    });
+  },
 });
 
 //export the action to update the connexion data when users sign in
-export const {
-  createUser,
-  jumpStep,
-  nextStep,
-  previousStep,
-  updateUserObj,
-  clearPersistor,
-} = authSlice.actions;
+export const { createUser, jumpStep, nextStep, previousStep, updateUserObj } =
+  authSlice.actions;
 
 //export the reducer
 export default authSlice.reducer;

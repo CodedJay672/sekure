@@ -27,7 +27,7 @@ import { useAppDispatch } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
 import { useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
-import { clearPersistor, jumpStep } from "@/_lib/features/Auth/authSlice";
+import { jumpStep } from "@/_lib/features/Auth/authSlice";
 import { useSubmitSignInForm } from "../react-query/queriesAndMutations";
 
 const SignInForm = () => {
@@ -61,7 +61,6 @@ const SignInForm = () => {
 
         // dispatch the action to update the user data
         dispatch(updateConnexionData(userData.user[0]));
-        dispatch(clearPersistor());
       } else {
         toast({
           description: "User Company information not found",
@@ -91,7 +90,6 @@ const SignInForm = () => {
           router.push("/signup/business");
           break;
         default:
-          dispatch(jumpStep(6));
           router.push("/signin/get-otp");
           break;
       }

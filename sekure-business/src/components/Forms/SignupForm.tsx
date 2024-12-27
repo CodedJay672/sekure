@@ -23,13 +23,13 @@ import { useToast } from "@/hooks/use-toast";
 import { CgSpinner } from "react-icons/cg";
 import { signupSchema } from "@/_validation/SignUp";
 import {
-  clearPersistor,
   createUser,
   nextStep,
   updateUserObj,
 } from "@/_lib/features/Auth/authSlice";
 import { transformedSignUpErrorObject } from "@/utils";
 import { useCreateUserAccount } from "../react-query/queriesAndMutations";
+import { persistor } from "@/_lib/redux/store";
 
 const SignupForm = () => {
   const [errorResponse, setErrorResponse] = useState({});
@@ -50,6 +50,10 @@ const SignupForm = () => {
     isPending,
     error: errorObj,
   } = useCreateUserAccount();
+
+  useEffect(() => {
+    persistor.purge();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
     const newUserData = await createUserCompanyMutation(values);
