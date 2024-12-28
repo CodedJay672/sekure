@@ -88,8 +88,8 @@ export function DataTable<TData, TValue>({
         <Filter />
         <Pagination table={table} />
       </div>
-      <div className="w-full overflow-auto">
-        <div className="rounded-md min-w-[800px] overflow-x-scroll">
+      <div className="overflow-x-auto">
+        <div className="rounded-md min-w-[800px]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

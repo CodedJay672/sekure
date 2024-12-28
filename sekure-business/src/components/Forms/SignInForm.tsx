@@ -25,7 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { updateConnexionData } from "@/_lib/features/users/connexionSlice";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { CgSpinner } from "react-icons/cg";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { transformedSignInErrorObject } from "@/utils";
 import {
   jumpStep,
