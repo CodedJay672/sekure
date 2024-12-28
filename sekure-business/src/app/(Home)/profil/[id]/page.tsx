@@ -165,9 +165,11 @@ const ProfileDetails: React.FC = () => {
             </div>
           </div>
           <div className="w-1/2">
-            <h3 className="text-xs font-medium">D'enterprise</h3>
+            <h3 className="text-xs font-medium">D&lsquo;enterprise</h3>
             <div className="mt-2">
-              <label className="text-xs font-thin">Nom de l'entreprise</label>
+              <label className="text-xs font-thin">
+                Nom de l&lsquo;entreprise
+              </label>
               <div className="flex-between">
                 <span className="text-sm font-semibold leading-2">
                   {userData.data?.user?.[0]?.user_company?.[0]?.name}
