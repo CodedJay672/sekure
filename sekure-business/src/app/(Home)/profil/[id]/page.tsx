@@ -3,23 +3,22 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import { useGetUserByID } from "@/components/react-query/queriesAndMutations";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useAppSelector } from "@/_lib/redux/hooks";
 import { EditIcon, VerifiedIcon } from "lucide-react";
-import { setEditUserInfo } from "@/_lib/features/Edit/editUserInformationSlice";
 import { RxAvatar } from "react-icons/rx";
 import Link from "next/link";
+import Image from "next/image";
 
 const ProfileDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userId = parseInt(id);
-  const dispatch = useAppDispatch();
   const signedInUserId = useAppSelector(
     (state) => state.connexion?.user?.[0]?.id
   );
-  const isEditing = useAppSelector((state) => state.edit?.editUserInfo);
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const handleClick = () => {
-    dispatch(setEditUserInfo(!isEditing));
+    setIsEditing((prev) => !prev);
   };
 
   const userData = useGetUserByID(userId);
@@ -80,9 +79,11 @@ const ProfileDetails: React.FC = () => {
             {userData.data?.user?.[0]?.image ? (
               <RxAvatar className="w-full h-full object-cover rounded-full" />
             ) : (
-              <img
-                src={userData.data?.user?.[0]?.image}
+              <Image
+                src={userData.data?.user?.[0]?.image || "/avatar.png"}
                 alt="avatar"
+                width={144}
+                height={144}
                 className="w-full h-full object-cover rounded-full"
               />
             )}
