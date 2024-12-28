@@ -19,6 +19,9 @@ interface State {
 }
 
 const BarChart: React.FC<State> = ({ state }) => {
+  // make total transactions customizable
+  const totalTransactios = state?.reduce((acc, item) => acc + item.total, 50);
+
   const data = {
     labels: state?.map((item) => item.date),
     datasets: [
@@ -56,7 +59,7 @@ const BarChart: React.FC<State> = ({ state }) => {
         categoryPercentage: 1.0,
       },
       y: {
-        max: 250000,
+        max: totalTransactios,
         ticks: {
           color: "#403F3A",
           font: {
@@ -64,9 +67,9 @@ const BarChart: React.FC<State> = ({ state }) => {
           },
           callback: function (value: string | number) {
             const numericValue = Number(value); // Convert the value to a number
-            return numericValue / 1000 > 0
+            return numericValue / 1000 > 1
               ? numericValue / 1000 + "K"
-              : numericValue / 1000; // Remove the 'K' from the y-axis labels
+              : numericValue; // Remove the 'K' from the y-axis labels
           },
         },
       },
