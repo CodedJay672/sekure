@@ -52,6 +52,7 @@ const SignInForm = () => {
   const {
     mutateAsync: submitSignInForm,
     isPending,
+    isError,
     error: objError,
   } = useSubmitSignInForm();
 
@@ -101,19 +102,25 @@ const SignInForm = () => {
           break;
       }
 
-      toast({
-        description: userData?.message,
-      });
-      const signUpUserObj: Partial<signUpResponse> = {
-        user: {
-          ...userData?.user?.[0],
-        },
-        company: {
-          ...userData?.user?.[0]?.user_company?.[0],
-        },
-      };
+      if (userData?.user?.[0]?.step !== "completed") {
+        // give the user a feedback
+        toast({
+          description: userData?.message,
+        });
 
-      dispatch(updateUserObj(signUpUserObj));
+        // update the user object
+        const signUpUserObj: Partial<signUpResponse> = {
+          user: {
+            ...userData?.user?.[0],
+          },
+          company: {
+            ...userData?.user?.[0]?.user_company?.[0],
+          },
+        };
+
+        // update the user object
+        dispatch(updateUserObj(signUpUserObj));
+      }
     } else {
       setErrorObj(transformedSignInErrorObject(userData));
       // Handle the error case
@@ -124,7 +131,7 @@ const SignInForm = () => {
   }
 
   // Handle the network error case
-  if (objError) {
+  if (isError) {
     toast({
       description: objError.message,
     });

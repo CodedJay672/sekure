@@ -25,11 +25,11 @@ export default function Home() {
     );
   }
 
-  if (companyTransactionsDetails.error) {
+  if (companyTransactionsDetails.isError) {
     return (
       <Modal>
         <div className="size-32 rounded-lg flex-center">
-          Something went wrong! Please refresh the page.
+          {companyTransactionsDetails.error?.message}
         </div>
       </Modal>
     );

@@ -9,6 +9,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
 import { useGetCompanyCardsDetails } from "@/components/react-query/queriesAndMutations";
+import LoadingSpinner from "@/components/Alert/Loading";
+import Modal from "@/components/ui/shared/Modal";
 
 const Cartes: React.FC = () => {
   const pathname = usePathname();
@@ -16,11 +18,28 @@ const Cartes: React.FC = () => {
   const id = useAppSelector(
     (state) => state.connexion.user?.[0]?.user_company?.[0]?.id
   );
-  const { data: getCompanyCardDetails } = useGetCompanyCardsDetails(
-    id as number
-  );
+  const {
+    data: getCompanyCardDetails,
+    isError,
+    isPending,
+    error,
+  } = useGetCompanyCardsDetails(id as number);
 
-  if (!getCompanyCardDetails) return null;
+  if (isPending) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Modal>
+        <div>{error?.message}</div>
+      </Modal>
+    );
+  }
 
   const { numbe_card_type_visa, number_card_type_master } =
     getCompanyCardDetails || {};

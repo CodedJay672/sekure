@@ -2,10 +2,12 @@
 
 import { useAppSelector } from "@/_lib/redux/hooks";
 import AdminChart from "@/components/AdminChart/AdminChart";
+import LoadingSpinner from "@/components/Alert/Loading";
 import Card from "@/components/Cards/Cards";
 import { useGetCompanyTransactionDetails } from "@/components/react-query/queriesAndMutations";
 import StatsCard from "@/components/StatsCard/StatsCard";
 import TransactionsTable from "@/components/Table/TransactionsTable/TransactionsTable";
+import Modal from "@/components/ui/shared/Modal";
 
 const Transactions: React.FC = () => {
   const id =
@@ -13,9 +15,28 @@ const Transactions: React.FC = () => {
       (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
     ) ?? 0;
 
-  const { data: getCompanyTransactionDetails } =
-    useGetCompanyTransactionDetails(id);
+  const {
+    data: getCompanyTransactionDetails,
+    isPending,
+    isError,
+    error,
+  } = useGetCompanyTransactionDetails(id);
 
+  if (isPending) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Modal>
+        <div>{error.message}</div>
+      </Modal>
+    );
+  }
   return (
     <section className="wrapper">
       <div className="overflow-hidden flex-1 flex flex-col gap-4">

@@ -8,6 +8,8 @@ import { EditIcon, VerifiedIcon } from "lucide-react";
 import { RxAvatar } from "react-icons/rx";
 import Link from "next/link";
 import Image from "next/image";
+import Modal from "@/components/ui/shared/Modal";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 const ProfileDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,23 +25,21 @@ const ProfileDetails: React.FC = () => {
 
   const userData = useGetUserByID(userId);
 
-  {
-    userData.isPending && (
-      <div className="w-full h-32 bg-white flex-center">
-        <span className="text-base font-semibold text-gray-400">
-          Loading...
-        </span>
-      </div>
+  if (userData.isPending) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
     );
   }
 
-  {
-    userData.isError && (
-      <div className="w-full h-32 bg-white flex-center">
-        <span className="text-base font-semibold text-gray-400">
+  if (userData.isError) {
+    return (
+      <Modal>
+        <div className="text-base font-semibold text-gray-400">
           {userData.error && userData?.error?.message}
-        </span>
-      </div>
+        </div>
+      </Modal>
     );
   }
 
