@@ -37,7 +37,7 @@ export default async function RootLayout({
               {convertmodal}
               {rechargemodal}
               {customermodal}
-              {children}
+              <div className="flex-1 overflow-hidden">{children}</div>
             </main>
             <Toaster />
           </Provider>

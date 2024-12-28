@@ -7,14 +7,10 @@ import Notifications from "../ui/shared/Notifications";
 import Switch from "../ui/shared/switch/Switch";
 import CustomBreadcrumb from "../ui/Breadcrumbs/Breadcrumbs";
 import { useAppSelector } from "@/_lib/redux/hooks";
-import { useGetUserByID } from "../react-query/queriesAndMutations";
 
 const Topbar: React.FC = () => {
   const [isOn, setIsOn] = useState(false);
-  const state = useAppSelector((state) => state.connexion.user);
-
-  //initialize the redux store with user data in the local storage
-  const { data: signedInUserInfo } = useGetUserByID(state?.[0]?.id || 0);
+  const userId = useAppSelector((state) => state.connexion?.user?.[0]?.id) ?? 0;
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -42,11 +38,7 @@ const Topbar: React.FC = () => {
         <CustomBreadcrumb />
       </div>
       <div className="flex-between gap-2">
-        <UserDropdown
-          full_name={signedInUserInfo?.user?.[0]?.full_name}
-          image={signedInUserInfo?.user?.[0]?.image}
-          user_company={signedInUserInfo?.user?.[0]?.user_company?.[0]}
-        />
+        <UserDropdown id={userId} />
         <Notifications />
         <Switch text="Mode test" isOn={isOn} handleToggle={handleToggle} />
       </div>

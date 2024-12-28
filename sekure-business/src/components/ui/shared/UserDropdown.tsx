@@ -1,33 +1,50 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/_lib/redux/hooks";
 import Image from "next/image";
-import { UserCompany } from "@/_validation/SignIn";
+import { useGetUserByID } from "@/components/react-query/queriesAndMutations";
 
 type TUser = {
-  full_name: string | undefined;
-  image: string | undefined;
-  user_company: UserCompany | undefined;
+  id: number;
 };
 
-const UserDropdown: React.FC<TUser> = ({ full_name, image, user_company }) => {
+const UserDropdown: React.FC<TUser> = ({ id }) => {
   const router = useRouter();
+  const userInfo = useGetUserByID(id);
+
+  if (userInfo.isPending) {
+    return (
+      <div className="flex relative cursor-pointer">
+        <div className="flex flex-col justify-center items-end mr-2">
+          <div className="h-4 bg-gray-300 rounded w-24 mb-1 animate-pulse"></div>
+          <div className="h-2 bg-gray-300 rounded w-16 mb-1 animate-pulse"></div>
+          <div className="h-2 bg-gray-300 rounded w-12 animate-pulse"></div>
+        </div>
+        <div className="w-11 h-11 flex flex-center flex-col rounded-full bg-gray-300 animate-pulse"></div>
+      </div>
+    );
+  }
+
+  if (userInfo.isError) {
+    return <div>Error loading user information</div>;
+  }
+
+  const { full_name, user_company, image } = userInfo?.data?.user?.[0];
 
   return (
     <div className="flex relative cursor-pointer">
       <div
         className="flex flex-col justify-center items-end mr-2"
-        onClick={() => router.push("/profil")}
+        onClick={() => router.push(`/profil/${id}`)}
       >
         <h3 className="text-[11px] leading-[16.5px] font-semibold">
           {full_name}
         </h3>
         <p className="text-[7px] leading-[10.5px] font-normal">
-          {user_company?.name}
+          {user_company?.[0].name}
         </p>
         <span className="text-[7px] leading-[10.5px] text-center font-normal">
-          ID: DT{user_company?.registry_number}
+          ID: DT{user_company?.[0]?.registry_number}
         </span>
       </div>
 

@@ -20,7 +20,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <nav className="w-[234px] flex-between flex-col gap-24 sticky">
+    <nav className="min-w-[234px] flex-between flex-col gap-24">
       <div className="w-full">
         {navLinks.map((link, idx) => (
           <Link
