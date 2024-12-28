@@ -3,12 +3,13 @@ import AccueilRowsSlider from "@/components/Table/AccueliTable/AccueilRowSlider/
 
 type TRowDetailsSlider = {
   data: any;
+link: string;
 };
 
-const RowDetailsSlider: React.FC<TRowDetailsSlider> = ({ data }) => {
+const RowDetailsSlider: React.FC<TRowDetailsSlider> = ({ data, link }) => {
   return (
     <div className="w-full h-dvh px-2 pb-14 overflow-auto">
-      <AccueilRowsSlider data={data} />
+      <AccueilRowsSlider data={data} link={link} />
     </div>
   );
 };

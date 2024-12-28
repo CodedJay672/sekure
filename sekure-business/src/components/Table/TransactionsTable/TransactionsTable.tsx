@@ -29,6 +29,7 @@ const TransactionsTable = () => {
         data={allTransactions?.data.data || []}
         filterValue="montant"
         pagesize={allTransactions?.data?.last_page || 1}
+        link="/transactions/details"
       />
     </section>
   );

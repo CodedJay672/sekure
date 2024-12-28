@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filterValue: string;
   pagesize: number;
+  link: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
   data,
   filterValue,
   pagesize,
+  link,
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -151,7 +153,7 @@ export function DataTable<TData, TValue>({
           </Table>
         </div>
         <SheetSlider open={isOpen} openChange={handleSheetState}>
-          <RowDetailsSlider data={rowID} />
+          <RowDetailsSlider data={rowID} link={link} />
         </SheetSlider>
       </div>
     </>

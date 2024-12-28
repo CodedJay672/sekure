@@ -47,6 +47,7 @@ const CustomersTable = () => {
         data={allCustomers?.data?.data || []}
         filterValue="email"
         pagesize={allCustomers?.data?.last_page || 1}
+        link="/profil"
       />
     </section>
   );

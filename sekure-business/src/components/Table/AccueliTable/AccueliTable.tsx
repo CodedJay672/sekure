@@ -39,6 +39,7 @@ const AccueliTable: React.FC = () => {
         data={allCompanyTransaction?.data?.data || []}
         filterValue="reference"
         pagesize={allCompanyTransaction?.data?.last_page || 1}
+        link="/transactions/details"
       />
     </section>
   );

@@ -40,6 +40,7 @@ const CartesTable: React.FC = () => {
         data={allCompanyCards?.data?.data || []}
         filterValue="type"
         pagesize={allCompanyCards?.data?.last_page || 1}
+        link="/cartes/details"
       />
     </section>
   );

@@ -20,6 +20,7 @@ const UserTable: React.FC = () => {
         data={allUsers?.data.data || []}
         filterValue="email"
         pagesize={allUsers?.data?.last_page || 1}
+        link='/profil'
       />
     </section>
   );

@@ -3,16 +3,16 @@
 import { CopyIcon } from "lucide-react";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Transaction } from "../../TransactionsTable/validation";
 
 type TAccueilRowsSlider = {
   data: Transaction;
+  link: string;
 };
 
-const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data }) => {
+const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data, link }) => {
   const router = useRouter();
-  const pathname = usePathname();
 
   const { created_at } = data;
 
@@ -213,7 +213,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data }) => {
       <div className="w-full mt-4 flex flex-col gap-2">
         <button
           className="w-full py-2 text-[#f5f5f5] bg-[#1f1f1f] text-[11px] font-semibold rounded-md"
-          onClick={() => router.push(`${pathname}/details/${data?.id}`)}
+          onClick={() => router.push(`${link}/${data?.id}`)}
         >
           voir utilisateur
         </button>
