@@ -29,7 +29,7 @@ const UtilisateursDetails: React.FC = () => {
     return (
       <Modal>
         <div className="flex flex-col items-center justify-center gap-4">
-          <p className="text-red-500">Une erreur s'est produite</p>
+          <p className="text-red-500">Une erreur s&apos;est produite</p>
           <Button onClick={() => router.back()}>Retour</Button>
         </div>
       </Modal>
