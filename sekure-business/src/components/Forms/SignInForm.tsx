@@ -40,6 +40,7 @@ const SignInForm = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [errorObj, setErrorObj] = useState({});
+  const [loadingPage, setLoadingPage] = useState(false);
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -57,6 +58,7 @@ const SignInForm = () => {
   } = useSubmitSignInForm();
 
   async function onSubmit(values: z.infer<typeof signinSchema>) {
+    setLoadingPage(true);
     const userData = await submitSignInForm(values);
 
     if (userData.success) {
@@ -127,6 +129,7 @@ const SignInForm = () => {
       toast({
         description: userData.message || "Une erreur s'est produite",
       });
+      setLoadingPage(false);
     }
   }
 
@@ -135,6 +138,7 @@ const SignInForm = () => {
     toast({
       description: objError.message,
     });
+    setLoadingPage(false);
   }
 
   return (
@@ -198,9 +202,9 @@ const SignInForm = () => {
           <Button
             type="submit"
             className="w-[186px] h-[50px] bg-primary rounded-md text-white  my-3"
-            disabled={isPending}
+            disabled={loadingPage}
           >
-            {isPending ? (
+            {loadingPage ? (
               <CgSpinner size={20} className="animate-spin" />
             ) : (
               "Suivant"

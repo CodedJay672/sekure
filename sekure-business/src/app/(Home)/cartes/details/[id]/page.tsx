@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Card from "@/components/Cards/Cards";
 import { Button } from "@/components/ui/button";
 import Active from "@/components/ui/shared/Active";
@@ -11,14 +11,29 @@ import { IoCopyOutline } from "react-icons/io5";
 import { RiAddCircleFill } from "react-icons/ri";
 import CartesTable from "@/components/Table/Cartes/CartesTable";
 import { useParams, useRouter } from "next/navigation";
-import { useGetCardDetailsQuery } from "@/components/react-query/queriesAndMutations";
+import {
+  useDeleteCardMutation,
+  useGetCardDetailsQuery,
+} from "@/components/react-query/queriesAndMutations";
 import LoadingSpinner from "@/components/Alert/Loading";
+import ConfirmAlert from "@/components/Alert/ConfirmAlert";
+import Modal from "@/components/ui/shared/Modal";
+import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
+import toast, { Toaster } from "react-hot-toast";
 
 const CardDetails: React.FC = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+  const parsedID = parseInt(id);
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
-  const cardDetails = useGetCardDetailsQuery(id as unknown as number);
+  const cardDetails = useGetCardDetailsQuery(parsedID);
+  const {
+    mutateAsync: deleteCardById,
+    isPending,
+    isError,
+    error: mutationErrorObj,
+  } = useDeleteCardMutation();
 
   if (cardDetails.isPending) {
     return (
@@ -35,6 +50,37 @@ const CardDetails: React.FC = () => {
           {cardDetails.data?.message}
         </h1>
       </div>
+    );
+  }
+
+  function handleOpenDialog() {
+    setOpen(true);
+  }
+
+  const handleDeleteCard = async (id: number) => {
+    const deleteCardInfo = await deleteCardById(id);
+    setOpen(false); // Ensure state update is done only once
+    router.replace("/cartes");
+    if (deleteCardInfo?.status) {
+      toast.success(deleteCardInfo?.message);
+    } else {
+      toast.error(deleteCardInfo?.message);
+    }
+  };
+
+  if (isPending) {
+    return (
+      <Modal>
+        <LoadingSpinner />
+      </Modal>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Modal>
+        <>{mutationErrorObj?.message}</>
+      </Modal>
     );
   }
 
@@ -78,7 +124,7 @@ const CardDetails: React.FC = () => {
               variant="default"
               type="button"
               className="primary-btn rounded-[9px] w-[154px] text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[3px]"
-              onClick={() => router.push("/card/create-card")}
+              onClick={() => router.push("/cartes/create-card")}
             >
               Créer une carte
               <RiAddCircleFill
@@ -126,7 +172,12 @@ const CardDetails: React.FC = () => {
           <CardNumber heading="CVV" number={cardDetails?.data?.data?.cvv} />
         </div>
         <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
-          <Button variant="default" type="button" className="bg-danger">
+          <Button
+            variant="default"
+            type="button"
+            className="bg-danger"
+            onClick={handleOpenDialog}
+          >
             <span className="w-full flex-1 text-white">Supprimer la carte</span>
             <RiAddCircleFill size={24} className="fill-white ml-4" />
           </Button>
@@ -175,7 +226,21 @@ const CardDetails: React.FC = () => {
           </div>
           <CartesTable />
         </div>
+        <Toaster position="top-center" />
       </div>
+      <Dialog open={open} onOpenChange={handleOpenDialog}>
+        <DialogOverlay>
+          <DialogContent aria-describedby="ConfirmAlert">
+            <ConfirmAlert
+              heading="Supprimer la carte"
+              content="Êtes-vous sûr de vouloir supprimer cette carte?"
+              clickFn={() => handleDeleteCard(parsedID)}
+              btnText="Confirmer"
+              cancelFn={() => setOpen(false)}
+            />
+          </DialogContent>
+        </DialogOverlay>
+      </Dialog>
     </section>
   );
 };

@@ -6,6 +6,8 @@ import { DataTable } from "../UserTable/data-table";
 import { columns } from "./columns";
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { useGetAllTransactions } from "@/components/react-query/queriesAndMutations";
+import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from "@/components/Alert/Loading";
 
 const AccueliTable: React.FC = () => {
   const company_id =
@@ -17,14 +19,22 @@ const AccueliTable: React.FC = () => {
   const {
     data: allCompanyTransaction,
     isPending,
+    isError,
     error: errorObj,
   } = useGetAllTransactions({ company_id, page });
+  const { toast } = useToast();
 
-  if (errorObj) {
+  if (isError) {
+    toast({
+      description: errorObj.message,
+    });
+  }
+
+  if (isPending) {
     return (
-      <p className="text-sm font-semibold text-center text-gray-400">
-        {errorObj.message}
-      </p>
+      <section className="bg-white py-4 px-[17px] flex-center flex-col rounded-lg">
+        <LoadingSpinner />
+      </section>
     );
   }
 

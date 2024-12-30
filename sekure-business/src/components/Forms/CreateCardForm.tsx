@@ -28,12 +28,9 @@ import {
 import { useAppSelector } from "@/_lib/redux/hooks";
 import { useCreateCustomerCardMutation } from "../react-query/queriesAndMutations";
 import Modal from "../ui/shared/Modal";
-import LoadingSpinner from "../Alert/Loading";
 import { useToast } from "@/hooks/use-toast";
 import { transformedGenericErrorObject } from "@/utils";
-import { signInReturnType } from "@/_validation/SignIn";
-import { useEffect, useState } from "react";
-import { ICreatedCard } from "@/_data/card";
+import { useState } from "react";
 import SuccessAlert from "../Alert/SuccessAlert";
 import { CgSpinner } from "react-icons/cg";
 

@@ -202,3 +202,24 @@ export const getCardDetails = async (id: number) => {
   const data = await response.json();
   return data;
 };
+
+export const deleteCard = async (id: number) => {
+  let response: Response;
+
+  try {
+    const session = await verifySession("session");
+
+    response = await fetch(`${process.env.BACKEND_API_URL}/cards/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${session?.value?.token}`,
+        accept: "application/json",
+      },
+    });
+  } catch (error) {
+    throw new Error("Error: " + error);
+  }
+
+  const data = await response.json();
+  return data;
+};

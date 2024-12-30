@@ -1,5 +1,6 @@
 import {
   createCustomerCard,
+  deleteCard,
   getCardDetails,
   getCards,
   getCardStats,
@@ -147,6 +148,7 @@ export const useGetCompanyByIdQuery = (id: number) => {
     enabled: !!id,
   });
 };
+
 // card queries and mutations
 export const useGetAllCardsQuery = ({
   company_id,
@@ -202,6 +204,23 @@ export const useGetCompanyCardsDetails = (company_id: number) => {
   return useQuery({
     queryKey: ["getCardStats", company_id],
     queryFn: () => getCardStats(company_id),
+  });
+};
+
+export const useDeleteCardMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["deleteCard"],
+    mutationFn: (id: number) => {
+      return deleteCard(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getAllCards"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllCustomers"] });
+      queryClient.invalidateQueries({ queryKey: ["getCardStats"] });
+      queryClient.invalidateQueries({ queryKey: ["allTransactions"] });
+    },
   });
 };
 

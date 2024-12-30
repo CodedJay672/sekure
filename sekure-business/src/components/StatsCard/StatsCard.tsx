@@ -32,8 +32,8 @@ interface StatsCardProps {
 }
 
 const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
-  const percentVisa = (entry[0] / (entry[0] + entry[1])) * 100;
-  const percentMaster = (entry[1] / (entry[0] + entry[1])) * 100;
+  const percentVisa = Math.floor((entry[0] / (entry[0] + entry[1])) * 100);
+  const percentMaster = Math.floor((entry[1] / (entry[0] + entry[1])) * 100);
 
   const data = {
     backgroundColor: ["#242424", "#33E89C"],
@@ -62,7 +62,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ entry }) => {
         labels: {
           usePointStyle: true,
           pointStyle: "circle",
-          boxWidth: 40,
+          boxWidth: 100,
           font: {
             size: 10,
             lineHeight: 16,

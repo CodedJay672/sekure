@@ -26,7 +26,7 @@ import toast, { Toaster } from "react-hot-toast";
 const PwdRecOTPFForm = () => {
   const router = useRouter();
   // const { toast } = useToast();
-  const state = useAppSelector((state) => state.connexion.user[0]);
+  const state = useAppSelector((state) => state.connexion?.user[0]);
   const [inactive, setInactive] = useState(false);
 
   const form = useForm<z.infer<typeof OTPSchema>>({

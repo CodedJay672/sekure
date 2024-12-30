@@ -98,7 +98,7 @@ export const getAllTransactions = async ({
 
     return data;
   } catch (error) {
-    console.log("cannot fetch all transactions", error);
+    throw new Error(`${error}`);
   }
 };
 

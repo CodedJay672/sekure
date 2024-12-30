@@ -3,20 +3,42 @@
 import { navLinks, bottomNav } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { icon8 } from "../../../public/assets/images/import";
 import { useState } from "react";
 import ConfirmAlert from "../Alert/ConfirmAlert";
 import { Dialog, DialogContent, DialogOverlay } from "../ui/dialog";
 import { PiPlusBold } from "react-icons/pi";
+import { signOut } from "@/_lib/actions";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { resetState } from "@/_lib/features/Auth/authSlice";
+import { logout } from "@/_lib/features/users/connexionSlice";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [showCustomers, setShowCustomers] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleToggle = () => {
     setShowCustomers((prev) => !prev);
+  };
+
+  const handleConfirm = async () => {
+    await signOut();
+
+    // close the modal
+    setOpen(false);
+
+    //redirect users to the login page
+    router.push("/signin");
+
+    // dispatch the logout action
+    dispatch(logout());
+
+    //reset the state
+    dispatch(resetState());
   };
 
   return (
@@ -149,7 +171,8 @@ const Sidebar: React.FC = () => {
                 heading="Déconnecter?"
                 content="Terminez cette carte pour la supprimer et la rendre inactive. Cette opération est non-reversible. les fonds à l’interieur sont automatiquelenlt reversés dans la Wallet USD"
                 btnText="Se déconnecter"
-                clickFn={() => setOpen(false)}
+                clickFn={handleConfirm}
+                cancelFn={() => setOpen(false)}
               />
             </DialogContent>
           </DialogOverlay>

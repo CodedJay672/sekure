@@ -1,17 +1,13 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { signOut } from "@/_lib/actions";
-import { useAppDispatch } from "@/_lib/redux/hooks";
-import { logout } from "@/_lib/features/users/connexionSlice";
-import { useRouter } from "next/navigation";
-import { resetState } from "@/_lib/features/Auth/authSlice";
 
 interface IConfirmAlert {
   heading: string;
   content: string;
   btnText: string;
   clickFn: () => void;
+  cancelFn?: () => void;
 }
 
 const ConfirmAlert: React.FC<IConfirmAlert> = ({
@@ -19,26 +15,8 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
   content,
   btnText,
   clickFn,
+  cancelFn,
 }) => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const handleClose = () => {
-    clickFn();
-  };
-
-  const handleConfirm = async () => {
-    await signOut();
-    dispatch(logout());
-
-    //reset the state
-    dispatch(resetState());
-
-    // return to signin page
-    router.replace("/signin");
-    clickFn();
-  };
-
   return (
     <div className="alert px-3">
       <div className="w-full flex-between flex-row">
@@ -54,12 +32,12 @@ const ConfirmAlert: React.FC<IConfirmAlert> = ({
         </div>
 
         <div className="w-full flex-between mt-6 gap-3">
-          <Button className="flex-1 primary-btn" onClick={handleConfirm}>
+          <Button className="flex-1 primary-btn" onClick={clickFn}>
             {btnText}
           </Button>
           <Button
             className="flex-1 secondary-btn bg-gray-300"
-            onClick={handleClose}
+            onClick={cancelFn}
           >
             Annuler
           </Button>
