@@ -1,7 +1,8 @@
 import { TCustomerCard } from "@/_data/card";
+import { Button } from "@/components/ui/button";
 import { formatDate } from "@/utils";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { CopyIcon } from "lucide-react";
+import { ArrowUpDown, CopyIcon } from "lucide-react";
 
 export type Transactions = {
   mode_wallet_company: string;
@@ -95,6 +96,19 @@ export const columns: ColumnDef<Transactions>[] = [
       const data = row.getValue("created_at") as string;
       return formatDate(data);
     },
-    header: "Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={(e) => {
+            e.preventDefault();
+            column.toggleSorting(column.getIsSorted() === "asc");
+          }}
+        >
+          {" "}
+          Date <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
 ];

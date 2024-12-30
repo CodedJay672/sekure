@@ -27,7 +27,7 @@ const TransactionsTable = () => {
       <DataTable
         columns={columns}
         data={allTransactions?.data.data || []}
-        filterValue="montant"
+        filterValue="reference"
         pagesize={allTransactions?.data?.last_page || 1}
         link="/transactions/details"
       />

@@ -74,6 +74,20 @@ export const columns: ColumnDef<User>[] = [
 
       return formatedDate;
     },
-    header: "Date D'ajout",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === "asc");
+          }}
+          className="text-[10px]"
+        >
+          Date de naissance
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
 ];

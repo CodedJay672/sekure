@@ -215,7 +215,7 @@ const AccueilRowsSlider: React.FC<TAccueilRowsSlider> = ({ data, link }) => {
           className="w-full py-2 text-[#f5f5f5] bg-[#1f1f1f] text-[11px] font-semibold rounded-md"
           onClick={() => router.push(`${link}/${data?.id}`)}
         >
-          voir utilisateur
+          voir
         </button>
         <button
           className="w-full py-2 bg-primary text-gray-100 text-[11px] font-semibold rounded-md"
