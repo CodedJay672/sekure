@@ -18,9 +18,9 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant, state, total }) => {
   const [period, setPeriod] = useState("per Jour");
 
   return (
-    <div className="w-full bg-white px-[27px] py-[14px] rounded-[10px]">
-      <div className="flex-between">
-        <div className="flex-1 flex flex-col gap-1">
+    <article className="flex flex-col flex-1 bg-white px-[27px] py-[14px] rounded-[10px]">
+      <div className="flex-between w-full">
+        <div className="flex flex-col gap-1 flex-1">
           <h2 className="text-base leading-5 text-dark3 font-semibold">{`${
             variant !== "detailed"
               ? "Évolution des cartes crées"
@@ -33,7 +33,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant, state, total }) => {
             </p>
           )}
         </div>
-        <div className="flex-center pt-2 relative">
+        <div className="flex-center w-64 max-w-max">
           <CustomDropdown period={period} onChange={setPeriod} />
           {variant === "detailed" && (
             <div className="ml-3">
@@ -55,7 +55,7 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant, state, total }) => {
       <div className="w-full overflow-hidden mt-3 pb-4">
         <BarChart state={state} />
       </div>
-    </div>
+    </article>
   );
 };
 

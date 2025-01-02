@@ -39,7 +39,7 @@ const Transactions: React.FC = () => {
   }
   return (
     <section className="wrapper">
-      <div className="overflow-hidden flex-1 flex flex-col gap-4">
+      <div className="tables-charts">
         <section className="flex gap-2 w-full">
           <Card
             data1={{

@@ -28,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { IError } from "@/utils/types/SignupTypes";
 import { transformedErrorObject } from "@/utils";
 import { useSubmitAdresseForm } from "@/components/react-query/queriesAndMutations";
+import CustomInput from "@/components/ui/shared/CustomInputs/CustomInput";
 
 const AdresseForm = () => {
   const dispatch = useAppDispatch();
@@ -93,24 +94,13 @@ const AdresseForm = () => {
               name="localisation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">
-                    Localisation
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cameroun"
-                      className="input pr-20 w-full"
-                      {...field}
-                    />
-                  </FormControl>
-                  {field.name in errorResponse ? (
-                    <small className="text-xs text-red-600 align-right">
-                      {errorResponse[field.name] as string}
-                    </small>
-                  ) : (
-                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                  )}{" "}
+                  <CustomInput
+                    type="text"
+                    label="Localisation"
+                    placeholder="Cameroun"
+                    field={field}
+                    error={errorResponse}
+                  />
                 </FormItem>
               )}
             />
@@ -120,24 +110,13 @@ const AdresseForm = () => {
               name="zip"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">
-                    Code Postal / ZIP
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cameroun"
-                      {...field}
-                      className="input pr-20 w-full"
-                    />
-                  </FormControl>
-                  {field.name in errorResponse ? (
-                    <small className="text-xs text-red-600 align-right">
-                      {errorResponse[field.name] as string}
-                    </small>
-                  ) : (
-                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                  )}{" "}
+                  <CustomInput
+                    type="text"
+                    label="Code Postal / ZIP"
+                    placeholder="Cameroun"
+                    field={field}
+                    error={errorResponse}
+                  />
                 </FormItem>
               )}
             />
@@ -147,24 +126,13 @@ const AdresseForm = () => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xs font-light">
-                    Ville / City
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cameroun"
-                      {...field}
-                      className="input pr-20 w-full"
-                    />
-                  </FormControl>
-                  {field.name in errorResponse ? (
-                    <small className="text-xs text-red-600 align-right">
-                      {errorResponse[field.name] as string}
-                    </small>
-                  ) : (
-                    <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                  )}{" "}
+                  <CustomInput
+                    type="text"
+                    label="Ville / City"
+                    placeholder="Cameroun"
+                    field={field}
+                    error={errorResponse}
+                  />
                 </FormItem>
               )}
             />
@@ -175,24 +143,13 @@ const AdresseForm = () => {
             name="street"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Quartier / Street
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Quartier / Street"
+                  placeholder="Cameroun"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -202,24 +159,13 @@ const AdresseForm = () => {
             name="appartement"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Appartement / Suite / Etage/ Point repère
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Appartement / Suite / Etage/ Point repère"
+                  placeholder="Cameroun"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -240,7 +186,9 @@ const AdresseForm = () => {
             className="primary-btn w-[224.24px] h-[50px]"
           >
             {isPending ? (
-              <CgSpinner size={20} className="animate-spin" />
+              <>
+                <CgSpinner size={20} className="animate-spin mr-5" /> Loading...
+              </>
             ) : (
               "Continuer"
             )}

@@ -85,8 +85,8 @@ const CardDetails: React.FC = () => {
   }
 
   return (
-    <section className="wrapper max-w-full">
-      <div className="max-w-[354px] flex flex-col gap-3 rounded-[10px]">
+    <section className="wrapper">
+      <div className="w-[30%] flex flex-col gap-3 rounded-[10px]">
         <div className="bg-white flex flex-col py-6 px-4 rounded-[10px]">
           <div className="flex-between">
             <h1 className="text-base leading-5 font-semibold text-dark3 flex-1">
@@ -119,16 +119,16 @@ const CardDetails: React.FC = () => {
               $54200.50
             </span>
           </div>
-          <div className="flex-between mt-3">
+          <div className="w-full flex-between gap-1 mt-3">
             <Button
               variant="default"
               type="button"
-              className="primary-btn rounded-[9px] w-[154px] text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[3px]"
+              className="w-full primary-btn rounded-[9px] text-[10px] leading-[34.5px] -tracking-[0.5%] font-normal pr-[3px]"
               onClick={() => router.push("/cartes/create-card")}
             >
               Créer une carte
               <RiAddCircleFill
-                size={24}
+                size={20}
                 color="white"
                 className="fill-white ml-4"
               />
@@ -136,23 +136,23 @@ const CardDetails: React.FC = () => {
 
             <Button
               type="button"
-              className="bg-black rounded-[9px] w-[164px] text-white text-xs leading-[34.5px] -tracking-[0.5%] font-normal pr-[2px]"
+              className="bg-black rounded-[9px] w-full text-white text-[10px] leading-[34.5px] -tracking-[0.5%] pr-[3px]"
+              onClick={() => router.push("/recharge-wallet")}
             >
               Recharger une carte
-              <div className="w-5 h-5 rounded-full bg-white p-1 ml-[2px] flex-center">
+              <div className="w-[17px] h-[17px] rounded-full bg-white p-1 ml-1">
                 <Image
                   src="/assets/icons-pack/forward-arrow.svg"
                   alt="deposit"
-                  width={24}
-                  height={24}
+                  width={17}
+                  height={17}
                   className="object-contain"
-                  onClick={() => router.push("/recharge-wallet")}
                 />
               </div>
             </Button>
           </div>
         </div>
-        <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
+        <div className="w-full py-3 px-4 bg-white flex flex-col rounded-[10px]">
           <CardNumber
             heading="ID de carte"
             number={cardDetails?.data?.data?.id}
@@ -171,7 +171,7 @@ const CardDetails: React.FC = () => {
           />
           <CardNumber heading="CVV" number={cardDetails?.data?.data?.cvv} />
         </div>
-        <div className="w-[354px] py-3 px-4 bg-white flex flex-col rounded-[10px]">
+        <div className="w-full py-3 px-4 bg-white flex flex-col rounded-[10px]">
           <Button
             variant="default"
             type="button"
@@ -184,8 +184,8 @@ const CardDetails: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden">
-        <div className="w-full flex-between gap-2">
+      <div className="tables-charts">
+        <div className="w-full flex-between gap-1">
           <Card
             data1={{ title: "Total paiements", value: "$54200.50" }}
             data2={{ title: "activées", value: "1437" }}
@@ -202,7 +202,7 @@ const CardDetails: React.FC = () => {
             data3={{ title: "suspendues", value: "46" }}
           />
         </div>
-        <div className="bg-white mt-3  px-2 py-3 rounded-[10px] ">
+        <div className="bg-white mt-3  px-2 py-3 rounded-[10px]">
           <h2 className="text-base leading-6 font-semibold">
             Liste des transactions
           </h2>

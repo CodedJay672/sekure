@@ -4,16 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { useToast } from "@/hooks/use-toast";
@@ -29,6 +20,7 @@ import { transformedErrorObject } from "@/utils";
 import { useState } from "react";
 import { useSubmitInformationForm } from "@/components/react-query/queriesAndMutations";
 import { IError } from "@/utils/types/SignupTypes";
+import CustomInput from "@/components/ui/shared/CustomInputs/CustomInput";
 
 const InformationForm = () => {
   const dispatch = useAppDispatch();
@@ -40,6 +32,7 @@ const InformationForm = () => {
   const {
     mutateAsync: submitInformationForm,
     isPending,
+    isError,
     error: mutationError,
   } = useSubmitInformationForm();
 
@@ -65,7 +58,7 @@ const InformationForm = () => {
 
     if (submitInformationResponse.status) {
       toast({
-        description: submitInformationResponse.message,
+        description: submitInformationResponse?.message,
       });
       dispatch(updateUserObj(submitInformationResponse));
       dispatch(createUser(values));
@@ -77,7 +70,7 @@ const InformationForm = () => {
     }
   }
 
-  if (mutationError) {
+  if (isError) {
     toast({
       description: mutationError?.message,
     });
@@ -94,26 +87,13 @@ const InformationForm = () => {
             control={form.control}
             name="sector_activity"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Secteur d’activité
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
-              </FormItem>
+              <CustomInput
+                label="Secteur d’activité"
+                placeholder="Votre adresse mail"
+                type="text"
+                field={field}
+                error={errorResponse}
+              />
             )}
           />
 
@@ -122,24 +102,14 @@ const InformationForm = () => {
             name="description_company"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light group">
-                  Description de l’entreprise
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    rows={5}
-                    {...field}
-                    className="input pr-20 h-[126px]"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  label="Description de l’entreprise"
+                  placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                  type="text"
+                  field={field}
+                  variant="textarea"
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -155,29 +125,14 @@ const InformationForm = () => {
             name="created_company"
             render={({ field }) => (
               <FormItem>
-                <div className="flex flex-col gap-1">
-                  <FormLabel className="text-xs font-light">
-                    Date de creation de l’entreprise
-                  </FormLabel>
-                  <span className="text-[10px] font-semibold text-gray-300">
-                    accepted format: yyyy-mm-dd
-                  </span>
-                </div>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre mot de passe"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  label="Date de creation de l’entreprise"
+                  placeholder="Votre mot de passe"
+                  description="Format: jjjj-mm-aaaa"
+                  type="text"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -187,24 +142,13 @@ const InformationForm = () => {
             name="registry_number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Numéro de Registre de l’entreprise
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez le nom de votre entreprise"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Numéro de Registre de l’entreprise"
+                  placeholder="Entrez le nom de votre entreprise"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -214,24 +158,13 @@ const InformationForm = () => {
             name="matricule_number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Numéro de matricule aux Impots
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Numéro de matricule aux Impots"
+                  placeholder="Entrez le nom de matricule entreprise"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -247,24 +180,13 @@ const InformationForm = () => {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Numéro de Téléphone
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="tel"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="tel"
+                  label="Numéro de Téléphone"
+                  placeholder="Votre adresse mail"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -274,24 +196,13 @@ const InformationForm = () => {
             name="website_link"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xs font-light">
-                  Lien du site web
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre mot de passe"
-                    {...field}
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Lien du site web"
+                  placeholder="Votre mot de passe"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -305,7 +216,9 @@ const InformationForm = () => {
             disabled={isPending}
           >
             {isPending ? (
-              <CgSpinner size={20} className="animate-spin" />
+              <>
+                <CgSpinner size={20} className="animate-spin mr-5" /> Loading...
+              </>
             ) : (
               "Continuer"
             )}

@@ -41,8 +41,8 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
   }, [open]);
 
   return (
-    <article className="w-[304px] py-3 px-[14px] flex flex-col justify-between gap-2 bg-white rounded-[10px]">
-      <div className="flex-1 flex-between">
+    <article className="w-full py-3 px-[14px] flex flex-col justify-between gap-2 bg-white rounded-[10px]">
+      <section className="flex-1 flex-between">
         <div className="flex-between">
           <Image
             src={`${
@@ -81,7 +81,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
             />
           </div>
         </div>
-      </div>
+      </section>
 
       <div className="flex-1 flex flex-col">
         <div className="flex-between">
@@ -110,7 +110,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
             <span className="text-[12px] leading-[34.5px] tracking-[-0.5%] flex-1 text-center select-none">
               Recharger
             </span>
-            <div className="bg-white w-6 h-6 rounded-full flex-center">
+            <div className="bg-white w-4 h-4 rounded-full flex-center">
               <Image
                 src="/assets/icons-pack/forward-arrow.svg"
                 alt="deposit"
@@ -142,7 +142,7 @@ const Wallet: React.FC<IWalletDetails> = ({ type, deposit, withdraw }) => {
             >
               Convertir
             </Link>
-            <div className="bg-white w-6 h-6 rounded-full flex-center">
+            <div className="bg-white w-4 h-4 rounded-full flex-center">
               <Image
                 src="/assets/icons-pack/reset.svg"
                 alt="deposit"

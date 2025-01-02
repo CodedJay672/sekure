@@ -205,7 +205,9 @@ const SignInForm = () => {
             disabled={loadingPage}
           >
             {loadingPage ? (
-              <CgSpinner size={20} className="animate-spin" />
+              <>
+                <CgSpinner size={20} className="animate-spin mr-3" /> Loading...
+              </>
             ) : (
               "Suivant"
             )}

@@ -1,6 +1,10 @@
+import { Metadata } from "next";
 import Image from "next/image";
-import Provider from "@/utils/providers/tanstackProvider";
-import StoreProvider from "@/app/StoreProvider";
+
+export const metadata: Metadata = {
+  title: "Sign In | Sekure Business",
+  description: "Sekure provides card services for businesses.",
+};
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

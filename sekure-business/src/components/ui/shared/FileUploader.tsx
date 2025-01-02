@@ -1,6 +1,5 @@
 "use client";
 
-import { useAppSelector } from "@/_lib/redux/hooks";
 import Image from "next/image";
 import { useState, useCallback } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";

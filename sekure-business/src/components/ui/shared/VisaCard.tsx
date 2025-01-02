@@ -16,12 +16,11 @@ const VisaCard: React.FC<IVisaCardProps> = ({
   type,
 }) => {
   return (
-    <div className="w-[326px] h-[239px] rounded-[20px] p-5 bg-primary mt-4 relative shadow-md">
+    <div className="w-full h-[239px] rounded-[20px] p-5 bg-primary mt-4 relative shadow-md">
       <Image
         src="/assets/cardbg.png"
         alt="card"
-        width={326}
-        height={239}
+        fill
         className="absolute top-0 left-0 z-2"
       />
       <div className="absolute w-full top-0 left-0 p-6 pr-8">

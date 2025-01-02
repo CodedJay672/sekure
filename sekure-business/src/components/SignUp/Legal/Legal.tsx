@@ -212,7 +212,9 @@ const LegalForm: React.FC = () => {
             className="primary-btn w-[224.24px] h-[50px]"
           >
             {isPending ? (
-              <CgSpinner size={20} className="animate-spin" />
+              <>
+                <CgSpinner size={20} className="animate-spin mr-5" /> Loading...
+              </>
             ) : (
               "Continuer"
             )}

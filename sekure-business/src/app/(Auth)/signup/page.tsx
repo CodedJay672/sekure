@@ -8,13 +8,11 @@ export const metadata: Metadata = {
 
 const Signup = () => {
   return (
-    <div className="w-full">
-      <div className="p-0 w-full">
-        <h1 className="text-[33px] leading-[41px] tracking-[-2px] font-semibold mb-3">
-          Créer un compte
-        </h1>
-        <SignupForm />
-      </div>
+    <div className="p-0 size-[60%] mx-auto my-5">
+      <h1 className="text-[33px] leading-[41px] tracking-[-2px] font-semibold mb-3">
+        Créer un compte
+      </h1>
+      <SignupForm />
     </div>
   );
 };

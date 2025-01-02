@@ -46,8 +46,8 @@ const Cartes: React.FC = () => {
 
   return (
     <section className="wrapper">
-      <div className="overflow-hidden flex-1 flex flex-col gap-4">
-        <section className="flex gap-2 w-[80%]">
+      <div className="tables-charts">
+        <section className="flex gap-2 w-[70%]">
           <Card
             data1={{
               title: "Total Cartes",

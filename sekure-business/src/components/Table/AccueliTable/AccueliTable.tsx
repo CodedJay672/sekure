@@ -39,7 +39,7 @@ const AccueliTable: React.FC = () => {
   }
 
   return (
-    <section className="bg-white py-4 px-[17px] flex flex-col gap-2">
+    <article className="bg-white py-4 px-[17px] flex flex-1 flex-col gap-2">
       <TableComponent
         heading="Derniers transactions"
         tagline="liste en temps réel des dernieres transactions effectuées avec les cartes"
@@ -51,7 +51,7 @@ const AccueliTable: React.FC = () => {
         pagesize={allCompanyTransaction?.data?.last_page || 1}
         link="/transactions/details"
       />
-    </section>
+    </article>
   );
 };
 

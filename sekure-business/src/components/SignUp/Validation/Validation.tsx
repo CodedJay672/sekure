@@ -15,7 +15,7 @@ const Validation: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.auth.userObj);
+  const state = useAppSelector((state) => state.auth?.userObj);
   const { user, company } = state;
 
   const {
@@ -73,8 +73,6 @@ const Validation: React.FC = () => {
             {state?.company?.name}
           </h2>
           <p className="text-[12px] leading-[18px]">
-            {state?.company?.name}
-            {", "}
             {state?.company?.description_company}
           </p>
         </div>
@@ -127,44 +125,44 @@ const Validation: React.FC = () => {
             <span className="text-[12px] leading-[18px]">Document</span>
           </div>
           <div className="flex-1 flex flex-col gap-2">
-            <div className="flex bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
-              <Image
-                src={`/assets/icons-pack/uploadDocument.png`}
-                alt="uploaded document"
-                width={14.22}
-                height={14.65}
-              />
-              <div className="flex-1">
-                <span className="text-[10px] leading-[13.px] text-[#101010]">
-                  Certificat de constitution d’entreprise
-                </span>
+            <div className="flex-center flex-col bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
+              <div className="flex-center w-16 h-16">
+                <Image
+                  src={`/assets/icons-pack/uploadDocument.png`}
+                  alt="uploaded document"
+                  width={14.22}
+                  height={14.65}
+                />
               </div>
+              <span className="text-[10px] leading-[13.px] text-[#101010]">
+                Certificat de constitution d’entreprise
+              </span>
             </div>
-            <div className="flex bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
-              <Image
-                src="/assets/icons-pack/uploadDocument.png"
-                alt="uploaded document"
-                width={14.22}
-                height={14.65}
-              />
-              <div className="flex-1">
-                <span className="text-[10px] leading-[13.px] text-[#101010]">
-                  Certificat de constitution d’entreprise
-                </span>
+            <div className="flex-center flex-col bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
+              <div className="flex-center w-16 h-16">
+                <Image
+                  src={`/${state?.company?.certificat_constitution}`}
+                  alt="uploaded document"
+                  width={14.22}
+                  height={14.65}
+                />
               </div>
+              <span className="text-[10px] leading-[13.px] text-[#101010]">
+                Certificat de constitution d’entreprise
+              </span>
             </div>
-            <div className="flex bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
-              <Image
-                src="/assets/icons-pack/uploadDocument.png"
-                alt="uploaded document"
-                width={14.22}
-                height={14.65}
-              />
-              <div className="flex-1">
-                <span className="text-[10px] leading-[13.px] text-[#101010]">
-                  Certificat de constitution d’entreprise
-                </span>
+            <div className="flex-center flex-col bg-[#F3F3F3] w-[317px] py-3 px-6 gap-3 rounded-[4px]">
+              <div className="flex-center w-16 h-16">
+                <Image
+                  src="/assets/icons-pack/uploadDocument.png"
+                  alt="uploaded document"
+                  width={14.22}
+                  height={14.65}
+                />
               </div>
+              <span className="text-[10px] leading-[13.px] text-[#101010]">
+                Certificat de constitution d’entreprise
+              </span>
             </div>
           </div>
         </div>

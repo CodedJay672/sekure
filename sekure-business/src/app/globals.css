@@ -170,6 +170,33 @@
   min-height: 100dvh;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #dddddd;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #5c5c7b;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #7878a3;
+}
+
 @layer base {
   :root {
     --primary: #18bc7a;
@@ -189,10 +216,6 @@
   * {
     @apply m-0 p-0 box-border;
   }
-
-  body {
-    @apply min-h-dvh max-w-[1550px] bg-notif text-dark3 mx-auto overflow-x-hidden;
-  }
 }
 
 @layer utilities {
@@ -209,7 +232,11 @@
   }
 
   .wrapper {
-    @apply flex gap-4 ml-4 pb-10 pr-6;
+    @apply flex flex-1 gap-4 2xl:gap-20 pb-10 pr-6 overflow-hidden;
+  }
+
+  .tables-charts {
+    @apply flex flex-1 flex-col gap-4 overflow-hidden;
   }
 
   .tab-header {

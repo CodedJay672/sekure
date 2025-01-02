@@ -7,7 +7,6 @@ import TableComponent from "@/components/ui/shared/TableComponent";
 import { useGetAllUsers } from "@/components/react-query/queriesAndMutations";
 import LoadingSpinner from "@/components/Alert/Loading";
 import Modal from "@/components/ui/shared/Modal";
-import ConfirmAlert from "@/components/Alert/ConfirmAlert";
 
 const UserTable: React.FC = () => {
   const {

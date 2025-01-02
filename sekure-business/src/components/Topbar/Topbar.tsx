@@ -17,7 +17,7 @@ const Topbar: React.FC = () => {
   };
 
   return (
-    <nav className="flex-between w-full py-3 px-6 gap-4 sticky top-0 bg-notif z-50">
+    <nav className="flex-between w-full py-3 px-6 gap-4 2xl:gap-32 sticky top-0 bg-notif z-50">
       <div className="flex-center">
         <div className="mr-1">
           <Image

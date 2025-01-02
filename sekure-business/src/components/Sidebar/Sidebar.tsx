@@ -13,6 +13,7 @@ import { signOut } from "@/_lib/actions";
 import { useAppDispatch } from "@/_lib/redux/hooks";
 import { resetState } from "@/_lib/features/Auth/authSlice";
 import { logout } from "@/_lib/features/users/connexionSlice";
+import { cn } from "@/lib/utils";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
@@ -42,15 +43,20 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <nav className="min-w-[234px] flex-between flex-col gap-24">
+    <nav className="min-w-[17%] flex-between flex-col gap-24 mr-5 2xl:mr-24">
       <div className="w-full">
         {navLinks.map((link, idx) => (
           <Link
             href={link.path}
             key={`${idx}-${link.name}`}
-            className={`w-full h-9 px-6 mb-3 flex flex-start items-center gap-3 hover:bg-white group ${
-              pathname === link.path ? "bg-white" : ""
-            } transition-all`}
+            className={cn(
+              `w-full h-9 px-6 mb-3 flex flex-start items-center gap-3 hover:bg-white group transition-all`,
+              {
+                "bg-white text-primary":
+                  pathname.startsWith(`${link.path}/`) ||
+                  pathname === link.path,
+              }
+            )}
           >
             <Image
               priority
@@ -66,9 +72,14 @@ const Sidebar: React.FC = () => {
               } transition-all`}
             />
             <span
-              className={`text-dark3 text-[11px] font-normal leading-[16.5px] group-hover:text-primary ${
-                pathname === link.path ? "text-primary" : "text-dark3"
-              } transition-all`}
+              className={cn(
+                "text-dark3 text-[11px] font-normal leading-[16.5px] group-hover:text-primary",
+                {
+                  "text-primary":
+                    pathname.startsWith(`${link.path}/`) ||
+                    pathname === link.path,
+                }
+              )}
             >
               {link.name}
             </span>

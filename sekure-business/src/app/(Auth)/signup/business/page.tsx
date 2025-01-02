@@ -32,7 +32,7 @@ const steps = [
 
 const Business = () => {
   return (
-    <section className="w-full">
+    <section className="size-[60%] mx-auto my-5">
       <div className="w-full">
         <h2 className="text-[33px] leading-[37px] -tracking-[2px] font-semibold px-10">
           Dites-nous en plus ...

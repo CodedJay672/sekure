@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import { IError } from "@/utils/types/SignupTypes";
 import { transformedErrorObject } from "@/utils";
 import { useSubmitAdjouterForm } from "@/components/react-query/queriesAndMutations";
+import CustomInput from "@/components/ui/shared/CustomInputs/CustomInput";
 
 interface AdjourterFormProps {
   onPageChange: (page: string) => void;
@@ -39,31 +40,14 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
   const state = useAppSelector((state) => state.auth);
   const { userObj, newUserData } = state;
   const [errorResponse, setErrorResponse] = useState({});
-
-  const queryClient = useQueryClient();
   const { toast } = useToast();
+
   const {
     mutateAsync: signupActionnaireMutation,
     isPending,
+    isError,
     error: mutationError,
   } = useSubmitAdjouterForm();
-
-  //   onSuccess: (data) => {
-  //     if ("user" in data) {
-  //       toast({
-  //         description: data.message,
-  //       });
-  //       dispatch(updateUserObj(data));
-  //       return dispatch(nextStep());
-  //     }
-
-  //     const errorObj = data as IError;
-  //     setErrorResponse(transformedErrorObject(errorObj));
-  //     toast({
-  //       description: "Something went wrong.",
-  //     });
-  //   },
-  // });
 
   const form = useForm<z.infer<typeof ActionnairesSchema>>({
     resolver: zodResolver(ActionnairesSchema),
@@ -136,9 +120,9 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
     }
   }
 
-  if (mutationError) {
+  if (isError) {
     toast({
-      description: mutationError.message,
+      description: mutationError?.message,
     });
   }
 
@@ -155,22 +139,13 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
             name="poste"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Poste</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Poste"
+                  placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -179,153 +154,90 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
             name="date_birth"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Date de Naissance
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    {...field}
-                    value={field.value ? field.value.toString() : ""}
-                    placeholder="enter date of birth"
-                    className="input pr-20"
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Date de Naissance"
+                  placeholder="enter date of birth"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="Pourcentage_action"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Pourcentage d’actions
-                </FormLabel>
-                <FormControl>
-                  <Input
+          <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="Pourcentage_action"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <CustomInput
                     type="text"
+                    label="Pourcentage d’actions"
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
+                    field={field}
+                    error={errorResponse}
                   />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="nationality"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Nationalité
-                </FormLabel>
-                <FormControl>
-                  <Input
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="nationality"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <CustomInput
                     type="text"
+                    label="Nationalité"
                     placeholder="Entrez votre nom comme sur votre pièce d’identité"
-                    className="input pr-20"
-                    {...field}
+                    field={field}
+                    error={errorResponse}
                   />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="localisation"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Localisation User
-                </FormLabel>
-                <FormControl>
-                  <Input
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="localisation"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <CustomInput
                     type="text"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
+                    label="Localisation User"
+                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                    field={field}
+                    error={errorResponse}
                   />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="appartement"
-            render={({ field }) => (
-              <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">
-                  Appartement, etage
-                </FormLabel>
-                <FormControl>
-                  <Input
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="appartement"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <CustomInput
                     type="text"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
+                    label="Appartement, etage"
+                    placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                    field={field}
+                    error={errorResponse}
                   />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
-              </FormItem>
-            )}
-          />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="city"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Cité</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Cité"
+                  placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -334,22 +246,13 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
             name="etat"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Etat</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Etat"
+                  placeholder="Entrez votre nom comme sur votre pièce d’identité"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -358,22 +261,13 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
             name="zip"
             render={({ field }) => (
               <FormItem className="mt-3">
-                <FormLabel className="text-xs font-light">Zip Code</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Votre adresse mail"
-                    className="input pr-20"
-                    {...field}
-                  />
-                </FormControl>
-                {field.name in errorResponse ? (
-                  <small className="text-xs text-red-600 align-right">
-                    {errorResponse[field.name] as string}
-                  </small>
-                ) : (
-                  <FormMessage className="text-xs font-normal leading-6 text-red-700" />
-                )}{" "}
+                <CustomInput
+                  type="text"
+                  label="Zip Code"
+                  placeholder="Votre adresse mail"
+                  field={field}
+                  error={errorResponse}
+                />
               </FormItem>
             )}
           />
@@ -435,7 +329,9 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
             className="primary-btn w-[224.24px] h-[50px]"
           >
             {isPending ? (
-              <CgSpinner size={20} className="animate-spin" />
+              <>
+                <CgSpinner size={20} className="animate-spin mr-5" /> Loading...
+              </>
             ) : (
               "Valider et continuer"
             )}

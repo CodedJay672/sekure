@@ -37,8 +37,8 @@ export default function Home() {
 
   return (
     <section className="wrapper">
-      <div className="overflow-hidden flex-1 flex flex-col gap-4">
-        <div className="flex-between gap-3">
+      <div className="tables-charts">
+        <div className="flex-between w-full gap-3">
           <Card
             data1={{
               title: "Total Transactions",
@@ -82,16 +82,14 @@ export default function Home() {
             }}
           />
         </div>
-        <section className="w-full min-h-32 flex-center flex-col bg-white rounded-xl overflow-hidden">
-          <AdminChart
-            variant="detailed"
-            state={companyTransactionsDetails?.data?.evolution_transactions}
-            total={companyTransactionsDetails?.data?.total_transaction}
-          />
-        </section>
+        <AdminChart
+          variant="detailed"
+          state={companyTransactionsDetails?.data?.evolution_transactions}
+          total={companyTransactionsDetails?.data?.total_transaction}
+        />
         <AccueliTable />
       </div>
-      <section className="flex flex-col max-w-[354px] w-[300px] gap-3">
+      <aside className="flex flex-col w-64 gap-3">
         <Wallet
           type="XAF"
           deposit={companyTransactionsDetails?.data?.wallet_xaf}
@@ -107,7 +105,7 @@ export default function Home() {
           deposit={companyTransactionsDetails?.data?.wallet_civ}
           withdraw={companyTransactionsDetails?.data?.wallet_civ}
         />
-      </section>{" "}
+      </aside>{" "}
     </section>
   );
 }
