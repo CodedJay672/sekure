@@ -75,10 +75,8 @@ const ProfileDetails: React.FC = () => {
       </div>
       <div className="w-full grid grid-cols-12 gap-4">
         <div className="col-span-4 bg-white rounded-lg shadow-md px-10 py-6">
-          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto bg-gray-300">
+          <div className="w-36 h-36 rounded-full overflow-hidden mx-auto bg-primary flex-center">
             {userData.data?.user?.[0]?.image ? (
-              <RxAvatar className="w-full h-full object-cover rounded-full" />
-            ) : (
               <Image
                 src={userData.data?.user?.[0]?.image || "/avatar.png"}
                 alt="avatar"
@@ -86,6 +84,10 @@ const ProfileDetails: React.FC = () => {
                 height={144}
                 className="w-full h-full object-cover rounded-full"
               />
+            ) : (
+              <span className="text-white text-2xl font-semibold">
+                {userData.data?.user?.[0]?.full_name?.slice(0, 2).toUpperCase()}
+              </span>
             )}
           </div>
           <div className="mt-6 w-full flex-center flex-col">

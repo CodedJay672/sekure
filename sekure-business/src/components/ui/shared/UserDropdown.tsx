@@ -59,7 +59,7 @@ const UserDropdown: React.FC<TUser> = ({ id }) => {
           />
         ) : (
           <p className="text-base text-center leading-[15px] mt-[2px] font-bold text-white">
-            DT
+            {full_name?.slice(0, 2).toUpperCase()}
           </p>
         )}
       </div>
