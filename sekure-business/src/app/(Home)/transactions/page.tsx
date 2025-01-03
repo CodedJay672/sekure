@@ -31,10 +31,11 @@ const Transactions: React.FC = () => {
   }
 
   if (isError) {
+    console.log(error?.message);
     return (
-      <Modal>
-        <div>{error.message}</div>
-      </Modal>
+      <section className="wrapper">
+        <div>{error?.message}</div>
+      </section>
     );
   }
   return (

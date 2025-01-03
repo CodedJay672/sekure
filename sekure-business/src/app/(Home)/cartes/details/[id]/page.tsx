@@ -77,10 +77,11 @@ const CardDetails: React.FC = () => {
   }
 
   if (isError) {
+    console.log(mutationErrorObj?.message);
     return (
-      <Modal>
-        <>{mutationErrorObj?.message}</>
-      </Modal>
+      <section className="wrapper">
+        <div>{mutationErrorObj?.message}</div>
+      </section>
     );
   }
 

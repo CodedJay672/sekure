@@ -60,9 +60,7 @@ const SignupForm = () => {
   }
 
   if (isError) {
-    toast({
-      description: errorObj?.message,
-    });
+    console.log(errorObj?.message);
   }
 
   return (

@@ -104,9 +104,7 @@ const LegalForm: React.FC = () => {
   }
 
   if (mutationError) {
-    toast({
-      description: mutationError.message,
-    });
+    console.log(mutationError?.message);
   }
 
   return (

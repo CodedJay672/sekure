@@ -34,12 +34,12 @@ const ProfileDetails: React.FC = () => {
   }
 
   if (userData.isError) {
+    console.log(userData.error && userData?.error?.message);
+
     return (
-      <Modal>
-        <div className="text-base font-semibold text-gray-400">
-          {userData.error && userData?.error?.message}
-        </div>
-      </Modal>
+      <section className="wrapper">
+        <div>{userData.error && userData?.error?.message}</div>
+      </section>
     );
   }
 

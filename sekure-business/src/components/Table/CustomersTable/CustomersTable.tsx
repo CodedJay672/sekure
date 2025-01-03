@@ -6,27 +6,18 @@ import { DataTable } from "../UserTable/data-table";
 import LoadingSpinner from "@/components/Alert/Loading";
 import { useGetAllCustomersQuery } from "@/components/react-query/queriesAndMutations";
 import { useAppSelector } from "@/_lib/redux/hooks";
-import { useState } from "react";
 
 const CustomersTable = () => {
   const company_id =
     useAppSelector(
       (state) => state.connexion?.user?.[0]?.user_company?.[0]?.id
     ) ?? 0;
-  const [page, setPage] = useState<number>(1);
+  const page = useAppSelector((state) => state.edit?.page);
 
   const { data: allCustomers, isPending } = useGetAllCustomersQuery({
     company_id,
     page,
   });
-
-  // const nextPage = () => {
-  //   setPage((prev) => prev + 1);
-  // };
-
-  // const prevPage = () => {
-  //   setPage((prev) => prev - 1);
-  // };
 
   if (isPending) {
     return (

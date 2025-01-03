@@ -121,9 +121,7 @@ const AdjourterForm: React.FC<AdjourterFormProps> = ({ onPageChange }) => {
   }
 
   if (isError) {
-    toast({
-      description: mutationError?.message,
-    });
+    console.log(mutationError?.message);
   }
 
   return (

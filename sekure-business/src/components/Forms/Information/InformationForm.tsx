@@ -71,9 +71,7 @@ const InformationForm = () => {
   }
 
   if (isError) {
-    toast({
-      description: mutationError?.message,
-    });
+    console.log(mutationError?.message);
   }
 
   return (

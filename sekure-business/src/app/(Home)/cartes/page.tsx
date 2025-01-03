@@ -34,10 +34,11 @@ const Cartes: React.FC = () => {
   }
 
   if (isError) {
+    console.log(error?.message);
     return (
-      <Modal>
+      <section className="wrapper">
         <div>{error?.message}</div>
-      </Modal>
+      </section>
     );
   }
 

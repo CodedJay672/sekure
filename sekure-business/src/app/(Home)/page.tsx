@@ -26,12 +26,11 @@ export default function Home() {
   }
 
   if (companyTransactionsDetails.isError) {
+    console.log(companyTransactionsDetails.error?.message);
     return (
-      <Modal>
-        <div className="size-32 rounded-lg flex-center">
-          {companyTransactionsDetails.error?.message}
-        </div>
-      </Modal>
+      <section className="wrapper">
+        <div>{companyTransactionsDetails.error?.message}</div>
+      </section>
     );
   }
 

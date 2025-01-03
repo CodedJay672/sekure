@@ -33,7 +33,11 @@ const PwdRecOTPFForm = () => {
     resolver: zodResolver(OTPSchema),
   });
 
-  const { mutateAsync: userSignIn, error: mutationError } = useSignUserIn();
+  const {
+    mutateAsync: userSignIn,
+    isError,
+    error: mutationError,
+  } = useSignUserIn();
 
   async function onSubmit(values: z.infer<typeof OTPSchema>) {
     setInactive(true);
@@ -57,11 +61,8 @@ const PwdRecOTPFForm = () => {
     }
   }
 
-  if (mutationError) {
-    toast.error(mutationError?.message);
-    // toast({
-    //   description: "Une erreur s'est produite, veuillez réessayer",
-    // });
+  if (isError) {
+    console.log(mutationError?.message);
   }
 
   return (

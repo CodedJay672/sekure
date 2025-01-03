@@ -135,9 +135,7 @@ const SignInForm = () => {
 
   // Handle the network error case
   if (isError) {
-    toast({
-      description: objError.message,
-    });
+    console.log(objError.message);
     setLoadingPage(false);
   }
 

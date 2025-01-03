@@ -21,6 +21,7 @@ const Validation: React.FC = () => {
   const {
     mutateAsync: signUpUser,
     isPending,
+    isError,
     error: mutationError,
   } = useSubmitValidationForm();
 
@@ -56,10 +57,8 @@ const Validation: React.FC = () => {
     });
   };
 
-  if (mutationError) {
-    toast({
-      description: "Une erreur s'est produite, veuillez réessayer",
-    });
+  if (isError) {
+    console.log(mutationError?.message);
   }
 
   return (
