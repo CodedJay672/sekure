@@ -85,7 +85,7 @@ const ProfileDetails: React.FC = () => {
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <span className="text-white text-2xl font-semibold">
+              <span className="text-white text-5xl font-semibold">
                 {userData.data?.user?.[0]?.full_name?.slice(0, 2).toUpperCase()}
               </span>
             )}
