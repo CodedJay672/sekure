@@ -47,7 +47,7 @@ export const columns: ColumnDef<Transaction>[] = [
       const amount = row.getValue("amount") as number;
       return amount.toLocaleString("fr-FR", {
         style: "currency",
-        currency: "XOF",
+        currency: "USD",
       });
     },
     header: "Montant",

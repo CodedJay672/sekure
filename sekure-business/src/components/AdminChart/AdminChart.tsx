@@ -40,7 +40,10 @@ const AdminChart: React.FC<AdminChartProps> = ({ variant, state, total }) => {
               <h2 className="text-xs font-light">Cette {period}</h2>
               <div className="flex-between gap-4">
                 <p className="text-[16px] font-bold leading-[16px]">
-                  XAF {total}
+                  {total?.toLocaleString("fr-FR", {
+                    style: "currency",
+                    currency: "XAF",
+                  })}
                 </p>
                 <div className="flex-center gap-1">
                   <BsFillTriangleFill size={8} className="fill-primary" />
