@@ -5,7 +5,12 @@ import {
   getCards,
   getCardStats,
 } from "@/_data/card";
-import { getCompanyById, ICompanyUpdate, updateCompany } from "@/_data/company";
+import {
+  getAllCompany,
+  getCompanyById,
+  ICompanyUpdate,
+  updateCompany,
+} from "@/_data/company";
 import {
   createCustomer,
   getAllCustomers,
@@ -140,7 +145,7 @@ export const useSignUserIn = () => {
   });
 };
 
-// company queries and mutation
+// fetch company information only when the id is available
 export const useGetCompanyByIdQuery = (id: number) => {
   return useQuery({
     queryKey: ["companyInformation", id],

@@ -44,7 +44,7 @@ const CustomDropdown: React.FC<ICustomDropdown> = ({ period, onChange }) => {
 
   return (
     <div
-      className="parent-div form-select select py-[12px]"
+      className="parent-div form-select select py-[12px] relative"
       onClick={() => setOpen(!open)}
     >
       <p className="text-[12px] leading-3 -tracking-[0.5px] font-medium text-center select-none">
@@ -54,7 +54,7 @@ const CustomDropdown: React.FC<ICustomDropdown> = ({ period, onChange }) => {
         <>
           <div className="fixed top-0 left-0 animate-in fade-in-10 w-full h-full bg-black/30 z-10 cursor-default" />
           <div
-            className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out flex flex-col gap-[3px] top-[60px] -left-24 w-[213px] rounded-[15px] py-[12px] z-50 absolute cursor-default before:absolute before:-top-3 before:left-40 before:w-[30px] before:h-[30px] before:-z-10 before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}
+            className={`animate-in fade-in-10 slide-in-from-top-10 ease-in-out flex flex-col gap-[3px] top-10 right-1 w-[213px] rounded-[15px] py-[12px] z-50 absolute cursor-default before:absolute before:-top-3 before:left-40 before:w-[30px] before:h-[30px] before:-z-10 before:rotate-45 before:rounded-[9px] bg-white shadow-xl before:bg-white`}
           >
             {selectOption.map((option) => (
               <div
