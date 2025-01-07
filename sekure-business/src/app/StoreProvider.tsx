@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { makeStore, persistor } from "@/_lib/redux/store";
 import { persistStore } from "redux-persist";
 import LoadingSpinner from "@/components/Alert/Loading";
+import Modal from "@/components/ui/shared/Modal";
 
 export default function StoreProvider({
   children,
@@ -32,9 +33,9 @@ export default function StoreProvider({
     <Provider store={storeRef.current}>
       <PersistGate
         loading={
-          <div className="w-full h-dvh place-content-center">
+          <Modal>
             <LoadingSpinner />
-          </div>
+          </Modal>
         }
         persistor={persistor}
       >

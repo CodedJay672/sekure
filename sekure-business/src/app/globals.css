@@ -164,12 +164,6 @@
   font-display: swap;
 }
 
-:root {
-  font-family: Lufga, sans-serif;
-  max-width: 1550px;
-  min-height: 100dvh;
-}
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -179,8 +173,8 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  scrollbar-width: thin;
+  width: 10px;
   border-radius: 2px;
 }
 
@@ -191,10 +185,6 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #5c5c7b;
   border-radius: 50px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #7878a3;
 }
 
 @layer base {

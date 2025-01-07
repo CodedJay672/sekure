@@ -43,7 +43,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <nav className="min-w-[17%] flex-between flex-col gap-24 mr-5 2xl:mr-24">
+    <nav className="min-w-[17%] max-h-[523px] flex-between flex-col gap-24 mr-5 2xl:mr-24 overflow-y-scroll no-scrollbar custom-scrollbar fixed left-0 top-20">
       <div className="w-full">
         {navLinks.map((link, idx) => (
           <Link

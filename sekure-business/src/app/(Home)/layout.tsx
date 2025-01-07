@@ -16,12 +16,12 @@ export default async function layout({
   return (
     <>
       <Topbar />
-      <section className="w-full flex justify-between items-start mt-3">
+      <section className="w-full flex justify-between items-start mt-3 relative">
         <Sidebar />
         {convertmodal}
         {rechargemodal}
         {customermodal}
-        {children}
+        <div className="w-full pl-[15.5rem]">{children}</div>
       </section>
     </>
   );

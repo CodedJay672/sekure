@@ -22,9 +22,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body className={inter.className}>
         <StoreProvider>
           <Provider>
-            <main className="min-h-dvh w-full mx-auto bg-notif overflow-hidden">
-              {children}
-            </main>
+            <main className="min-h-dvh w-full bg-notif">{children}</main>
             <Toaster />
           </Provider>
         </StoreProvider>
