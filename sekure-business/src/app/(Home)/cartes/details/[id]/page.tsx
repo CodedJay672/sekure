@@ -117,7 +117,7 @@ const CardDetails: React.FC = () => {
               Solde de la carte
             </span>
             <span className="text-xs leading-[34.5px] tracking-[-0.5%] font-bold text-dark3 pr-2">
-              $54200.50
+              ${cardDetails?.data?.data?.balance ?? "0.00"}
             </span>
           </div>
           <div className="w-full flex-between gap-1 mt-3">
