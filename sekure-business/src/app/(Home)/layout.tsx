@@ -21,7 +21,7 @@ export default async function layout({
         {convertmodal}
         {rechargemodal}
         {customermodal}
-        <div className="w-full pl-[15.5rem]">{children}</div>
+        <div className="w-full pl-[15.5rem] 2xl:pl-[35rem]">{children}</div>
       </section>
     </>
   );
